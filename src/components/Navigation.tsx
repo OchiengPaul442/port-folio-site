@@ -40,6 +40,7 @@ export function Navigation() {
       className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg-primary)]/80 backdrop-blur-md"
       role="navigation"
       aria-label="Main navigation"
+      data-notranslate="true"
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <Link

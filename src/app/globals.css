@@ -189,3 +189,55 @@ body {
   border-top: 1px solid var(--color-border);
   margin: 2em 0;
 }
+
+/* Google Translate widget */
+.language-control {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  font-size: 0.75rem;
+}
+
+.language-control .goog-te-gadget {
+  font-family: inherit;
+  font-size: 0;
+}
+
+.language-control .goog-te-gadget-simple {
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  background: var(--color-bg-secondary);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.language-control .goog-te-gadget-simple:hover {
+  border-color: var(--color-accent);
+}
+
+.language-control .goog-te-gadget-text {
+  font-size: 0.75rem !important;
+  color: var(--color-text-primary) !important;
+  vertical-align: middle;
+}
+
+.language-control select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+
+/* Hide Google Translate banner when page is translated */
+body > .goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}

@@ -1,35 +1,67 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-const languages = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'lg', label: 'Luganda', flag: '🇺🇬' },
-  { code: 'sw', label: 'Swahili', flag: '🌍' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
-];
+interface GoogleTranslateElement {
+  new (options: Record<string, unknown>, element: string): void;
+}
+
+declare global {
+  interface Window {
+    google?: {
+      translate?: GoogleTranslateElement & {
+        TranslateElement?: GoogleTranslateElement;
+      };
+    };
+    googleTranslateElementInit?: () => void;
+  }
+}
 
 export function LanguageSelector() {
-  const [language, setLanguage] = useState('en');
+  const widgetRef = useRef<HTMLDivElement>(null);
+  const scriptLoaded = useRef(false);
 
-  function handleLanguageChange(target: string) {
-    setLanguage(target);
-    if (target === 'en') return;
+  useEffect(() => {
+    function initWidget() {
+      const TranslateClass = window.google?.translate?.TranslateElement;
+      if (TranslateClass && widgetRef.current && !widgetRef.current.hasChildNodes()) {
+        new TranslateClass(
+          {
+            pageLanguage: 'en',
+            includedLanguages: 'en,lg,sw,fr,es',
+            layout: 'SIMPLE',
+            autoDisplay: false,
+          },
+          'google-translate-widget'
+        );
+      }
+    }
 
-    const translatedUrl = new URL('https://translate.google.com/translate');
-    translatedUrl.searchParams.set('sl', 'en');
-    translatedUrl.searchParams.set('tl', target);
-    translatedUrl.searchParams.set('u', window.location.href);
-    window.location.assign(translatedUrl.toString());
-  }
+    if (scriptLoaded.current) {
+      initWidget();
+      return;
+    }
+
+    if (document.getElementById('google-translate-script')) {
+      scriptLoaded.current = true;
+      initWidget();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = 'google-translate-script';
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    script.onload = () => {
+      scriptLoaded.current = true;
+      initWidget();
+    };
+    document.body.appendChild(script);
+  }, []);
 
   return (
-    <div className="language-control" data-no-translate>
-      <label className="sr-only" htmlFor="site-language">Translate this page</label>
-      <select id="site-language" value={language} onChange={(event) => handleLanguageChange(event.target.value)}>
-        {languages.map((item) => <option value={item.code} key={item.code}>{item.flag} {item.label}</option>)}
-      </select>
+    <div className="language-control" data-notranslate="true">
+      <div id="google-translate-widget" ref={widgetRef} />
     </div>
   );
 }
