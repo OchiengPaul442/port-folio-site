@@ -15,7 +15,7 @@ export function Footer() {
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
               Software engineer in Kampala, Uganda.
               <br />
-              Building AI tools and environmental data platforms.
+              Building thoughtful web products and dependable software systems.
             </p>
           </div>
           <div className="flex gap-6">
@@ -37,7 +37,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t border-[var(--color-border)] pt-6">
           <p className="font-mono text-xs text-[var(--color-text-tertiary)]">
-            &copy; {new Date().getFullYear()} Paul Ochieng Levi. Built with Next.js &amp; Tailwind CSS.
+            &copy; {new Date().getFullYear()} Paul Ochieng Levi.
           </p>
         </div>
       </div>

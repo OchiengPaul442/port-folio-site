@@ -60,6 +60,25 @@ body {
   font-family: var(--font-sans);
 }
 
+.site-shell {
+  min-height: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.hero-surface {
+  position: relative;
+  isolation: isolate;
+  background: radial-gradient(circle at 86% 18%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 24rem), radial-gradient(circle at 6% 82%, color-mix(in srgb, #0f766e 13%, transparent), transparent 22rem);
+}
+
+.reveal-up { animation: reveal-up .72s cubic-bezier(.2,.7,.2,1) both; }
+.reveal-up-delay { animation: reveal-up .72s .13s cubic-bezier(.2,.7,.2,1) both; }
+.reveal-up-delay-2 { animation: reveal-up .72s .24s cubic-bezier(.2,.7,.2,1) both; }
+.float-soft { animation: float-soft 7s ease-in-out infinite; }
+@keyframes reveal-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes float-soft { 50% { transform: translateY(-9px); } }
+
 ::selection {
   background: var(--color-accent);
   color: var(--color-accent-text);

@@ -51,7 +51,7 @@ export function CaseStudyLayout({
               rel="noopener noreferrer"
               className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
             >
-              Source Code &nearr;
+              View source ↗
             </a>
           )}
           {liveUrl && (
@@ -61,7 +61,7 @@ export function CaseStudyLayout({
               rel="noopener noreferrer"
               className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
             >
-              Live Site &nearr;
+              Visit live site ↗
             </a>
           )}
         </div>

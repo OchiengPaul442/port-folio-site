@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CaseStudyLayout } from '@/components/CaseStudyLayout';
+import { ProjectVisual } from '@/components/ProjectVisual';
 import { getProjectBySlug, getAllProjects } from '@/lib/projects';
 
 interface PageProps {
@@ -48,13 +49,8 @@ export default async function CaseStudyPage({ params }: PageProps) {
           liveUrl={project.liveUrl}
         >
           <div className="space-y-10">
-            {/* Project Screenshot Placeholder */}
-            <div className="not-prose overflow-hidden rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)]">
-              <div className="flex h-48 items-center justify-center sm:h-64">
-                <p className="font-mono text-sm text-[var(--color-text-tertiary)]">
-                  Project screenshot
-                </p>
-              </div>
+            <div className="not-prose">
+              <ProjectVisual title={project.title} stack={project.stack} status={project.status} />
             </div>
 
             <section>

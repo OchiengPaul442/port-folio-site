@@ -5,7 +5,7 @@ import { getAllProjects } from '@/lib/projects';
 export const metadata: Metadata = {
   title: 'Work',
   description:
-    'Projects and case studies by Paul Ochieng Levi — AI agents, environmental data platforms, and developer tools.',
+    'Projects and case studies by Paul Ochieng Levi — full-stack products, data platforms, and developer tools.',
 };
 
 export default function WorkPage() {
@@ -18,8 +18,8 @@ export default function WorkPage() {
           Work
         </h1>
         <p className="mt-2 text-[var(--color-text-secondary)]">
-          A selection of projects I&apos;ve built or contributed to. Each case study
-          covers the problem, approach, and what I&apos;d change.
+          A selection of products I&apos;ve built or contributed to—spanning frontend
+          experience, backend systems, data, and emerging technology.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           {projects.map((project) => (

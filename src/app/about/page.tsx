@@ -4,15 +4,15 @@ import { Timeline } from '@/components/Timeline';
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'About Paul Ochieng Levi — software engineer in Kampala, Uganda building AI tools and environmental data platforms.',
+    'About Paul Ochieng Levi — a full-stack software engineer in Kampala, Uganda building thoughtful digital products and dependable systems.',
 };
 
 const experience = [
   {
     period: 'Current Focus',
-    title: 'AI Agent Development',
+    title: 'Applied AI & Developer Tools',
     description:
-      'Building local-first AI coding agents (Pulse, NexCode) with multi-model routing, workspace awareness, and privacy-first architecture using VS Code extensions, Ollama, and LangGraph.',
+      'Exploring local-first developer tools with an emphasis on useful workflows, privacy, and performance on everyday hardware.',
   },
   {
     period: 'Active Contributor',
@@ -24,7 +24,7 @@ const experience = [
     period: 'Ongoing',
     title: 'Full-Stack Product Development',
     description:
-      'Building web applications with TypeScript, React, Next.js, and Django. Projects include PDF editors, API backends, and data visualization tools.',
+      'Building web applications across the stack with TypeScript, React, Next.js, Python, Django, and PostgreSQL—from interface design through production APIs.',
   },
 ];
 
@@ -40,22 +40,21 @@ export default function AboutPage() {
           <div className="prose max-w-none">
             <p className="text-lg text-[var(--color-text-secondary)]">
               I&apos;m Paul Ochieng Levi, a software engineer based in Kampala, Uganda.
-              I build AI-powered tools, environmental-data platforms, and product
-              infrastructure — with a specific focus on problems particular to
-              African markets.
+              I build digital products from interface to infrastructure: responsive
+              web applications, useful APIs, and the systems that connect them.
             </p>
             <p className="text-[var(--color-text-secondary)]">
-              My work sits at the intersection of AI agents and environmental
-              technology. I&apos;ve contributed to AirQo&apos;s platform serving air
-              quality data across African communities, and I build local-first AI
-              coding tools that work offline and respect developer privacy.
+              I enjoy working across the stack because the best product decisions
+              happen when design, data, and implementation inform one another.
+              I&apos;ve contributed to AirQo&apos;s platform serving air quality data across
+              African communities, and I also build product tools, marketplaces,
+              and developer experiences.
             </p>
             <p className="text-[var(--color-text-secondary)]">
               I care about low-bandwidth performance, multi-language support, and
-              infrastructure that works where connectivity and hardware assumptions
-              from the West don&apos;t hold. The best technology for African markets
-              isn&apos;t simplified versions of Western products — it&apos;s
-              purpose-built solutions that start from local constraints.
+              software that respects its users&apos; actual conditions. Good technology
+              begins with local constraints, clear communication, and a willingness
+              to make the complex feel straightforward.
             </p>
           </div>
 

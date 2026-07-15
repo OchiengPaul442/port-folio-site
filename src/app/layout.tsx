@@ -20,17 +20,17 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Paul Ochieng Levi — Software Engineer, Uganda',
+    default: 'Paul Ochieng Levi — Full-Stack Software Engineer',
     template: '%s | Paul Ochieng Levi',
   },
   description:
-    'Software engineer in Kampala, Uganda building AI-powered tools, environmental-data platforms, and product infrastructure. Focus on low-bandwidth performance, multi-language support, and infrastructure for African markets.',
+    'Full-stack software engineer in Kampala, Uganda building reliable web products, APIs, developer tools, and data platforms for real-world users.',
   keywords: [
     'Paul Ochieng Levi',
     'Software Engineer Uganda',
-    'air quality software engineer',
+    'full-stack software engineer',
     'React Next.js developer Uganda',
-    'AI agents',
+    'backend and frontend engineer',
     'environmental technology',
   ],
   authors: [{ name: 'Paul Ochieng Levi' }],
@@ -40,15 +40,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://paul.dev',
     siteName: 'Paul Ochieng Levi',
-    title: 'Paul Ochieng Levi — Software Engineer, Uganda',
+    title: 'Paul Ochieng Levi — Full-Stack Software Engineer',
     description:
-      'Software engineer in Kampala, Uganda building AI-powered tools, environmental-data platforms, and product infrastructure.',
+      'Full-stack software engineer building reliable web products, APIs, developer tools, and data platforms.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Paul Ochieng Levi — Software Engineer, Uganda',
+    title: 'Paul Ochieng Levi — Full-Stack Software Engineer',
     description:
-      'Software engineer in Kampala, Uganda building AI-powered tools, environmental-data platforms, and product infrastructure.',
+      'Full-stack software engineer building reliable web products, APIs, developer tools, and data platforms.',
     creator: '@OchiengTech',
   },
   robots: {
@@ -77,7 +77,7 @@ export default function RootLayout({
       lang="en"
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="site-shell min-h-full flex flex-col">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
@@ -110,7 +110,7 @@ export default function RootLayout({
               ],
               knowsAbout: [
                 'Software Engineering',
-                'AI Agents',
+                'Applied AI',
                 'Environmental Technology',
                 'TypeScript',
                 'Python',

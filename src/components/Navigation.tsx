@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
+import { BrandMark } from '@/components/BrandMark';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -40,13 +41,14 @@ export function Navigation() {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <Link
           href="/"
-          className="font-mono text-sm font-semibold tracking-tight text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+          className="group inline-flex items-center gap-2.5 font-mono text-sm font-semibold tracking-tight text-[var(--color-text-primary)] transition-colors hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
           aria-label="Paul Ochieng Levi - Home"
         >
-          paul.dev
+          <BrandMark className="h-8 w-8 shrink-0 text-[var(--color-accent)] transition-transform duration-300 group-hover:rotate-[-7deg]" />
+          <span>paul.dev</span>
         </Link>
 
         <ul className="hidden items-center gap-1 md:flex" role="list">

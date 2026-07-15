@@ -15,16 +15,16 @@ export default function ContactPage() {
           Contact
         </h1>
         <p className="mt-2 text-[var(--color-text-secondary)]">
-          I&apos;m open to opportunities and collaboration. Here are some reasons
-          to reach out:
+          I&apos;m open to thoughtful engineering opportunities, collaborations, and
+          conversations about building useful software.
         </p>
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-5">
             <h2 className="font-semibold text-[var(--color-text-primary)]">Full-Time Roles</h2>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              Software engineering positions focused on AI, environmental tech,
-              or product infrastructure. Remote-first preferred.
+              Product-minded frontend, backend, or full-stack roles. I&apos;m especially
+              interested in teams that care about quality, users, and momentum.
             </p>
           </div>
           <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-5">
@@ -37,15 +37,15 @@ export default function ContactPage() {
           <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-5">
             <h2 className="font-semibold text-[var(--color-text-primary)]">Consulting</h2>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              Short-term engagements for AI integration, API development,
-              or frontend architecture. Especially for African market constraints.
+              Short-term engagements for frontend architecture, APIs, integrations,
+              and turning a product idea into a focused first release.
             </p>
           </div>
           <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-5">
             <h2 className="font-semibold text-[var(--color-text-primary)]">Open Source</h2>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              Collaborating on open-source projects related to AI agents,
-              developer tools, or environmental technology.
+              Collaborating on projects around developer experience, public-good
+              technology, useful data, and the open web.
             </p>
           </div>
         </div>

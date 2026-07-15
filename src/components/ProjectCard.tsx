@@ -12,7 +12,7 @@ export function ProjectCard({ slug, title, subtitle, status, stack }: ProjectCar
   return (
     <Link
       href={`/work/${slug}`}
-      className="group block rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-6 transition-all hover:border-[var(--color-accent)] hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+      className="group block rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)] hover:shadow-xl hover:shadow-stone-900/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
@@ -43,8 +43,8 @@ export function ProjectCard({ slug, title, subtitle, status, stack }: ProjectCar
           </span>
         ))}
       </div>
-      <div className="mt-4 text-sm font-medium text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
-        View case study &rarr;
+      <div className="mt-5 text-sm font-semibold text-[var(--color-accent)] transition-transform group-hover:translate-x-1">
+        Read the case study →
       </div>
     </Link>
   );
