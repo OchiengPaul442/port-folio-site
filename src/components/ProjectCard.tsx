@@ -43,7 +43,7 @@ export function ProjectCard({ slug, title, subtitle, status, stack }: ProjectCar
           </span>
         ))}
       </div>
-      <div className="mt-5 text-sm font-semibold text-[var(--color-accent)] transition-transform group-hover:translate-x-1">
+      <div className="mt-5 text-sm font-semibold text-[var(--color-accent)] opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
         Read the case study →
       </div>
     </Link>
