@@ -1,12 +1,37 @@
 import type { MetadataRoute } from 'next';
-import { getAllProjects } from '@/lib/projects';
+import fs from 'fs';
+import path from 'path';
+
+const contentDir = path.join(process.cwd(), 'content', 'projects');
+
+function getProjectMtime(slug: string): Date {
+  try {
+    const stat = fs.statSync(path.join(contentDir, `${slug}.json`));
+    return stat.mtime;
+  } catch {
+    return new Date();
+  }
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://paul.dev';
+  const now = new Date();
 
-  const projects = getAllProjects().map((project) => ({
-    url: `${baseUrl}/work/${project.slug}`,
-    lastModified: new Date(),
+  const projects = [
+    'aeris-aq',
+    'airqo-web-db',
+    'builld',
+    'coinz',
+    'dawa-ug',
+    'ledgerbloom',
+    'nexcode',
+    'nexus-airqo',
+    'pdf-viewer',
+    'pulse',
+    'saving-food',
+  ].map((slug) => ({
+    url: `${baseUrl}/work/${slug}`,
+    lastModified: getProjectMtime(slug),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
@@ -14,44 +39,38 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
       url: `${baseUrl}/work`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     ...projects,
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/now`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/resume`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'yearly',
       priority: 0.3,
     },

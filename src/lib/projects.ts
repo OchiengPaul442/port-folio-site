@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { cache } from 'react';
 
 export interface Project {
   slug: string;
@@ -22,7 +23,7 @@ export interface Project {
 
 const contentDir = path.join(process.cwd(), 'content', 'projects');
 
-export function getAllProjects(): Project[] {
+export const getAllProjects = cache((): Project[] => {
   try {
     const files = fs.readdirSync(contentDir).filter((f) => f.endsWith('.json'));
     const projects = files
@@ -40,7 +41,7 @@ export function getAllProjects(): Project[] {
   } catch {
     return [];
   }
-}
+});
 
 export function getFeaturedProjects(): Project[] {
   return getAllProjects().filter((p) => p.featured);

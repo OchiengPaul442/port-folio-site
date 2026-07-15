@@ -8,7 +8,7 @@ const contactSchema = z.object({
   email: z.string().email('Invalid email address'),
   subject: z.string().min(1, 'Subject is required').max(200),
   message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
-  website: z.string().max(0), // honeypot
+  website: z.string().max(0),
 });
 
 export function ContactForm() {
@@ -30,7 +30,6 @@ export function ContactForm() {
       website: formData.get('website') as string,
     };
 
-    // Honeypot check
     if (data.website) {
       setStatus('success');
       return;
@@ -50,8 +49,24 @@ export function ContactForm() {
     setStatus('submitting');
 
     try {
-      // In production, this would POST to an API route
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        if (res.status === 429) {
+          setErrors({ form: 'Too many requests. Please try again later.' });
+          setStatus('idle');
+          return;
+        }
+        if (body.fields) setErrors(body.fields);
+        setStatus('error');
+        return;
+      }
+
       setStatus('success');
       form.reset();
     } catch {
@@ -131,6 +146,8 @@ export function ContactForm() {
         />
         {errors.message && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.message}</p>}
       </div>
+
+      {errors.form && <p className="text-xs text-[var(--color-error)]">{errors.form}</p>}
 
       <button
         type="submit"

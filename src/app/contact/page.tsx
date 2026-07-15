@@ -65,10 +65,10 @@ export default function ContactPage() {
           </h2>
           <div className="mt-4 flex flex-wrap gap-6">
             <a
-              href="mailto:paul@example.com"
+              href="mailto:contact@paul.dev"
               className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
             >
-              paul@example.com
+              contact@paul.dev
             </a>
             <a
               href="https://github.com/OchiengPaul442"
@@ -77,14 +77,6 @@ export default function ContactPage() {
               className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
             >
               GitHub
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              LinkedIn
             </a>
             <a
               href="https://twitter.com/OchiengTech"

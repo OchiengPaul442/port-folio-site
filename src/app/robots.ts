@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/resume/paul-ochieng-levi-resume.pdf'],
+        disallow: ['/api/'],
       },
     ],
     sitemap: 'https://paul.dev/sitemap.xml',

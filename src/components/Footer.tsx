@@ -27,19 +27,11 @@ export function Footer() {
             >
               GitHub
             </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              LinkedIn
-            </a>
             <Link
-              href="/resume"
+              href="/contact"
               className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
             >
-              Resume
+              Contact
             </Link>
           </div>
         </div>

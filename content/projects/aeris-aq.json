@@ -8,7 +8,7 @@
   "approach": "Built with FastAPI backend, Gemini AI provider, SQLite for session storage, and multi-source data integration (WAQI, AirQo, OpenMeteo, Carbon Intensity, DEFRA, UBA, NSW). Uses a clean architecture pattern with domain services, infrastructure layer, and REST API interfaces. Includes health endpoints, readiness gates, and cold-start handling for free-tier deployments. Frontend uses Next.js, Tailwind CSS, Framer Motion, and SWR for data fetching.",
   "hardestDecision": "Implementing free-tier cold-start behavior — the deployment on Render sleeps during inactivity, requiring a warmup window where the API returns 503 with retry-after headers. Needed to handle this gracefully across all endpoints including chat, health checks, and session management without confusing clients.",
   "status": "shipped",
-  "outcome": "Live at aeris.ochiengpaul.com and agent-frontend-seven.vercel.app. 216 commits on GitHub. Integrates 7 air quality data sources with conversational AI interface.",
+  "outcome": "Live at aeris.ochiengpaul.com and agent-frontend-seven.vercel.app. Integrates 7 air quality data sources with conversational AI interface.",
   "whatIdChange": "Would implement response caching for common air quality queries, add streaming responses for better UX during long agent reasoning chains, and add a fact-checking layer that cross-references agent responses against verified data endpoints.",
   "stack": ["Python", "FastAPI", "LangGraph", "Gemini", "SQLite", "TypeScript", "React", "Next.js", "Tailwind CSS", "Framer Motion"],
   "repo": "https://github.com/OchiengPaul442/AirQualityAgent",

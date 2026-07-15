@@ -10,14 +10,9 @@
   },
   "dependencies": {
     "cmdk": "^1.1.1",
-    "framer-motion": "^12.42.2",
-    "gray-matter": "^4.0.3",
     "next": "16.2.10",
-    "next-mdx-remote": "^6.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "rehype-pretty-code": "^0.14.4",
-    "remark-gfm": "^4.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

@@ -9,28 +9,22 @@ export const metadata: Metadata = {
 
 const experience = [
   {
-    period: '2024 — Present',
+    period: 'Current Focus',
     title: 'AI Agent Development',
     description:
       'Building local-first AI coding agents (Pulse, NexCode) with multi-model routing, workspace awareness, and privacy-first architecture using VS Code extensions, Ollama, and LangGraph.',
   },
   {
-    period: '2022 — Present',
-    title: 'AirQo Platform Contributor',
+    period: 'Active Contributor',
+    title: 'AirQo Platform',
     description:
       'Contributing to AirQo\'s frontend and backend — internationalization supporting 40+ languages including African languages, REST API development, and dashboard components for air quality monitoring across Africa.',
   },
   {
-    period: '2023 — 2024',
+    period: 'Ongoing',
     title: 'Full-Stack Product Development',
     description:
       'Building web applications with TypeScript, React, Next.js, and Django. Projects include PDF editors, API backends, and data visualization tools.',
-  },
-  {
-    period: '2022 — 2023',
-    title: 'Software Engineering Foundations',
-    description:
-      'Deepening expertise in TypeScript, Python, and modern web frameworks. Contributing to open source projects and building developer tools.',
   },
 ];
 

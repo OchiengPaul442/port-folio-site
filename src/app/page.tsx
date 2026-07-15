@@ -4,8 +4,9 @@ import { getFeaturedProjects } from '@/lib/projects';
 import { getGitHubProfile } from '@/lib/github';
 
 export default async function Home() {
+  const profilePromise = getGitHubProfile();
   const featuredProjects = getFeaturedProjects();
-  const profile = await getGitHubProfile();
+  const profile = await profilePromise;
 
   return (
     <>
@@ -32,10 +33,10 @@ export default async function Home() {
               View Work
             </Link>
             <Link
-              href="/resume"
+              href="/about"
               className="inline-flex items-center rounded-md border border-[var(--color-border)] px-4 py-2 text-sm font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
             >
-              Resume
+              About
             </Link>
           </div>
           <div className="mt-8 flex gap-4">
@@ -48,15 +49,7 @@ export default async function Home() {
               GitHub
             </a>
             <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="mailto:paul@example.com"
+              href="mailto:contact@paul.dev"
               className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
             >
               Email
@@ -154,7 +147,7 @@ export default async function Home() {
           <div className="mt-8 flex flex-wrap gap-8">
             <div>
               <div className="text-3xl font-bold text-[var(--color-text-primary)]">
-                {profile?.public_repos ?? 50}+
+                {profile?.public_repos ?? '?'}+
               </div>
               <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 Public Repositories
@@ -162,15 +155,7 @@ export default async function Home() {
             </div>
             <div>
               <div className="text-3xl font-bold text-[var(--color-text-primary)]">
-                2,500+
-              </div>
-              <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
-                Public Contributions
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-[var(--color-text-primary)]">
-                {profile?.followers ?? 24}
+                {profile?.followers ?? '?'}
               </div>
               <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 Followers
@@ -199,12 +184,12 @@ export default async function Home() {
           <p className="mt-4 max-w-xl text-[var(--color-text-secondary)]">
             Open to full-time roles, remote engineering positions, climate-tech
             collaboration, and consulting. Reach out via{' '}
-            <a href="mailto:paul@example.com" className="text-[var(--color-accent)] underline underline-offset-2">
+            <a href="mailto:contact@paul.dev" className="text-[var(--color-accent)] underline underline-offset-2">
               email
             </a>{' '}
-            or connect on{' '}
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] underline underline-offset-2">
-              LinkedIn
+            or on{' '}
+            <a href="https://github.com/OchiengPaul442" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] underline underline-offset-2">
+              GitHub
             </a>.
           </p>
         </div>
