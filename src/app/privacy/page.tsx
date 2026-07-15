@@ -30,6 +30,13 @@ export default function PrivacyPage() {
             This site does not use cookies, tracking pixels, or third-party
             analytics services. No browsing data is collected or shared.
           </p>
+          <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Translation</h2>
+          <p>
+            The language control can open the current page through Google
+            Translate. Translation is handled by Google&apos;s service; this website
+            does not store your language choice or send page content through its
+            own server for translation.
+          </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Data Storage</h2>
           <p>
             Contact form submissions are processed server-side and not stored

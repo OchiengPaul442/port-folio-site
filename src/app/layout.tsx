@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { ClickFeedback } from '@/components/ClickFeedback';
+import { LanguageSelector } from '@/components/LanguageSelector';
 import './globals.css';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -19,6 +21,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://paul.dev'),
+  applicationName: 'Paul Ochieng Levi',
+  category: 'technology',
   title: {
     default: 'Paul Ochieng Levi — Full-Stack Software Engineer',
     template: '%s | Paul Ochieng Levi',
@@ -64,6 +69,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://paul.dev',
+    languages: {
+      'en-UG': 'https://paul.dev',
+    },
   },
 };
 
@@ -81,41 +89,36 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
+        <ClickFeedback />
         <Navigation />
         <main id="main-content" className="flex-1">
           {children}
         </main>
         <Footer />
+        <LanguageSelector />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'Person',
-              name: 'Paul Ochieng Levi',
-              url: 'https://paul.dev',
-              jobTitle: 'Software Engineer',
-              worksFor: {
-                '@type': 'Organization',
-                name: 'AirQo',
-              },
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: 'Kampala',
-                addressCountry: 'UG',
-              },
-              sameAs: [
-                'https://github.com/OchiengPaul442',
-                'https://twitter.com/OchiengTech',
-              ],
-              knowsAbout: [
-                'Software Engineering',
-                'Applied AI',
-                'Environmental Technology',
-                'TypeScript',
-                'Python',
-                'React',
-                'Next.js',
+              '@graph': [
+                {
+                  '@type': 'Person',
+                  name: 'Paul Ochieng Levi',
+                  url: 'https://paul.dev',
+                  jobTitle: 'Software Engineer',
+                  worksFor: { '@type': 'Organization', name: 'AirQo' },
+                  address: { '@type': 'PostalAddress', addressLocality: 'Kampala', addressCountry: 'UG' },
+                  sameAs: ['https://github.com/OchiengPaul442', 'https://twitter.com/OchiengTech'],
+                  knowsAbout: ['Software Engineering', 'Applied AI', 'Environmental Technology', 'TypeScript', 'Python', 'React', 'Next.js'],
+                },
+                {
+                  '@type': 'WebSite',
+                  name: 'Paul Ochieng Levi',
+                  url: 'https://paul.dev',
+                  inLanguage: 'en-UG',
+                  description: 'Portfolio of Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda.',
+                },
               ],
             }),
           }}
