@@ -1,0 +1,18 @@
+{
+  "slug": "nexus-airqo",
+  "title": "AirQo Nexus",
+  "subtitle": "Real-time air quality data platform",
+  "description": "An interactive air quality platform providing real-time and historical air quality data across Africa. Access and visualize pollution data through an easy-to-use web interface powered by the AirQo monitoring network.",
+  "problem": "Air quality data in Africa is sparse, fragmented, and difficult to access. Communities, researchers, and policymakers need a unified platform to visualize real-time and historical pollution data to make informed decisions about environmental health.",
+  "role": "Contributed to the AirQo Nexus platform development, building data visualization components, real-time data pipelines, and the interactive map interface for exploring air quality monitoring stations across Africa.",
+  "approach": "Built on the AirQo platform infrastructure with real-time data ingestion from Binos air quality monitors, interactive mapping with station overlays, historical data visualization with charts and trends, and responsive design for mobile field use.",
+  "hardestDecision": "Handling the data quality challenges inherent in low-cost air quality sensors — building visualization that accurately represents sensor uncertainty without undermining user confidence in the data.",
+  "status": "shipped",
+  "outcome": "Live at nexus.airqo.net, providing real-time air quality data across African cities. Part of AirQo's suite of products serving communities, researchers, and policymakers.",
+  "whatIdChange": "Would add predictive air quality forecasting using machine learning, implement community-contributed data sources, and add accessibility features for visually impaired users.",
+  "stack": ["TypeScript", "React", "D3.js", "PostgreSQL", "Real-time Data"],
+  "repo": "https://github.com/airqo-platform/AirQo-frontend",
+  "liveUrl": "https://nexus.airqo.net",
+  "featured": false,
+  "order": 10
+}

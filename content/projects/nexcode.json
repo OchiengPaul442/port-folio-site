@@ -1,0 +1,18 @@
+{
+  "slug": "nexcode",
+  "title": "NexCode",
+  "subtitle": "Multi-agent AI coding assistant for VS Code",
+  "description": "A local-first, multi-agent AI coding assistant for VS Code. NexCode brings chat, streaming, attachments, and controlled edit approvals to your editor with a copilot-style sidebar UX and dynamic auto-routing between fast and deep models.",
+  "problem": "Single-agent coding assistants struggle with complex tasks that require different specializations — planning, coding, reviewing, and testing. Developers need a system that can dynamically route tasks to the most appropriate model while maintaining a cohesive workflow in their editor.",
+  "role": "Built the complete VS Code extension including the agent-core orchestration layer, multi-agent pipeline system, provider routing for Ollama and OpenAI-compatible endpoints, and the sidebar UI with session history and per-session model/mode controls.",
+  "approach": "Implemented a multi-agent core with auto, planner, coder, reviewer, QA, and security modes. Each mode routes to different Ollama models based on capability requirements. Uses native live token streaming from agent stages (no end-of-run replay), persistent memory and feedback logs for iterative prompt refinement, and a tooling layer for filesystem, terminal, git, tests, local code search, and web search.",
+  "hardestDecision": "Implementing selective field loading for the sidebar UX — loading only required fields for list views versus complete nested responses for detail views. This optimization was critical for performance with large session histories but required careful cache invalidation logic.",
+  "status": "in-progress",
+  "outcome": "Not yet published. Open source on GitHub.",
+  "whatIdChange": "Would add more comprehensive error recovery for provider connection failures and implement a fallback chain when primary models are unavailable.",
+  "stack": ["TypeScript", "VS Code Extension API", "Ollama", "OpenAI API"],
+  "repo": "https://github.com/OchiengPaul442/NexCode",
+  "liveUrl": null,
+  "featured": true,
+  "order": 2
+}

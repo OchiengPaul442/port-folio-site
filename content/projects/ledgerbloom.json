@@ -1,0 +1,18 @@
+{
+  "slug": "ledgerbloom",
+  "title": "LedgerBloom",
+  "subtitle": "Invoice and payment tracking SaaS",
+  "description": "A SaaS platform for tracking invoices, following up with clients, and managing receivables. Collect payments with confidence from one place with client reminders and financial tracking.",
+  "problem": "Small businesses and freelancers in Uganda struggle to track outstanding invoices and follow up with clients systematically. Manual tracking in spreadsheets leads to missed payments and cash flow problems.",
+  "role": "Built the full-stack application including authentication (Google and GitHub OAuth), invoice management system, client reminder workflows, and the dashboard interface.",
+  "approach": "Full-stack SaaS application with modern authentication, real-time invoice tracking, automated client reminders, and a clean dashboard for financial overview. Built with a focus on simplicity and reliability for the Ugandan market.",
+  "hardestDecision": "Designing the reminder system to be helpful without being intrusive — finding the right cadence and channels for client follow-ups that actually improve collection rates without damaging business relationships.",
+  "status": "shipped",
+  "outcome": "Live at ledgerbloom.ochiengpaul.com with working authentication and invoice management.",
+  "whatIdChange": "Would add mobile money integration (MTN MoMo, Airtel Money) for the Ugandan market, and implement PDF invoice generation with custom branding.",
+  "stack": ["TypeScript", "React", "Next.js", "PostgreSQL"],
+  "repo": null,
+  "liveUrl": "https://ledgerbloom.ochiengpaul.com",
+  "featured": true,
+  "order": 5
+}

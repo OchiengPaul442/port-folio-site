@@ -1,0 +1,18 @@
+{
+  "slug": "airqo-web-db",
+  "title": "AirQo Website API",
+  "subtitle": "High-performance REST API backend for air quality data",
+  "description": "A high-performance, scalable REST API backend for the AirQo website, providing access to air quality data, research publications, events, team information, and more. Built with Django REST Framework with a focus on performance, security, and developer experience.",
+  "problem": "Air quality data across African cities needs to be accessible through a performant, well-documented API that supports complex filtering, pagination, and caching. The existing infrastructure needed modernization with proper API versioning, comprehensive documentation, and security hardening.",
+  "role": "Built the V2 enhanced API endpoints with advanced features including comprehensive caching, query optimization, and improved error handling. Implemented the forum events API with complete nested response structures, universal slug-based lookups, and privacy-friendly URL patterns.",
+  "approach": "Built on Django 5.1.4 with Django REST Framework 3.15.2. Uses PostgreSQL with connection pooling, multi-level caching strategy with 5-10 minute cache TTLs, smart pagination with cursor and page-based options, and OpenAPI 3.0 documentation via drf-spectacular. Implements privacy-friendly slug-based URLs instead of numeric IDs.",
+  "hardestDecision": "Implementing the universal slug system across all models. This required careful migration planning to ensure backward compatibility with existing v1 endpoints while providing SEO-optimized, human-readable identifiers for all resources.",
+  "status": "shipped",
+  "outcome": "Powers the AirQo website (airqo.africa) serving air quality data across African communities. The API supports the website, mobile apps, and research integrations.",
+  "whatIdChange": "Would implement GraphQL as an alternative to REST for more flexible querying, and add real-time WebSocket support for live air quality data streams.",
+  "stack": ["Python", "Django", "Django REST Framework", "PostgreSQL", "Redis"],
+  "repo": "https://github.com/airqo-platform/AirQo-api",
+  "liveUrl": "https://airqo.africa",
+  "featured": true,
+  "order": 4
+}

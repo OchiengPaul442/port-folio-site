@@ -1,0 +1,18 @@
+{
+  "slug": "coinz",
+  "title": "Coinz",
+  "subtitle": "Digital rewards and cryptocurrency platform",
+  "description": "A digital rewards and cryptocurrency platform with a customer-facing rewards application and a merchant dashboard for managing campaigns, rewards, and team access.",
+  "problem": "Businesses need modern loyalty and rewards systems that integrate with digital payment methods. Existing solutions are either too expensive, too complex, or not adapted to the African market where mobile money dominates.",
+  "role": "Built both the customer-facing rewards application (dev.coinzz.club) and the merchant management dashboard (merchant.coinzz.club) with campaign management, team access controls, and reward distribution systems.",
+  "approach": "Dual-platform architecture — a lightweight consumer app for earning and redeeming rewards, and a full-featured merchant dashboard for campaign creation, analytics, and team management. Built with authentication, role-based access, and real-time reward tracking.",
+  "hardestDecision": "Designing the reward economics to be sustainable for merchants while remaining attractive to consumers — finding the right balance between reward value, redemption frequency, and merchant ROI.",
+  "status": "shipped",
+  "outcome": "Live platforms at dev.coinzz.club and merchant.coinzz.club with working authentication, campaign management, and reward distribution.",
+  "whatIdChange": "Would add analytics dashboards for merchants showing reward ROI, implement A/B testing for campaign optimization, and add API integrations with major Ugandan payment providers.",
+  "stack": ["TypeScript", "React", "Next.js", "PostgreSQL"],
+  "repo": null,
+  "liveUrl": "https://dev.coinzz.club",
+  "featured": false,
+  "order": 7
+}

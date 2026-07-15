@@ -1,0 +1,18 @@
+{
+  "slug": "saving-food",
+  "title": "SavingFood.ai",
+  "subtitle": "AI-powered food waste management",
+  "description": "An AI-powered platform for revolutionizing food waste management. SavingFood.ai uses artificial intelligence to help businesses and communities reduce food waste through smart tracking, prediction, and optimization.",
+  "problem": "Food waste is a massive global problem — roughly one-third of all food produced is wasted. In developing countries, the lack of tools to track, predict, and optimize food usage contributes to unnecessary waste while communities face food insecurity.",
+  "role": "Built the AI-powered platform including the prediction models, waste tracking system, and the user interface for businesses and community organizations to manage their food waste reduction efforts.",
+  "approach": "AI-driven approach combining prediction models for food spoilage, tracking systems for waste patterns, and optimization algorithms for inventory management. Built as a web application with a clean, accessible interface.",
+  "hardestDecision": "Making the AI predictions useful without requiring extensive data input — finding the balance between prediction accuracy and the practical data entry burden on users who are often busy food service operators.",
+  "status": "shipped",
+  "outcome": "Live at sf-project-topaz.vercel.app with food waste management features.",
+  "whatIdChange": "Would add integration with point-of-sale systems for automatic waste tracking, implement computer vision for food quality assessment, and add community sharing features for surplus food redistribution.",
+  "stack": ["TypeScript", "React", "Next.js", "Python", "AI/ML"],
+  "repo": null,
+  "liveUrl": "https://sf-project-topaz.vercel.app",
+  "featured": false,
+  "order": 8
+}
