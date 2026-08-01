@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ProjectCard } from '@/components/ProjectCard';
 import { getFeaturedProjects } from '@/lib/projects';
-import { getGitHubProfile } from '@/lib/github';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { GitHubStats } from '@/components/GitHubStats';
 
 const capabilities = [
   ['Product engineering', 'From problem to production — I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.'],
@@ -12,9 +12,7 @@ const capabilities = [
 ];
 
 export default async function Home() {
-  const profilePromise = getGitHubProfile();
   const featuredProjects = getFeaturedProjects();
-  const profile = await profilePromise;
 
   return (
     <>
@@ -155,29 +153,20 @@ export default async function Home() {
       {/* ─── Open Source ─── */}
       <section className="px-6 py-20" aria-labelledby="github-activity">
         <div className="mx-auto max-w-5xl">
-          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-8 sm:p-10">
-            <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
-              <ScrollReveal>
-                <div>
-                  <p className="section-label">Open source</p>
-                  <h2 id="github-activity" className="mt-3 text-2xl font-bold tracking-tight">I share the work as I go.</h2>
-                  <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Browse source code, documentation, and experiments behind these projects.</p>
-                </div>
-              </ScrollReveal>
-              <ScrollReveal delay={0.08}>
-                <div className="flex items-end gap-8">
-                  <div className="text-right">
-                    <div className="text-3xl font-bold">{profile?.public_repos ?? '—'}+</div>
-                    <div className="mt-1 text-xs text-[var(--color-text-tertiary)]">Public repos</div>
-                  </div>
-                  <a href="https://github.com/OchiengPaul442" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-primary)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
-                    GitHub
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
-                  </a>
-                </div>
-              </ScrollReveal>
+          <ScrollReveal>
+            <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+              <div>
+                <p className="section-label">Open source</p>
+                <h2 id="github-activity" className="mt-3 text-3xl font-bold tracking-tight">I share the work as I go.</h2>
+                <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Browse source code, documentation, and experiments behind these projects.</p>
+              </div>
+              <a href="https://github.com/OchiengPaul442" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-primary)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+                GitHub
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+              </a>
             </div>
-          </div>
+          </ScrollReveal>
+          <GitHubStats />
         </div>
       </section>
     </>

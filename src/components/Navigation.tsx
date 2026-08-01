@@ -167,7 +167,6 @@ export function Navigation() {
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
-          ref={firstMenuItemRef as any}
           className={`absolute right-0 top-0 h-full w-72 bg-[var(--color-bg-primary)] border-l border-[var(--color-border)] shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
             mobileOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
@@ -199,6 +198,7 @@ export function Navigation() {
               {navLinks.map(({ href, label }, index) => (
                 <li key={href}>
                   <Link
+                    ref={index === 0 ? firstMenuItemRef : undefined}
                     href={href}
                     onClick={() => setMobileOpen(false)}
                     className={`flex items-center rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 ${
