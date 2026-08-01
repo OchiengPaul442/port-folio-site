@@ -62,7 +62,6 @@ export async function POST(request: Request) {
   }
 
   const { name, email, subject, message } = result.data;
-
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL || 'paul.ochieng.dev@gmail.com';
   const configuredFrom = process.env.CONTACT_FROM_EMAIL;
@@ -81,6 +80,7 @@ export async function POST(request: Request) {
   const safeEmail = escapeHtml(email);
   const safeSubject = escapeHtml(subject);
   const safeMessage = escapeHtml(message).replace(/\n/g, '<br />');
+  const cleanSubject = subject.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
 
   try {
     const response = await fetch('https://api.resend.com/emails', {
@@ -94,9 +94,9 @@ export async function POST(request: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `New portfolio enquiry — ${subject}`,
+        subject: `New portfolio enquiry - ${cleanSubject}`,
         text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
-        html: `<h2>New portfolio contact</h2><p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p>${safeMessage}</p>`,
+        html: `<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p>${safeMessage}</p>`,
       }),
       signal: AbortSignal.timeout(10_000),
     });
