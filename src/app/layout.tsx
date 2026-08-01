@@ -4,6 +4,9 @@ import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { ClickFeedback } from '@/components/ClickFeedback';
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
+import { ScrollProgress } from '@/components/ScrollProgress';
+import { ThemeProvider } from '@/components/ThemeProvider';
 import './globals.css';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -83,19 +86,25 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="site-shell min-h-full flex flex-col">
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <ClickFeedback />
-        <Navigation />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <LanguageSelector />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <SmoothScrollProvider>
+            <a href="#main-content" className="skip-link">
+              Skip to main content
+            </a>
+            <ScrollProgress />
+            <ClickFeedback />
+            <Navigation />
+            <main id="main-content" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <LanguageSelector />
+          </SmoothScrollProvider>
+        </ThemeProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

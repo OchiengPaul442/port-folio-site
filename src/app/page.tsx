@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { ProjectCard } from '@/components/ProjectCard';
 import { getFeaturedProjects } from '@/lib/projects';
 import { getGitHubProfile } from '@/lib/github';
+import { ScrollReveal } from '@/components/ScrollReveal';
 
 const capabilities = [
   ['Product engineering', 'I take products from a clear problem to a dependable release: thoughtful interfaces, robust APIs, and the decisions between them.'],
   ['Frontend systems', 'Responsive React and Next.js experiences with accessible interaction patterns, practical performance budgets, and maintainable component architecture.'],
   ['Backend & data', 'APIs, databases, authentication, integrations, and data flows built with Python, Django, TypeScript, PostgreSQL, and cloud services.'],
-  ['Applied AI', 'I explore AI where it earns its place—useful developer tooling, data assistance, and privacy-conscious workflows rather than novelty for its own sake.'],
+  ['Applied AI', 'I explore AI where it earns its place — useful developer tooling, data assistance, and privacy-conscious workflows rather than novelty for its own sake.'],
 ];
 
 export default async function Home() {
@@ -17,41 +18,159 @@ export default async function Home() {
 
   return (
     <>
-      <section className="hero-surface px-6 py-20 sm:py-28">
-        <div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[1.2fr_.8fr]">
-          <div>
-            <p className="reveal-up text-sm font-medium text-[var(--color-text-secondary)]">Kampala, Uganda · Full-stack software engineer</p>
-            <h1 className="reveal-up-delay mt-6 max-w-3xl text-5xl font-bold tracking-[-0.045em] text-[var(--color-text-primary)] sm:text-6xl lg:text-7xl">I build dependable digital products.</h1>
-            <p className="reveal-up-delay-2 mt-6 max-w-2xl text-lg leading-8 text-[var(--color-text-secondary)]">I&apos;m Paul Ochieng Levi, a full-stack software engineer in Kampala. I design and build the interfaces, systems, and integrations that help people get real work done.</p>
-            <div className="reveal-up-delay-2 mt-8 flex flex-wrap gap-3">
-              <Link href="/work" className="inline-flex items-center rounded-md bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[var(--color-accent-text)] transition-transform hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">Explore my work <span className="ml-2">→</span></Link>
-              <Link href="/contact" className="inline-flex items-center rounded-md border border-[var(--color-border)] bg-[var(--color-bg-primary)]/70 px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">Start a conversation</Link>
+      {/* ─── Hero ─── */}
+      <section className="relative overflow-hidden border-b border-[var(--color-border)]">
+        {/* Subtle dot grid texture */}
+        <div
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+          aria-hidden="true"
+        />
+        <div className="hero-accent-line" aria-hidden="true" />
+
+        <div className="relative px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
+          <div className="mx-auto max-w-5xl">
+            {/* Top meta line */}
+            <div className="flex items-center gap-3 text-sm text-[var(--color-text-tertiary)] reveal-up">
+              <span className="font-mono">Kampala, Uganda</span>
+              <span className="h-px w-8 bg-[var(--color-border)]" />
+              <span className="font-mono">Software Engineer</span>
+            </div>
+
+            {/* Main heading — asymmetric, weight contrast */}
+            <div className="mt-10 reveal-up-delay">
+              <h1 className="text-6xl font-light tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-7xl lg:text-8xl">
+                Paul
+              </h1>
+              <h1 className="text-6xl font-bold tracking-[-0.05em] text-[var(--color-accent)] sm:text-7xl lg:text-8xl -mt-2 sm:-mt-4">
+                Ochieng.
+              </h1>
+            </div>
+
+            {/* Statement + CTAs */}
+            <div className="mt-10 max-w-2xl reveal-up-delay-2">
+              <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
+                I design and build the systems that help people get real work done.
+                Right now that means developer tools and environmental data
+                infrastructure — the kind of software that needs to work
+                when the connection is slow and the stakes are real.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/work"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-[var(--color-accent-text)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+                >
+                  See the work
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-sm font-medium text-[var(--color-text-tertiary)] transition-colors duration-200 hover:text-[var(--color-accent)]"
+                >
+                  Start a conversation →
+                </Link>
+              </div>
+            </div>
+
+            {/* Status strip — horizontal on desktop */}
+            <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3 reveal-up-delay-2">
+              {[
+                { label: 'Now', text: 'Building Pulse — a local-first VS Code assistant' },
+                { label: 'Thinking', text: 'Resilient systems that work when dependencies fail' },
+                { label: 'Focus', text: 'Full-stack craft · developer tools · environmental data' },
+              ].map((item) => (
+                <div key={item.label} className="group flex items-start gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 transition-colors duration-200 hover:border-[var(--color-accent)]/30">
+                  <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-tertiary)]">{item.label}</p>
+                    <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{item.text}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <aside className="float-soft rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)]/85 p-6 shadow-xl shadow-stone-900/5 backdrop-blur" aria-label="Engineering approach">
-            <p className="text-sm font-semibold text-[var(--color-text-primary)]">From the first sketch to a stable release.</p>
-            <div className="mt-6 space-y-5">
-              {[['Listen closely', 'Start with the people and constraints behind the request.'], ['Build deliberately', 'Connect interface, data, and infrastructure without losing the thread.'], ['Improve in the open', 'Use feedback and real use to make the next version better.']].map(([title, text]) => <div key={title}><p className="text-sm font-semibold text-[var(--color-text-primary)]">{title}</p><p className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">{text}</p></div>)}
-            </div>
-            <div className="mt-7 border-t border-[var(--color-border)] pt-5 font-mono text-xs text-[var(--color-text-tertiary)]">Frontend · Backend · Product thinking</div>
-          </aside>
         </div>
       </section>
 
-      <section className="px-6 py-20" aria-labelledby="selected-work"><div className="mx-auto max-w-5xl">
-        <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-accent)]">Selected work</p><h2 id="selected-work" className="mt-3 text-3xl font-bold tracking-tight">Things I&apos;ve made and improved.</h2></div><Link href="/work" className="text-sm font-semibold text-[var(--color-accent)] hover:underline">View every project →</Link></div>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{featuredProjects.map((project) => <ProjectCard key={project.slug} {...project} />)}</div>
-      </div></section>
+      {/* ─── Selected Work ─── */}
+      <section className="px-6 py-20" aria-labelledby="selected-work">
+        <div className="mx-auto max-w-5xl">
+          <ScrollReveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="section-label">Selected work</p>
+                <h2 id="selected-work" className="mt-3 text-3xl font-bold tracking-tight">Things I&apos;ve made and improved.</h2>
+              </div>
+              <Link href="/work" className="text-sm font-semibold text-[var(--color-accent)] hover:underline">View every project →</Link>
+            </div>
+          </ScrollReveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredProjects.map((project, index) => (
+              <ScrollReveal key={project.slug} delay={index * 0.08}>
+                <ProjectCard {...project} />
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <section className="bg-[var(--color-bg-secondary)] px-6 py-20" aria-labelledby="capabilities"><div className="mx-auto max-w-5xl">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-accent)]">Capabilities</p><h2 id="capabilities" className="mt-3 max-w-xl text-3xl font-bold tracking-tight">A balanced product engineering practice.</h2>
-        <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2">{capabilities.map(([title, description], index) => <div key={title} className="bg-[var(--color-bg-primary)] p-7 transition-colors hover:bg-amber-50 dark:hover:bg-stone-900"><span className="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span><h3 className="mt-4 text-lg font-semibold">{title}</h3><p className="mt-3 text-sm leading-6 text-[var(--color-text-secondary)]">{description}</p></div>)}</div>
-      </div></section>
+      <div className="section-divider section-divider--accent" aria-hidden="true" />
 
-      <section className="px-6 py-20" aria-labelledby="github-activity"><div className="mx-auto flex max-w-5xl flex-col justify-between gap-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] p-8 sm:flex-row sm:items-end">
-        <div><p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-accent)]">Open source</p><h2 id="github-activity" className="mt-3 text-2xl font-bold">I share the work as I go.</h2><p className="mt-2 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Explore experiments, product work, and engineering notes on GitHub.</p></div>
-        <div className="flex gap-8"><div><div className="text-3xl font-bold">{profile?.public_repos ?? '—'}+</div><div className="mt-1 text-xs text-[var(--color-text-tertiary)]">Public repos</div></div><a href="https://github.com/OchiengPaul442" target="_blank" rel="noopener noreferrer" className="self-end text-sm font-semibold text-[var(--color-accent)] hover:underline">Visit GitHub →</a></div>
-      </div></section>
+      {/* ─── Capabilities ─── */}
+      <section className="px-6 py-20" aria-labelledby="capabilities">
+        <div className="mx-auto max-w-5xl">
+          <ScrollReveal>
+            <p className="section-label">Capabilities</p>
+            <h2 id="capabilities" className="mt-3 max-w-xl text-3xl font-bold tracking-tight">A balanced product engineering practice.</h2>
+          </ScrollReveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            {capabilities.map(([title, description], index) => (
+              <ScrollReveal key={title} delay={index * 0.08}>
+                <div className="card group relative h-full">
+                  <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">0{index + 1}</span>
+                  <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">{description}</p>
+                  <div className="absolute bottom-0 left-6 right-6 h-px bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider" aria-hidden="true" />
+
+      {/* ─── Open Source ─── */}
+      <section className="px-6 py-20" aria-labelledby="github-activity">
+        <div className="mx-auto max-w-5xl">
+          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-8 sm:p-10">
+            <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
+              <ScrollReveal>
+                <div>
+                  <p className="section-label">Open source</p>
+                  <h2 id="github-activity" className="mt-3 text-2xl font-bold tracking-tight">I share the work as I go.</h2>
+                  <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Explore experiments, product work, and engineering notes on GitHub.</p>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal delay={0.08}>
+                <div className="flex items-end gap-8">
+                  <div className="text-right">
+                    <div className="text-3xl font-bold">{profile?.public_repos ?? '—'}+</div>
+                    <div className="mt-1 text-xs text-[var(--color-text-tertiary)]">Public repos</div>
+                  </div>
+                  <a href="https://github.com/OchiengPaul442" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-primary)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+                    GitHub
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                  </a>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

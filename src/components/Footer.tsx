@@ -3,7 +3,7 @@ import Link from 'next/link';
 export function Footer() {
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]">
-      <div className="mx-auto max-w-4xl px-6 py-12">
+      <div className="mx-auto max-w-5xl px-6 py-12">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div>
             <Link
@@ -23,22 +23,35 @@ export function Footer() {
               href="https://github.com/OchiengPaul442"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
+              className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors duration-200"
             >
               GitHub
             </a>
             <Link
               href="/contact"
-              className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
+              className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors duration-200"
             >
               Contact
             </Link>
           </div>
         </div>
-        <div className="mt-8 border-t border-[var(--color-border)] pt-6">
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-[var(--color-text-tertiary)]">
+          <Link href="/work" className="hover:text-[var(--color-accent)] transition-colors duration-200">Work</Link>
+          <Link href="/about" className="hover:text-[var(--color-accent)] transition-colors duration-200">About</Link>
+          <Link href="/now" className="hover:text-[var(--color-accent)] transition-colors duration-200">Now</Link>
+          <Link href="/privacy" className="hover:text-[var(--color-accent)] transition-colors duration-200">Privacy</Link>
+          <a href="https://twitter.com/OchiengTech" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">Twitter</a>
+        </div>
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-[var(--color-border)] pt-6 sm:flex-row sm:items-center">
           <p className="font-mono text-xs text-[var(--color-text-tertiary)]">
             &copy; {new Date().getFullYear()} Paul Ochieng Levi.
           </p>
+          <a
+            href="#main-content"
+            className="font-mono text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors duration-200"
+          >
+            Back to top ↑
+          </a>
         </div>
       </div>
     </footer>
