@@ -30,9 +30,9 @@ export default function ContactPage() {
           </p>
         </ScrollReveal>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          <ScrollReveal delay={0.05}>
-            <div className="card">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 items-stretch">
+          <ScrollReveal delay={0.05} className="h-full">
+            <div className="card h-full">
               <h2 className="font-semibold text-[var(--color-text-primary)]">Full-Time Roles</h2>
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                 Product-minded frontend, backend, or full-stack roles. I&apos;m especially
@@ -40,8 +40,8 @@ export default function ContactPage() {
               </p>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <div className="card">
+          <ScrollReveal delay={0.1} className="h-full">
+            <div className="card h-full">
               <h2 className="font-semibold text-[var(--color-text-primary)]">Climate-Tech Collaboration</h2>
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                 Working with organizations focused on environmental data,
@@ -49,8 +49,8 @@ export default function ContactPage() {
               </p>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.15}>
-            <div className="card">
+          <ScrollReveal delay={0.15} className="h-full">
+            <div className="card h-full">
               <h2 className="font-semibold text-[var(--color-text-primary)]">Consulting</h2>
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                 Short-term engagements for frontend architecture, APIs, integrations,
@@ -58,8 +58,8 @@ export default function ContactPage() {
               </p>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
-            <div className="card">
+          <ScrollReveal delay={0.2} className="h-full">
+            <div className="card h-full">
               <h2 className="font-semibold text-[var(--color-text-primary)]">Open Source</h2>
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                 Collaborating on projects around developer experience, public-good

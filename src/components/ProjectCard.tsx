@@ -1,5 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { LoaderCircle } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ProjectCardProps {
   slug: string;
@@ -15,31 +19,67 @@ interface ProjectCardProps {
 const blurPlaceholder = 'data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAACQAQCdASoBAAEAAkA4JYgCdAEO/hepgAAA/v3Mn/gP3MpSh6J/OaE7L/63rD0X+7Z3f+b7f/67rL0X+7Z3f+b7f/67';
 
 export function ProjectCard({ slug, title, subtitle, status, stack, image, category, tags }: ProjectCardProps) {
+  const [previewStarted, setPreviewStarted] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
+  const intentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (intentTimer.current) clearTimeout(intentTimer.current);
+  }, []);
+
+  function showPreview() {
+    setPreviewVisible(true);
+    if (previewStarted || !image) return;
+    intentTimer.current = setTimeout(() => setPreviewStarted(true), 140);
+  }
+
+  function hidePreview() {
+    if (intentTimer.current) clearTimeout(intentTimer.current);
+    setPreviewVisible(false);
+  }
+
   return (
     <Link
       href={`/work/${slug}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+      onMouseEnter={showPreview}
+      onMouseLeave={hidePreview}
+      onFocus={showPreview}
+      onBlur={hidePreview}
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
     >
       {/* Accent top bar */}
       <div className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
-      {/* Image overlay — diagonal reveal from top-right on hover */}
-      {image && (
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={image}
-            alt={`${title} screenshot`}
-            fill
-            placeholder="blur"
-            blurDataURL={blurPlaceholder}
-            className="object-cover transition-[clip-path] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] [clip-path:circle(0%_at_100%_0%)] group-hover:[clip-path:circle(150%_at_100%_0%)]"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-          {/* Multi-layer gradient for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-[var(--color-bg-secondary)]/90 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-bg-secondary)]/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          {/* Subtle dark overlay for contrast */}
-          <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      {image && previewVisible && (
+        <div className="project-preview-tooltip absolute left-4 right-4 top-4 z-20 overflow-hidden rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-bg-primary)] shadow-2xl shadow-black/40" aria-hidden="true">
+          <div className="relative h-40 w-full overflow-hidden bg-stone-950">
+            {!imageLoaded && !imageFailed && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
+                <LoaderCircle className="h-6 w-6 animate-spin text-[var(--color-accent)]" aria-hidden="true" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em]">Loading preview</span>
+                <span className="preview-signal" aria-hidden="true"><i /><i /><i /><i /></span>
+              </div>
+            )}
+            {imageFailed && <div className="absolute inset-0 flex items-center justify-center px-6 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-tertiary)]">Preview unavailable</div>}
+            {previewStarted && (
+              <Image
+                src={image}
+                alt=""
+                fill
+                placeholder="blur"
+                blurDataURL={blurPlaceholder}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageFailed(true)}
+                className={`object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                sizes="(max-width: 640px) calc(100vw - 3rem), 288px"
+              />
+            )}
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/80 to-transparent px-3 pb-2 pt-7 text-[10px] font-medium text-white">
+              <span>{title}</span><span className="text-amber-300">Preview</span>
+            </div>
+          </div>
         </div>
       )}
 

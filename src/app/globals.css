@@ -426,6 +426,39 @@ button:hover ~ .cursor-dot,
   box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
+/* Project preview loading signal */
+.preview-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 12px;
+}
+
+.preview-signal i {
+  display: block;
+  width: 2px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  animation: preview-signal 0.9s ease-in-out infinite;
+}
+
+.preview-signal i:nth-child(2) { animation-delay: 0.12s; }
+.preview-signal i:nth-child(3) { animation-delay: 0.24s; }
+.preview-signal i:nth-child(4) { animation-delay: 0.36s; }
+
+@keyframes preview-signal {
+  0%, 100% { height: 5px; opacity: 0.45; }
+  50% { height: 12px; opacity: 1; }
+}
+
+@media (min-width: 640px) {
+  .project-preview-tooltip {
+    left: auto;
+    width: 18rem;
+  }
+}
+
 /* ============================================
    ANIMATIONS — Unified system
    ============================================ */
