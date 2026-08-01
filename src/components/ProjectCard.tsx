@@ -21,7 +21,7 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image }: Pro
       {/* Accent top bar */}
       <div className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
-      {/* Image overlay — diagonal reveal from top-left on hover */}
+      {/* Image overlay — diagonal reveal from top-right on hover */}
       {image && (
         <div className="absolute inset-0 z-0">
           <Image
@@ -30,11 +30,14 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image }: Pro
             fill
             placeholder="blur"
             blurDataURL={blurPlaceholder}
-            className="object-cover transition-[clip-path] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] [clip-path:polygon(0_0,0_0,0_100%,0_100%)] group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]"
+            className="object-cover transition-[clip-path] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] [clip-path:circle(0%_at_100%_0%)] group-hover:[clip-path:circle(150%_at_100%_0%)]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-          {/* Dark gradient overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-[var(--color-bg-secondary)]/80 to-[var(--color-bg-secondary)]/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          {/* Multi-layer gradient for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-[var(--color-bg-secondary)]/90 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-bg-secondary)]/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          {/* Subtle dark overlay for contrast */}
+          <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </div>
       )}
 
@@ -65,7 +68,7 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image }: Pro
             {stack.map((tech) => (
               <span
                 key={tech}
-                className="rounded-md bg-[var(--color-bg-tertiary)]/80 backdrop-blur-sm px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)] transition-colors duration-300 group-hover:bg-[var(--color-accent)]/10 group-hover:text-[var(--color-accent)]"
+                className="rounded-md bg-[var(--color-bg-tertiary)]/80 backdrop-blur-sm px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)] transition-colors duration-300 group-hover:bg-[var(--color-bg-secondary)]/80 group-hover:text-[var(--color-accent)]"
               >
                 {tech}
               </span>

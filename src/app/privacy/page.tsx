@@ -1,8 +1,16 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy',
-  description: 'Privacy policy for paul.dev',
+  title: 'Privacy Policy',
+  description: 'Privacy policy for paul.dev — how Paul Ochieng Levi collects, uses, and protects personal data on this portfolio website.',
+  openGraph: {
+    title: 'Privacy Policy | Paul Ochieng Levi',
+    description: 'Privacy policy for paul.dev portfolio website.',
+    url: 'https://paul.dev/privacy',
+  },
+  alternates: {
+    canonical: 'https://paul.dev/privacy',
+  },
 };
 
 export default function PrivacyPage() {

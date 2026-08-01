@@ -6,7 +6,15 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'Work',
   description:
-    'Projects and case studies by Paul Ochieng Levi — full-stack products, data platforms, and developer tools.',
+    'Projects and case studies by Paul Ochieng Levi — full-stack products, developer tools, AI agents, and open-source contributions. Built with React, Next.js, Python, and Django.',
+  openGraph: {
+    title: 'Work | Paul Ochieng Levi',
+    description: 'Full-stack projects including AI agents, SaaS platforms, and developer tools.',
+    url: 'https://paul.dev/work',
+  },
+  alternates: {
+    canonical: 'https://paul.dev/work',
+  },
 };
 
 export default function WorkPage() {

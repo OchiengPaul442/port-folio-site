@@ -4,7 +4,15 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'Now',
   description:
-    'What Paul Ochieng Levi is currently building, learning, and exploring.',
+    'What Paul Ochieng Levi is currently building, learning, and exploring — active projects, current focus areas, and open problems in software engineering.',
+  openGraph: {
+    title: 'Now | Paul Ochieng Levi',
+    description: 'Current projects and focus areas of a full-stack software engineer in Kampala, Uganda.',
+    url: 'https://paul.dev/now',
+  },
+  alternates: {
+    canonical: 'https://paul.dev/now',
+  },
 };
 
 export default function NowPage() {

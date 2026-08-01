@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
-import { useTheme } from 'next-themes';
 
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const posRef = useRef({ x: 0, y: 0 });
   const mouseRef = useRef({ x: 0, y: 0 });
-  const { theme } = useTheme();
 
   const createSparkle = useCallback((x: number, y: number) => {
     const colors = ['var(--color-accent)', '#f59e0b', '#d97706', '#b45309'];
@@ -56,17 +54,14 @@ export function CustomCursor() {
   // Konami code
   const konamiRef = useRef<number[]>([]);
   const konamiSequence = [
-    38, 38, 40, 40, 37, 39, 37, 39, 66, 65, // ↑↑↓↓←→←→BA
+    38, 38, 40, 40, 37, 39, 37, 39, 66, 65,
   ];
 
   useEffect(() => {
-    // Only show custom cursor on non-touch devices
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-    };
+    let hasMoved = false;
 
     const handleMouseDown = () => {
       if (ringRef.current) ringRef.current.classList.add('cursor-ring--click');
@@ -86,11 +81,8 @@ export function CustomCursor() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       konamiRef.current.push(e.keyCode);
-      if (konamiRef.current.length > 10) {
-        konamiRef.current.shift();
-      }
+      if (konamiRef.current.length > 10) konamiRef.current.shift();
       if (konamiRef.current.join(',') === konamiSequence.join(',')) {
-        // Konami code activated!
         for (let i = 0; i < 50; i++) {
           setTimeout(() => {
             const piece = document.createElement('div');
@@ -112,13 +104,12 @@ export function CustomCursor() {
       }
     };
 
-    // Animate cursor with smooth easing
+    // Animation loop
     let animId: number;
+
     const animate = () => {
-      // Smooth follow with different speeds for dot and ring
-      const dotLerp = 0.2;
-      const ringLerp = 0.08;
-      
+      const ringLerp = 0.12;
+
       posRef.current.x += (mouseRef.current.x - posRef.current.x) * ringLerp;
       posRef.current.y += (mouseRef.current.y - posRef.current.y) * ringLerp;
 
@@ -131,6 +122,20 @@ export function CustomCursor() {
       animId = requestAnimationFrame(animate);
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+
+      // Show cursor after first move
+      if (!hasMoved) {
+        hasMoved = true;
+        if (dotRef.current) dotRef.current.style.opacity = '1';
+        if (ringRef.current) ringRef.current.style.opacity = '1';
+      }
+    };
+
+    // Hide default cursor
+    document.documentElement.classList.add('has-custom-cursor');
+
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
@@ -138,9 +143,6 @@ export function CustomCursor() {
     document.addEventListener('dblclick', handleDoubleClick);
     document.addEventListener('keydown', handleKeyDown);
     animId = requestAnimationFrame(animate);
-
-    // Hide default cursor
-    document.documentElement.classList.add('has-custom-cursor');
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
@@ -154,15 +156,14 @@ export function CustomCursor() {
     };
   }, [createSparkle, createConfetti, showMessage]);
 
-  // Don't render on touch devices
   if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
     return null;
   }
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={ringRef} className="cursor-ring" />
+      <div ref={dotRef} className="cursor-dot" style={{ opacity: 0 }} />
+      <div ref={ringRef} className="cursor-ring" style={{ opacity: 0 }} />
     </>
   );
 }

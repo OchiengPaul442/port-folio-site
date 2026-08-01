@@ -5,10 +5,10 @@ import { getGitHubProfile } from '@/lib/github';
 import { ScrollReveal } from '@/components/ScrollReveal';
 
 const capabilities = [
-  ['Product engineering', 'I take products from a clear problem to a dependable release: thoughtful interfaces, robust APIs, and the decisions between them.'],
-  ['Frontend systems', 'Responsive React and Next.js experiences with accessible interaction patterns, practical performance budgets, and maintainable component architecture.'],
-  ['Backend & data', 'APIs, databases, authentication, integrations, and data flows built with Python, Django, TypeScript, PostgreSQL, and cloud services.'],
-  ['Applied AI', 'I explore AI where it earns its place — useful developer tooling, data assistance, and privacy-conscious workflows rather than novelty for its own sake.'],
+  ['Product engineering', 'From problem to production — I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.'],
+  ['Frontend systems', 'React and Next.js applications built for real users: accessible, fast on slow connections, and maintainable months after launch.'],
+  ['Backend & data', 'Python, Django, TypeScript, and PostgreSQL. APIs, authentication, data pipelines, and the integrations that connect systems.'],
+  ['Applied AI', 'AI where it earns its place — coding assistants, data agents, and developer tools built for real workflows, not demos.'],
 ];
 
 export default async function Home() {
@@ -36,7 +36,7 @@ export default async function Home() {
             {/* Top meta line */}
             <div className="flex items-center gap-3 text-sm text-[var(--color-text-tertiary)] reveal-up">
               <span className="font-mono">Kampala, Uganda</span>
-              <span className="h-px w-8 bg-[var(--color-border)]" />
+              <span className="font-mono">·</span>
               <span className="font-mono">Software Engineer</span>
             </div>
 
@@ -53,10 +53,10 @@ export default async function Home() {
             {/* Statement + CTAs */}
             <div className="mt-10 max-w-2xl reveal-up-delay-2">
               <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
-                I design and build the systems that help people get real work done.
-                Right now that means developer tools and environmental data
-                infrastructure — the kind of software that needs to work
-                when the connection is slow and the stakes are real.
+                I build software that works in the real world — developer tools,
+                data platforms, and web products designed for the constraints
+                people actually face: slow connections, limited devices, and
+                high stakes.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
@@ -159,7 +159,7 @@ export default async function Home() {
                 <div>
                   <p className="section-label">Open source</p>
                   <h2 id="github-activity" className="mt-3 text-2xl font-bold tracking-tight">I share the work as I go.</h2>
-                  <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Explore experiments, product work, and engineering notes on GitHub.</p>
+                  <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Browse source code, documentation, and experiments behind these projects.</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={0.08}>

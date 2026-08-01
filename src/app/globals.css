@@ -48,6 +48,37 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
+/* Custom scrollbar — matches theme accent color */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-accent);
+}
+
+/* Firefox scrollbar corner */
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 /* Reduced motion — kill all animations */
 @media (prefers-reduced-motion: reduce) {
   html.lenis, html.lenis body { height: auto; }
@@ -93,58 +124,77 @@ body {
   animation: click-spark 0.56s ease-out both;
 }
 
-/* Google Translate widget — single declaration */
-.language-control {
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 50;
-  font-size: 0.75rem;
+/* ============================================
+   GOOGLE TRANSLATE — hide UI, keep functional
+   ============================================ */
+/* Move banner off-screen but keep it in DOM */
+body > .goog-te-banner-frame,
+.goog-te-banner-frame {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
 }
-.language-control select {
-  max-width: 8.5rem;
-  appearance: none;
-  border: 1px solid var(--color-border);
-  border-radius: 0.375rem;
-  background: var(--color-bg-secondary);
-  color: var(--color-text-secondary);
-  padding: 0.65rem 2rem 0.65rem 0.8rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+
+/* Remove the top push Google adds to the body */
+body {
+  top: 0 !important;
+  position: static !important;
 }
-.language-control select:hover {
-  border-color: var(--color-accent);
-  color: var(--color-text-primary);
+
+/* Move widget elements off-screen but keep them queryable */
+.goog-te-gadget,
+.goog-te-gadget-simple {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
-.language-control select:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+
+/* Keep the combo box functional but invisible */
+.goog-te-combo {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0.01 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
-.language-control .goog-te-gadget {
-  font-family: inherit;
-  font-size: 0;
+
+/* Hide tooltip and menu */
+#goog-gt-tt,
+.goog-tooltip,
+.goog-te-menu-frame {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
-.language-control .goog-te-gadget-simple {
-  border: 1px solid var(--color-border);
-  border-radius: 0.375rem;
-  background: var(--color-bg-secondary);
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-  transition: border-color 0.2s;
+
+/* Hide translate iframes but keep them in DOM */
+iframe[src*="translate.google"],
+iframe.skiptranslate {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  border: none !important;
 }
-.language-control .goog-te-gadget-simple:hover {
-  border-color: var(--color-accent);
-}
-.language-control .goog-te-gadget-text {
-  font-size: 0.75rem !important;
-  color: var(--color-text-primary) !important;
-  vertical-align: middle;
-}
-body > .goog-te-banner-frame { display: none !important; }
-body { top: 0 !important; }
 
 /* ============================================
    HERO
@@ -181,59 +231,65 @@ html {
   position: fixed;
   top: 0;
   left: 0;
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
   background: var(--color-accent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
   will-change: transform;
-  transition: width 0.15s ease, height 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 0 6px var(--color-accent), 0 0 12px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1), height 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, box-shadow 0.2s ease;
+  box-shadow:
+    0 0 8px var(--color-accent),
+    0 0 20px color-mix(in srgb, var(--color-accent) 60%, transparent),
+    0 0 40px color-mix(in srgb, var(--color-accent) 30%, transparent);
 }
 
 .cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 32px;
-  height: 32px;
-  border: 1px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
+  width: 40px;
+  height: 40px;
+  border: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99998;
   will-change: transform;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), height 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease, opacity 0.25s ease, border-width 0.15s ease;
-  opacity: 0.5;
-  backdrop-filter: blur(1px);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, border-width 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 25%, transparent);
 }
 
+/* Click state */
 .cursor-ring--click {
-  width: 24px !important;
-  height: 24px !important;
-  border-width: 1.5px;
+  width: 28px !important;
+  height: 28px !important;
+  border-width: 2.5px;
   border-color: var(--color-accent);
-  opacity: 1;
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 50%, transparent);
 }
 
 /* Hover states — ring expands on interactive elements */
 a:hover ~ .cursor-ring,
 button:hover ~ .cursor-ring,
 [role="link"]:hover ~ .cursor-ring {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-color: var(--color-accent);
-  border-width: 1.5px;
-  opacity: 0.8;
+  border-width: 2px;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
-/* Active hover — dot shrinks slightly on interactive elements */
+/* Active hover — dot scales on interactive elements */
 a:hover ~ .cursor-dot,
 button:hover ~ .cursor-dot,
 [role="link"]:hover ~ .cursor-dot {
-  width: 4px;
-  height: 4px;
-  box-shadow: 0 0 8px var(--color-accent), 0 0 16px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  width: 6px;
+  height: 6px;
+  box-shadow:
+    0 0 10px var(--color-accent),
+    0 0 24px color-mix(in srgb, var(--color-accent) 70%, transparent),
+    0 0 48px color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 /* Sparkle on click */

@@ -22,13 +22,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: project.title,
     description: project.description,
+    keywords: project.stack.concat(['Paul Ochieng Levi', 'portfolio', 'case study']),
     openGraph: {
-      title: project.title,
+      title: `${project.title} | Paul Ochieng Levi`,
       description: project.description,
       type: 'article',
+      url: `https://paul.dev/work/${slug}`,
+      siteName: 'Paul Ochieng Levi',
       images: project.image
         ? [{ url: project.image, width: 1200, height: 750, alt: `${project.title} screenshot` }]
         : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} | Paul Ochieng Levi`,
+      description: project.description,
+      creator: '@OchiengTech',
+    },
+    alternates: {
+      canonical: `https://paul.dev/work/${slug}`,
     },
   };
 }

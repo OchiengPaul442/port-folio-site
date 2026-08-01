@@ -5,7 +5,15 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Get in touch with Paul Ochieng Levi — open to full-time roles, remote engineering, climate-tech collaboration, and consulting.',
+    'Get in touch with Paul Ochieng Levi — full-stack software engineer in Kampala, Uganda. Open to full-time roles, remote engineering, climate-tech collaboration, and consulting.',
+  openGraph: {
+    title: 'Contact Paul Ochieng Levi',
+    description: 'Full-stack software engineer open to opportunities and collaboration.',
+    url: 'https://paul.dev/contact',
+  },
+  alternates: {
+    canonical: 'https://paul.dev/contact',
+  },
 };
 
 export default function ContactPage() {

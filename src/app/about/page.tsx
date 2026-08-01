@@ -5,7 +5,15 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'About Paul Ochieng Levi — a full-stack software engineer in Kampala, Uganda building thoughtful digital products and dependable systems.',
+    'About Paul Ochieng Levi — a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience with AirQo, React, Next.js, Python, and Django.',
+  openGraph: {
+    title: 'About Paul Ochieng Levi',
+    description: 'Full-stack software engineer in Kampala, Uganda building reliable web products and developer tools.',
+    url: 'https://paul.dev/about',
+  },
+  alternates: {
+    canonical: 'https://paul.dev/about',
+  },
 };
 
 const experience = [
