@@ -7,6 +7,7 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { CustomCursor } from '@/components/CustomCursor';
 import './globals.css';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -97,6 +98,7 @@ export default function RootLayout({
             </a>
             <ScrollProgress />
             <ClickFeedback />
+            <CustomCursor />
             <Navigation />
             <main id="main-content" className="flex-1">
               {children}
