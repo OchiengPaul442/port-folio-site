@@ -13,6 +13,7 @@
   "stack": ["TypeScript", "React", "D3.js", "PostgreSQL", "Real-time Data"],
   "repo": "https://github.com/airqo-platform/AirQo-frontend",
   "liveUrl": "https://nexus.airqo.net",
+  "image": "/images/airqo-nexus.webp",
   "featured": false,
-  "order": 10
+  "order": 11
 }

@@ -11,8 +11,9 @@
   "outcome": "Live at ledgerbloom.ochiengpaul.com with working authentication and invoice management.",
   "whatIdChange": "Would add mobile money integration (MTN MoMo, Airtel Money) for the Ugandan market, and implement PDF invoice generation with custom branding.",
   "stack": ["TypeScript", "React", "Next.js", "PostgreSQL"],
-  "repo": null,
+  "repo": "https://github.com/OchiengPaul442/invoice-system",
   "liveUrl": "https://ledgerbloom.ochiengpaul.com",
+  "image": "/images/ledgerbloom.webp",
   "featured": true,
-  "order": 5
+  "order": 4
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProjectCardProps {
   slug: string;
@@ -6,49 +7,73 @@ interface ProjectCardProps {
   subtitle: string;
   status: string;
   stack: string[];
+  image?: string;
 }
 
-export function ProjectCard({ slug, title, subtitle, status, stack }: ProjectCardProps) {
+const blurPlaceholder = 'data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAACQAQCdASoBAAEAAkA4JYgCdAEO/hepgAAA/v3Mn/gP3MpSh6J/OaE7L/63rD0X+7Z3f+b7f/67rL0X+7Z3f+b7f/67';
+
+export function ProjectCard({ slug, title, subtitle, status, stack, image }: ProjectCardProps) {
   return (
     <Link
       href={`/work/${slug}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
     >
-      {/* Accent top bar — clipped by overflow-hidden */}
-      <div className="absolute inset-x-0 top-0 h-0.5 bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <h3 className="text-base font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors">
-            {title}
-          </h3>
-          <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-            {subtitle}
-          </p>
+      {/* Accent top bar */}
+      <div className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+
+      {/* Image overlay — diagonal reveal from top-left on hover */}
+      {image && (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={image}
+            alt={`${title} screenshot`}
+            fill
+            placeholder="blur"
+            blurDataURL={blurPlaceholder}
+            className="object-cover transition-[clip-path] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] [clip-path:polygon(0_0,0_0,0_100%,0_100%)] group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+          {/* Dark gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-[var(--color-bg-secondary)]/80 to-[var(--color-bg-secondary)]/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </div>
-        <span
-          className={`shrink-0 flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
-            status === 'shipped'
-              ? 'bg-[var(--color-success-bg)] text-[var(--color-success-text)]'
-              : 'bg-[var(--color-warning-bg)] text-[var(--color-warning-text)]'
-          }`}
-        >
-          <span className={`h-1.5 w-1.5 rounded-full ${status === 'shipped' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-          {status}
-        </span>
-      </div>
-      <div className="mt-auto pt-4">
-        <div className="flex flex-wrap gap-1.5">
-          {stack.map((tech) => (
-            <span
-              key={tech}
-              className="rounded-md bg-[var(--color-bg-tertiary)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)]"
-            >
-              {tech}
-            </span>
-          ))}
+      )}
+
+      {/* Card content — always visible, consistent sizing */}
+      <div className="relative z-10 flex flex-1 flex-col p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors duration-300">
+              {title}
+            </h3>
+            <p className="mt-1 text-sm text-[var(--color-text-secondary)] transition-colors duration-300 group-hover:text-[var(--color-text-primary)]">
+              {subtitle}
+            </p>
+          </div>
+          <span
+            className={`shrink-0 flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              status === 'shipped'
+                ? 'bg-[var(--color-success-bg)] text-[var(--color-success-text)]'
+                : 'bg-[var(--color-warning-bg)] text-[var(--color-warning-text)]'
+            }`}
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${status === 'shipped' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+            {status}
+          </span>
         </div>
-        <div className="mt-4 text-sm font-semibold text-[var(--color-accent)] opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-          Read the case study →
+        <div className="mt-auto pt-4">
+          <div className="flex flex-wrap gap-1.5">
+            {stack.map((tech) => (
+              <span
+                key={tech}
+                className="rounded-md bg-[var(--color-bg-tertiary)]/80 backdrop-blur-sm px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)] transition-colors duration-300 group-hover:bg-[var(--color-accent)]/10 group-hover:text-[var(--color-accent)]"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+          <div className="mt-4 text-sm font-semibold text-[var(--color-accent)] opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+            Read the case study →
+          </div>
         </div>
       </div>
     </Link>

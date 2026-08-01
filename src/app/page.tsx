@@ -78,7 +78,7 @@ export default async function Home() {
             {/* Status strip — horizontal on desktop */}
             <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3 reveal-up-delay-2">
               {[
-                { label: 'Now', text: 'Building Pulse — a local-first VS Code assistant' },
+                { label: 'Now', text: 'Building NexCode — a multi-agent AI coding assistant for VS Code' },
                 { label: 'Thinking', text: 'Resilient systems that work when dependencies fail' },
                 { label: 'Focus', text: 'Full-stack craft · developer tools · environmental data' },
               ].map((item) => (
@@ -110,7 +110,14 @@ export default async function Home() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featuredProjects.map((project, index) => (
               <ScrollReveal key={project.slug} delay={index * 0.08}>
-                <ProjectCard {...project} />
+                <ProjectCard
+                  slug={project.slug}
+                  title={project.title}
+                  subtitle={project.subtitle}
+                  status={project.status}
+                  stack={project.stack}
+                  image={project.image}
+                />
               </ScrollReveal>
             ))}
           </div>

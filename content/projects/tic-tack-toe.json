@@ -1,0 +1,18 @@
+{
+  "slug": "tic-tack-toe",
+  "title": "Tic-Tac-Toe",
+  "subtitle": "Interactive browser game with AI opponent",
+  "description": "A clean, responsive Tic-Tac-Toe game built with modern web technologies. Features an intelligent AI opponent, smooth animations, and a polished UI that works across devices.",
+  "problem": "Building a satisfying game experience with simple rules requires careful attention to UX — the AI needs to feel challenging but fair, the board state must be immediately clear, and win/draw detection needs to feel instant.",
+  "role": "Designed and built the complete game including the game logic engine, AI opponent with minimax algorithm, responsive board UI, and score tracking.",
+  "approach": "Implemented a minimax algorithm for the AI opponent to ensure optimal play. The UI uses CSS Grid for the board layout with smooth transition animations for piece placement and win-line highlights. State management keeps the game logic clean and testable.",
+  "hardestDecision": "Tuning the AI difficulty — a perfect minimax player is unbeatable, which isn't fun for most users. Added difficulty levels by introducing controlled randomness at lower settings to make the game enjoyable for different skill levels.",
+  "status": "shipped",
+  "outcome": "Fully playable game with multiple difficulty levels. Open source on GitHub.",
+  "whatIdChange": "Would add multiplayer support over WebSocket, implement a move history replay feature, and add sound effects for piece placement and win celebrations.",
+  "stack": ["TypeScript", "React", "CSS Grid"],
+  "repo": "https://github.com/OchiengPaul442/tic-tack-toe",
+  "liveUrl": null,
+  "featured": false,
+  "order": 15
+}

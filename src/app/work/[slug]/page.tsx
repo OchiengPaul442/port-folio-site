@@ -26,6 +26,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: project.title,
       description: project.description,
       type: 'article',
+      images: project.image
+        ? [{ url: project.image, width: 1200, height: 750, alt: `${project.title} screenshot` }]
+        : [],
     },
   };
 }
@@ -52,7 +55,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
           <div className="space-y-10">
             <ScrollReveal>
               <div className="not-prose">
-                <ProjectVisual title={project.title} stack={project.stack} status={project.status} />
+                <ProjectVisual title={project.title} stack={project.stack} status={project.status} image={project.image} priority />
               </div>
             </ScrollReveal>
 

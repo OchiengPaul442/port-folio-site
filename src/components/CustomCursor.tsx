@@ -112,11 +112,15 @@ export function CustomCursor() {
       }
     };
 
-    // Animate cursor
+    // Animate cursor with smooth easing
     let animId: number;
     const animate = () => {
-      posRef.current.x += (mouseRef.current.x - posRef.current.x) * 0.12;
-      posRef.current.y += (mouseRef.current.y - posRef.current.y) * 0.12;
+      // Smooth follow with different speeds for dot and ring
+      const dotLerp = 0.2;
+      const ringLerp = 0.08;
+      
+      posRef.current.x += (mouseRef.current.x - posRef.current.x) * ringLerp;
+      posRef.current.y += (mouseRef.current.y - posRef.current.y) * ringLerp;
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate(${mouseRef.current.x}px, ${mouseRef.current.y}px) translate(-50%, -50%)`;

@@ -38,6 +38,7 @@ export default function WorkPage() {
                 subtitle={project.subtitle}
                 status={project.status}
                 stack={project.stack}
+                image={project.image}
               />
             </ScrollReveal>
           ))}

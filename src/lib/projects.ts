@@ -17,6 +17,7 @@ export interface Project {
   stack: string[];
   repo: string | null;
   liveUrl: string | null;
+  image?: string;
   featured: boolean;
   order: number;
 }

@@ -1,0 +1,19 @@
+{
+  "slug": "sentsafrica",
+  "title": "Sentsa Africa",
+  "subtitle": "Digital platform for African social enterprise",
+  "description": "A web platform for Sentsa Africa, an organization focused on driving social impact across African communities. The site serves as a digital presence for communicating mission, programs, and impact to stakeholders and partners.",
+  "problem": "Social enterprises in Africa often lack a polished, professional digital presence that communicates their impact effectively to international partners, donors, and the communities they serve. Generic templates fail to capture the nuance of mission-driven work.",
+  "role": "Built the complete website including content architecture, responsive design, performance optimization, and deployment. Translated the organization's mission into a clear, compelling digital experience.",
+  "approach": "Content-first design approach — started with information architecture that prioritizes the organization's key messages, then built a responsive, accessible frontend optimized for both desktop stakeholders and mobile-first community members. Focused on fast load times and clear visual hierarchy.",
+  "hardestDecision": "Balancing visual richness with performance — impact stories benefit from rich media, but the target audience often accesses the site on constrained networks. Implemented progressive loading and optimized assets to serve both needs.",
+  "status": "shipped",
+  "outcome": "Live at sentsafrica.com, serving as the organization's primary digital presence.",
+  "whatIdChange": "Would add a multilingual content system for broader accessibility, implement a newsletter and impact reporting dashboard for stakeholders, and add structured data for improved search visibility.",
+  "stack": ["TypeScript", "React", "Next.js", "Tailwind CSS"],
+  "repo": null,
+  "liveUrl": "https://www.sentsafrica.com",
+  "image": "/images/sentsafrica.webp",
+  "featured": false,
+  "order": 12
+}

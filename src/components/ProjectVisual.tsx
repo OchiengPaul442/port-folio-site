@@ -1,6 +1,53 @@
-interface ProjectVisualProps { title: string; stack: string[]; status: string; }
+import Image from 'next/image';
 
-export function ProjectVisual({ title, stack, status }: ProjectVisualProps) {
+interface ProjectVisualProps {
+  title: string;
+  stack: string[];
+  status: string;
+  image?: string;
+  priority?: boolean;
+}
+
+const blurPlaceholder = 'data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAACQAQCdASoBAAEAAkA4JYgCdAEO/hepgAAA/v3Mn/gP3MpSh6J/OaE7L/63rD0X+7Z3f+b7f/67rL0X+7Z3f+b7f/67';
+
+export function ProjectVisual({ title, stack, status, image, priority = false }: ProjectVisualProps) {
+  if (image) {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-stone-950 shadow-lg">
+        <div className="relative aspect-[16/10] w-full">
+          <Image
+            src={image}
+            alt={`${title} screenshot`}
+            fill
+            priority={priority}
+            placeholder="blur"
+            blurDataURL={blurPlaceholder}
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 896px"
+          />
+        </div>
+        <div className="flex items-center justify-between border-t border-white/10 bg-stone-950 px-5 py-3">
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-stone-500">{title}</span>
+            <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+              status === 'shipped'
+                ? 'bg-emerald-500/10 text-emerald-400'
+                : 'bg-amber-500/10 text-amber-400'
+            }`}>
+              <span className={`h-1 w-1 rounded-full ${status === 'shipped' ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+              {status}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const accents = ['bg-amber-400', 'bg-teal-500', 'bg-orange-400'];
   return (
     <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-stone-950 p-5 text-stone-100 shadow-lg">

@@ -13,6 +13,7 @@
   "stack": ["Python", "FastAPI", "LangGraph", "Gemini", "SQLite", "TypeScript", "React", "Next.js", "Tailwind CSS", "Framer Motion"],
   "repo": "https://github.com/OchiengPaul442/AirQualityAgent",
   "liveUrl": "https://aeris.ochiengpaul.com",
+  "image": "/images/aeris.webp",
   "featured": true,
-  "order": 3
+  "order": 2
 }

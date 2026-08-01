@@ -1,0 +1,18 @@
+{
+  "slug": "airqo-icons-flutter",
+  "title": "AirQo Icons Flutter",
+  "subtitle": "Open-source icon package for Flutter developers",
+  "description": "A curated Flutter icon package published on pub.dev, providing a consistent set of icons for air quality monitoring applications. Designed to complement Flutter's built-in icon system with domain-specific iconography for environmental data visualization.",
+  "problem": "Flutter developers building air quality and environmental monitoring applications lack a consistent, well-designed set of domain-specific icons. Using generic icons reduces the professionalism and clarity of data-heavy interfaces that need to communicate air quality levels, sensor types, and environmental conditions.",
+  "role": "Designed the icon set, implemented the Flutter package structure, and published to pub.dev with proper documentation, versioning, and cross-platform compatibility testing.",
+  "approach": "Created a minimal, consistent icon design language that works at multiple sizes and in both light and dark themes. Implemented as a Flutter package with proper asset management, ensuring icons integrate seamlessly with Material Design conventions while maintaining visual distinctiveness.",
+  "hardestDecision": "Designing icons that are immediately recognizable at small sizes (16x16) while remaining visually interesting at larger scales — air quality concepts like PM2.5, AQI levels, and sensor types require abstract representation that must be intuitive without text labels.",
+  "status": "shipped",
+  "outcome": "Published on pub.dev and used in AirQo's Flutter applications. Open source under MIT license.",
+  "whatIdChange": "Would add animated icon variants for real-time data visualization, implement a custom icon font for better web performance, and expand the set to cover broader environmental monitoring concepts.",
+  "stack": ["Flutter", "Dart", "pub.dev"],
+  "repo": null,
+  "liveUrl": "https://pub.dev/packages/airqo_icons_flutter",
+  "featured": false,
+  "order": 16
+}

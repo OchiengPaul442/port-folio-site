@@ -26,27 +26,15 @@ export default function NowPage() {
               <h2 className="section-label">Active Projects</h2>
               <div className="mt-4 space-y-4">
                 <div className="card">
-                  <h3 className="font-semibold text-[var(--color-text-primary)]">Pulse</h3>
+                  <h3 className="font-semibold text-[var(--color-text-primary)]">NexCode</h3>
                   <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-                    Refining a local-first VS Code assistant with a focus on a clear,
-                    reliable developer workflow and useful performance on ordinary
-                    machines.
+                    Building a multi-agent AI coding assistant for VS Code with
+                    sensible task routing, resilient provider connections, and a
+                    less distracting editor experience.
                   </p>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     <span className="rounded-md bg-[var(--color-bg-tertiary)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)]">TypeScript</span>
                     <span className="rounded-md bg-[var(--color-bg-tertiary)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)]">VS Code API</span>
-                    <span className="rounded-md bg-[var(--color-bg-tertiary)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)]">Ollama</span>
-                  </div>
-                </div>
-                <div className="card">
-                  <h3 className="font-semibold text-[var(--color-text-primary)]">NexCode</h3>
-                  <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-                    A developer-tool experiment focused on sensible task routing,
-                    resilient provider connections, and a less distracting editor
-                    experience.
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    <span className="rounded-md bg-[var(--color-bg-tertiary)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)]">TypeScript</span>
                     <span className="rounded-md bg-[var(--color-bg-tertiary)] px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)]">Multi-Agent</span>
                   </div>
                 </div>

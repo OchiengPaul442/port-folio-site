@@ -1,0 +1,19 @@
+{
+  "slug": "airqo-website",
+  "title": "AirQo Website",
+  "subtitle": "Web experience for an air quality platform serving Africa",
+  "description": "The main public-facing website for AirQo, a platform providing air quality data and insights across African communities. The website serves as the primary entry point for communities, researchers, and policymakers seeking air quality information.",
+  "problem": "AirQo needed a modern, accessible website that communicates its mission and data products to diverse audiences — from community members checking local air quality to researchers accessing detailed monitoring data. The site needed to perform well on low-bandwidth connections common across Africa.",
+  "role": "Contributed to the frontend development of the AirQo website, building responsive components, implementing internationalization supporting 40+ languages including African languages, and optimizing performance for constrained networks.",
+  "approach": "Built with a focus on accessibility and performance — responsive design optimized for mobile-first usage, lazy-loaded data visualizations, and a multilingual content system supporting over 40 languages. Implemented internationalization workflows that accommodate African languages with limited tooling support.",
+  "hardestDecision": "Implementing internationalization for African languages — many lack standard digital tooling, requiring custom solutions for text direction, font support, and content management that respects linguistic nuances.",
+  "status": "shipped",
+  "outcome": "Live at airqo.net, serving as AirQo's primary digital presence across African communities with multilingual support.",
+  "whatIdChange": "Would implement progressive web app capabilities for offline access, add voice-based interaction for low-literacy users, and build a community-contributed translation system.",
+  "stack": ["TypeScript", "React", "Next.js", "i18n", "Tailwind CSS"],
+  "repo": "https://github.com/airqo-platform/AirQo-frontend",
+  "liveUrl": "https://airqo.net",
+  "image": "/images/airqo-website.webp",
+  "featured": true,
+  "order": 6
+}

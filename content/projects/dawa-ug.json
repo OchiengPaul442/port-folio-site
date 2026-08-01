@@ -13,6 +13,7 @@
   "stack": ["TypeScript", "React", "Next.js", "PostgreSQL"],
   "repo": null,
   "liveUrl": "https://www.dawa.ug",
+  "image": "/images/dawa.webp",
   "featured": false,
-  "order": 6
+  "order": 8
 }

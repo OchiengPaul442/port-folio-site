@@ -1,0 +1,19 @@
+{
+  "slug": "aqmrg",
+  "title": "AQMRG",
+  "subtitle": "Air quality monitoring research platform",
+  "description": "A research-focused platform for the Air Quality Monitoring Research Group, providing tools for data visualization, research publication management, and collaborative analysis of air quality monitoring data across African regions.",
+  "problem": "Research groups working on air quality in Africa need a centralized platform to manage their publications, share monitoring data, and collaborate across institutions. Existing academic platforms are often expensive and not tailored to environmental research workflows.",
+  "role": "Built the web platform including research publication management, data visualization dashboards, and the collaborative interface for researchers to share findings and coordinate monitoring efforts.",
+  "approach": "Developed a focused research platform with publication indexing, interactive data visualization for monitoring results, and team collaboration features. Built with an emphasis on data integrity, accessibility for researchers with varying technical backgrounds, and clean presentation of complex environmental data.",
+  "hardestDecision": "Designing data visualization that serves both technical researchers and non-technical stakeholders — the same charts need to support detailed analysis for scientists while remaining interpretable for policymakers and community members.",
+  "status": "shipped",
+  "outcome": "Live at aqmrg.org, supporting the research group's digital presence and collaborative workflows.",
+  "whatIdChange": "Would add real-time data streaming from monitoring stations, implement a peer review workflow for publications, and build API integrations with major air quality data repositories.",
+  "stack": ["TypeScript", "React", "Next.js", "Data Visualization"],
+  "repo": null,
+  "liveUrl": "https://www.aqmrg.org",
+  "image": "/images/aqmrg.webp",
+  "featured": false,
+  "order": 13
+}

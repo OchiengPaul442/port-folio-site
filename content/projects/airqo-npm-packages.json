@@ -1,0 +1,18 @@
+{
+  "slug": "airqo-npm-packages",
+  "title": "AirQo NPM Packages",
+  "subtitle": "Open-source JavaScript packages for environmental data",
+  "description": "A collection of open-source NPM packages providing utilities, data models, and API clients for working with air quality data. Published under the AirQo organization on npmjs.com for use by the broader environmental data community.",
+  "problem": "Developers building applications that consume air quality data need reusable utilities for data formatting, API integration, and environmental data models. Without shared packages, each project reimplements common functionality, leading to inconsistencies and duplicated effort.",
+  "role": "Developed and maintained the NPM packages including data models, API clients, and utility functions. Managed package versioning, documentation, and continuous integration for reliable publishing.",
+  "approach": "Built modular packages with clear separation of concerns — data models for air quality readings, API clients for AirQo endpoints, and utility functions for data transformation. Each package is independently versioned and documented, with TypeScript definitions and comprehensive test coverage.",
+  "hardestDecision": "Balancing package granularity — too many small packages create dependency management friction, while monolithic packages reduce reusability. Settled on a focused set of packages that align with common use cases without over-fragmenting the ecosystem.",
+  "status": "shipped",
+  "outcome": "Published on npmjs.com under the AirQo organization. Used in production applications and available to the broader developer community.",
+  "whatIdChange": "Would add comprehensive JSDoc documentation, implement automated API documentation generation, and build example projects demonstrating common integration patterns.",
+  "stack": ["TypeScript", "Node.js", "npm"],
+  "repo": null,
+  "liveUrl": "https://www.npmjs.com/settings/airqo/packages",
+  "featured": false,
+  "order": 17
+}

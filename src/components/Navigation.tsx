@@ -14,6 +14,11 @@ const navLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
+function isActive(pathname: string, href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(href + '/');
+}
+
 export function Navigation() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -59,11 +64,11 @@ export function Navigation() {
               <Link
                 href={href}
                 className={`rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${
-                  pathname === href
+                  isActive(pathname, href)
                     ? 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)]'
                     : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                 }`}
-                aria-current={pathname === href ? 'page' : undefined}
+                aria-current={isActive(pathname, href) ? 'page' : undefined}
               >
                 {label}
               </Link>
@@ -112,11 +117,11 @@ export function Navigation() {
                   href={href}
                   onClick={() => setMobileOpen(false)}
                   className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${
-                    pathname === href
+                    isActive(pathname, href)
                       ? 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)]'
                       : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                   }`}
-                  aria-current={pathname === href ? 'page' : undefined}
+                  aria-current={isActive(pathname, href) ? 'page' : undefined}
                 >
                   {label}
                 </Link>

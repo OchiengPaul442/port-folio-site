@@ -13,6 +13,7 @@
   "stack": ["TypeScript", "React", "Next.js", "Cloud Infrastructure"],
   "repo": null,
   "liveUrl": "https://www.builld.tech",
+  "image": "/images/builld.webp",
   "featured": false,
-  "order": 9
+  "order": 10
 }

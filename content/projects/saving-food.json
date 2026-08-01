@@ -13,6 +13,7 @@
   "stack": ["TypeScript", "React", "Next.js", "Python", "AI/ML"],
   "repo": null,
   "liveUrl": "https://sf-project-topaz.vercel.app",
+  "image": "/images/savingfood.webp",
   "featured": false,
-  "order": 8
+  "order": 9
 }
