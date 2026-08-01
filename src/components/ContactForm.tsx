@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { z } from 'zod';
+import { CheckCircle2, MailPlus } from 'lucide-react';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
@@ -81,10 +82,41 @@ export function ContactForm() {
 
   if (status === 'success') {
     return (
-      <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-success-bg)] p-6 text-center">
-        <p className="text-sm font-medium text-[var(--color-success-text)]">
-          Message sent successfully. I&apos;ll get back to you soon.
-        </p>
+      <div
+        className="rounded-xl border border-[var(--color-success-text)]/20 bg-[var(--color-success-bg)] p-6 sm:p-7"
+        role="status"
+        aria-live="polite"
+      >
+        <div className="flex items-start gap-3">
+          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-success-text)]" aria-hidden="true" />
+          <div>
+            <p className="text-sm font-semibold text-[var(--color-success-text)]">
+              Message sent successfully.
+            </p>
+            <p className="mt-1 text-sm text-[var(--color-success-text)]/80">
+              Thanks for reaching out. I&apos;ll get back to you soon.
+            </p>
+          </div>
+        </div>
+        <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[var(--color-success-text)]/15 pt-5">
+          <button
+            type="button"
+            onClick={() => {
+              setErrors({});
+              setStatus('idle');
+            }}
+            className="inline-flex items-center gap-2 rounded-md bg-[var(--color-success-text)] px-4 py-2.5 text-sm font-semibold text-[var(--color-success-bg)] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-success-text)]"
+          >
+            <MailPlus className="h-4 w-4" aria-hidden="true" />
+            Send another message
+          </button>
+          <a
+            href="mailto:paul.ochieng.dev@gmail.com"
+            className="text-sm font-medium text-[var(--color-success-text)] underline decoration-[var(--color-success-text)]/40 underline-offset-4 hover:decoration-[var(--color-success-text)]"
+          >
+            Email directly
+          </a>
+        </div>
       </div>
     );
   }

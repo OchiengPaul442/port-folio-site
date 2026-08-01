@@ -65,7 +65,12 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL || 'paul.ochieng.dev@gmail.com';
-  const from = process.env.CONTACT_FROM_EMAIL;
+  const configuredFrom = process.env.CONTACT_FROM_EMAIL;
+  const from = configuredFrom
+    ? configuredFrom.includes('<')
+      ? configuredFrom
+      : `Paul Ochieng Levi <${configuredFrom}>`
+    : undefined;
 
   if (!apiKey || !from) {
     console.error('Contact email is not configured. Set RESEND_API_KEY and CONTACT_FROM_EMAIL.');
@@ -89,7 +94,7 @@ export async function POST(request: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `[Portfolio] ${subject}`,
+        subject: `New portfolio enquiry — ${subject}`,
         text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
         html: `<h2>New portfolio contact</h2><p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p>${safeMessage}</p>`,
       }),
