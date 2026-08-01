@@ -105,7 +105,7 @@ body {
 }
 
 /* Click feedback spark */
-.click-spark {
+.click-spark { 
   position: fixed;
   z-index: 100;
   width: 12px;
@@ -507,6 +507,82 @@ button:hover ~ .cursor-dot,
 /* ============================================
    ANIMATIONS — Unified system
    ============================================ */
+.consent-panel {
+  animation: consent-panel-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.consent-panel-confirmed {
+  border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-border));
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--color-accent) 12%, transparent);
+  animation: consent-confirmed 0.55s ease-out both;
+}
+
+.consent-confirmation {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: consent-message-in 0.35s ease-out both;
+}
+
+.consent-confirmation-icon {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 2.25rem;
+  place-items: center;
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  color: var(--color-accent);
+  font-size: 1.35rem;
+  font-weight: 700;
+  animation: consent-icon-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.consent-orb {
+  position: absolute;
+  top: -2.4rem;
+  left: 2rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  box-shadow: 0 0 0.8rem var(--color-accent), 0 0 2rem color-mix(in srgb, var(--color-accent) 45%, transparent);
+  animation: consent-orb-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes consent-panel-in {
+  from { opacity: 0; transform: translateY(1rem) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes consent-orb-pulse {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.75; }
+  50% { transform: translateY(-0.35rem) scale(1.15); opacity: 1; }
+}
+
+@keyframes consent-confirmed {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+
+@keyframes consent-message-in {
+  from { opacity: 0; transform: translateX(-0.5rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes consent-icon-pop {
+  from { opacity: 0; transform: scale(0.4) rotate(-18deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .consent-panel,
+  .consent-orb,
+  .consent-confirmation,
+  .consent-confirmation-icon { animation: none; }
+}
+
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
