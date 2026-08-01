@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PrivacySettingsButton } from '@/components/PrivacySettingsButton';
 
 export function Footer() {
   return (
@@ -40,6 +41,7 @@ export function Footer() {
           <Link href="/about" className="hover:text-[var(--color-accent)] transition-colors duration-200">About</Link>
           <Link href="/now" className="hover:text-[var(--color-accent)] transition-colors duration-200">Now</Link>
           <Link href="/privacy" className="hover:text-[var(--color-accent)] transition-colors duration-200">Privacy</Link>
+          <PrivacySettingsButton />
           <a href="https://www.linkedin.com/in/paulochieng442/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">LinkedIn</a>
           <a href="https://twitter.com/OchiengTech" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">Twitter</a>
         </div>

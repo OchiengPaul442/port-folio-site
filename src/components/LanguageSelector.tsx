@@ -80,15 +80,23 @@ export function LanguageSelector() {
       }
     };
 
-    // The script is loaded by Next.js in the root layout. If it has already
-    // arrived, initialise the widget immediately; otherwise its callback
-    // will run once the script finishes loading.
-    window.googleTranslateElementInit?.();
+    if (window.google?.translate?.TranslateElement) {
+      window.googleTranslateElementInit?.();
+      return;
+    }
+
+    if (document.getElementById('google-translate-script')) return;
+
+    const script = document.createElement('script');
+    script.id = 'google-translate-script';
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.head.appendChild(script);
   }, []);
 
   useEffect(() => {
-    loadGoogleTranslate();
-  }, [loadGoogleTranslate]);
+    if (currentLang !== 'en') loadGoogleTranslate();
+  }, [currentLang, loadGoogleTranslate]);
 
   const handleLanguageChange = useCallback((lang: Language) => {
     setIsOpen(false);

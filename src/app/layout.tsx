@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { ClickFeedback } from '@/components/ClickFeedback';
@@ -9,6 +8,7 @@ import { ScrollProgress } from '@/components/ScrollProgress';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { CustomCursor } from '@/components/CustomCursor';
 import { Analytics } from '@/components/Analytics';
+import { ConsentBanner } from '@/components/ConsentBanner';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -78,11 +78,6 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <body className="site-shell min-h-full flex flex-col">
-        <Script
-          id="google-translate-script"
-          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="lazyOnload"
-        />
         <Analytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrollProvider>
@@ -98,6 +93,7 @@ export default function RootLayout({
             </main>
             <Footer />
             <LanguageSelector />
+            <ConsentBanner />
           </SmoothScrollProvider>
         </ThemeProvider>
         <script

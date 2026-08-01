@@ -74,6 +74,11 @@ export default function ContactPage() {
             <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">
               Send a Message
             </h2>
+            <p className="mt-2 max-w-lg text-xs leading-5 text-[var(--color-text-tertiary)]">
+              Your message is sent to Paul through a transactional email provider
+              so he can respond. Please do not include sensitive information. See
+              the <a href="/privacy" className="text-[var(--color-accent)] underline underline-offset-2">Privacy Policy</a> for details.
+            </p>
             <div className="mt-6 max-w-lg">
               <ContactForm />
             </div>
