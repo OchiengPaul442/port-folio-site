@@ -8,11 +8,13 @@ interface ProjectCardProps {
   status: string;
   stack: string[];
   image?: string;
+  category?: string;
+  tags?: string[];
 }
 
 const blurPlaceholder = 'data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAACQAQCdASoBAAEAAkA4JYgCdAEO/hepgAAA/v3Mn/gP3MpSh6J/OaE7L/63rD0X+7Z3f+b7f/67rL0X+7Z3f+b7f/67';
 
-export function ProjectCard({ slug, title, subtitle, status, stack, image }: ProjectCardProps) {
+export function ProjectCard({ slug, title, subtitle, status, stack, image, category, tags }: ProjectCardProps) {
   return (
     <Link
       href={`/work/${slug}`}
@@ -63,7 +65,9 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image }: Pro
             {status}
           </span>
         </div>
+        {category && <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-accent)]">{category}</p>}
         <div className="mt-auto pt-4">
+          {tags && <div className="mb-3 flex flex-wrap gap-1.5">{tags.slice(0, 3).map((tag) => <span key={tag} className="rounded-full border border-[var(--color-border)] px-2 py-0.5 text-[10px] text-[var(--color-text-tertiary)]">{tag}</span>)}</div>}
           <div className="flex flex-wrap gap-1.5">
             {stack.map((tech) => (
               <span

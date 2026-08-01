@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import Script from 'next/script';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { ClickFeedback } from '@/components/ClickFeedback';
@@ -9,20 +9,6 @@ import { ScrollProgress } from '@/components/ScrollProgress';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { CustomCursor } from '@/components/CustomCursor';
 import './globals.css';
-
-const ibmPlexSans = IBM_Plex_Sans({
-  variable: '--font-sans',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: '--font-mono',
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://paul.dev'),
@@ -88,9 +74,14 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="site-shell min-h-full flex flex-col">
+        <Script
+          id="google-translate-script"
+          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          strategy="lazyOnload"
+        />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrollProvider>
             <a href="#main-content" className="skip-link">
@@ -120,7 +111,7 @@ export default function RootLayout({
                   jobTitle: 'Software Engineer',
                   worksFor: { '@type': 'Organization', name: 'AirQo' },
                   address: { '@type': 'PostalAddress', addressLocality: 'Kampala', addressCountry: 'UG' },
-                  sameAs: ['https://github.com/OchiengPaul442', 'https://twitter.com/OchiengTech'],
+                  sameAs: ['https://github.com/OchiengPaul442', 'https://www.linkedin.com/in/paulochieng442/', 'https://twitter.com/OchiengTech'],
                   knowsAbout: ['Software Engineering', 'Applied AI', 'Environmental Technology', 'TypeScript', 'Python', 'React', 'Next.js'],
                 },
                 {

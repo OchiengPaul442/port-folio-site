@@ -28,7 +28,8 @@ export function ParallaxSection({
     offset: ['start end', 'end start'],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['-15%', '15%']);
+  const travel = Math.max(0.05, Math.min(speed, 0.8)) * 50;
+  const y = useTransform(scrollYProgress, [0, 1], [`-${travel}%`, `${travel}%`]);
 
   return (
     <div

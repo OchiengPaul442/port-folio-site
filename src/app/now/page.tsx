@@ -24,7 +24,7 @@ export default function NowPage() {
             Now
           </h1>
           <p className="mt-2 font-mono text-sm text-[var(--color-text-tertiary)]">
-            Last updated: July 2026
+            Last updated: August 2026
           </p>
         </ScrollReveal>
 

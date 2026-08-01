@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from 'react';
 
 interface Language {
   code: string;
@@ -29,51 +29,20 @@ declare global {
   }
 }
 
-function getGoogleCombo(): HTMLSelectElement | null {
-  // Try multiple selectors to find the Google translate combo
-  const selectors = [
-    '.goog-te-combo',
-    'select.goog-te-combo',
-    '#google_translate_element select',
-    '.goog-te-gadget-simple select',
-  ];
-  for (const sel of selectors) {
-    const el = document.querySelector(sel) as HTMLSelectElement;
-    if (el) return el;
-  }
-  // Search inside iframes
-  const iframes = document.querySelectorAll('iframe');
-  for (const iframe of iframes) {
-    try {
-      const doc = iframe.contentDocument;
-      if (doc) {
-        const el = doc.querySelector('.goog-te-combo') as HTMLSelectElement;
-        if (el) return el;
-      }
-    } catch {
-      // Cross-origin
-    }
-  }
-  return null;
-}
+const getStoredLanguage = () => {
+  if (typeof window === 'undefined') return 'en';
+  const saved = window.localStorage.getItem('preferred-language');
+  return saved && languages.some((language) => language.code === saved) ? saved : 'en';
+};
+
+const subscribeToLanguage = () => () => undefined;
 
 export function LanguageSelector() {
-  const [currentLang, setCurrentLang] = useState('en');
+  const currentLang = useSyncExternalStore(subscribeToLanguage, getStoredLanguage, () => 'en');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
   const initAttempted = useRef(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('preferred-language');
-    if (saved && languages.some((l) => l.code === saved)) {
-      setCurrentLang(saved);
-    }
-
-    loadGoogleTranslate();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -88,7 +57,7 @@ export function LanguageSelector() {
     }
   }, [isOpen]);
 
-  function loadGoogleTranslate() {
+  const loadGoogleTranslate = useCallback(() => {
     // Define the init callback globally
     window.googleTranslateElementInit = () => {
       if (!widgetRef.current || initAttempted.current) return;
@@ -112,39 +81,29 @@ export function LanguageSelector() {
       }
     };
 
-    // Check if script already loaded
-    if (document.getElementById('google-translate-script')) {
-      window.googleTranslateElementInit?.();
-      return;
-    }
+    // The script is loaded by Next.js in the root layout. If it has already
+    // arrived, initialise the widget immediately; otherwise its callback
+    // will run once the script finishes loading.
+    window.googleTranslateElementInit?.();
+  }, []);
 
-    const script = document.createElement('script');
-    script.id = 'google-translate-script';
-    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-    document.body.appendChild(script);
-  }
+  useEffect(() => {
+    loadGoogleTranslate();
+  }, [loadGoogleTranslate]);
 
   const handleLanguageChange = useCallback((lang: Language) => {
-    setCurrentLang(lang.code);
     setIsOpen(false);
     localStorage.setItem('preferred-language', lang.code);
 
-    // Find the Google combo after a short delay to ensure widget is ready
-    setTimeout(() => {
-      const combo = getGoogleCombo();
-      if (!combo) return;
-
-      if (lang.code === 'en') {
-        // Restore original by reloading
-        window.location.reload();
-        return;
-      }
-
-      // Set value and dispatch change
-      combo.value = lang.code;
-      combo.dispatchEvent(new Event('change', { bubbles: true }));
-    }, 300);
+    // Google Translate reads this cookie on page load. This avoids racing the
+    // widget's asynchronously-created select element.
+    if (lang.code === 'en') {
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+    } else {
+      document.cookie = `googtrans=/en/${lang.code}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    window.location.reload();
   }, []);
 
   const current = languages.find((l) => l.code === currentLang) || languages[0];

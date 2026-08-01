@@ -117,6 +117,8 @@ export default async function Home() {
                   status={project.status}
                   stack={project.stack}
                   image={project.image}
+                  category={project.category}
+                  tags={project.tags}
                 />
               </ScrollReveal>
             ))}

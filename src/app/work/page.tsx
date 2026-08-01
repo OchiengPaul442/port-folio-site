@@ -33,8 +33,8 @@ export default function WorkPage() {
             Work
           </h1>
           <p className="mt-2 text-base text-[var(--color-text-secondary)]">
-            A selection of products I&apos;ve built or contributed to — spanning frontend
-            experience, backend systems, data, and emerging technology.
+            A selection of products I&apos;ve built, shipped, or contributed to — spanning
+            product interfaces, backend systems, environmental data, and developer tools.
           </p>
         </ScrollReveal>
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
@@ -47,6 +47,8 @@ export default function WorkPage() {
                 status={project.status}
                 stack={project.stack}
                 image={project.image}
+                category={project.category}
+                tags={project.tags}
               />
             </ScrollReveal>
           ))}

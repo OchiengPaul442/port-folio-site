@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const contactSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100),
-  email: z.string().email('Invalid email address'),
-  subject: z.string().min(1, 'Subject is required').max(200),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
+  name: z.string().trim().min(1, 'Name is required').max(100),
+  email: z.string().trim().email('Invalid email address'),
+  subject: z.string().trim().min(1, 'Subject is required').max(200),
+  message: z.string().trim().min(10, 'Message must be at least 10 characters').max(2000),
   website: z.string().max(0),
 });
 
@@ -21,6 +21,16 @@ function checkRateLimit(ip: string): boolean {
   if (entry.count >= 5) return false;
   entry.count++;
   return true;
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;',
+  })[character] ?? character);
 }
 
 export async function POST(request: Request) {
@@ -53,8 +63,48 @@ export async function POST(request: Request) {
 
   const { name, email, subject, message } = result.data;
 
-  // In production, integrate with an email service (Resend, SendGrid, etc.)
-  console.log('Contact form submission:', { name, email, subject, message });
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.CONTACT_TO_EMAIL || 'paul.ochieng.dev@gmail.com';
+  const from = process.env.CONTACT_FROM_EMAIL;
+
+  if (!apiKey || !from) {
+    console.error('Contact email is not configured. Set RESEND_API_KEY and CONTACT_FROM_EMAIL.');
+    return NextResponse.json({ error: 'Email delivery is temporarily unavailable.' }, { status: 503 });
+  }
+
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject);
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br />');
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': crypto.randomUUID(),
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: email,
+        subject: `[Portfolio] ${subject}`,
+        text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
+        html: `<h2>New portfolio contact</h2><p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p>${safeMessage}</p>`,
+      }),
+      signal: AbortSignal.timeout(10_000),
+    });
+
+    if (!response.ok) {
+      const providerError = await response.text();
+      console.error('Resend rejected contact email:', response.status, providerError);
+      return NextResponse.json({ error: 'Email delivery is temporarily unavailable.' }, { status: 502 });
+    }
+  } catch (error) {
+    console.error('Contact email delivery failed:', error);
+    return NextResponse.json({ error: 'Email delivery is temporarily unavailable.' }, { status: 502 });
+  }
 
   return NextResponse.json({ success: true });
 }

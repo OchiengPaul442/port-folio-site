@@ -21,7 +21,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mt-2 font-mono text-sm text-[var(--color-text-tertiary)]">
-          Last updated: July 2026
+          Last updated: August 2026
         </p>
         <div className="prose mt-8 max-w-none text-[var(--color-text-secondary)]">
           <p>
@@ -32,7 +32,9 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Information Collected</h2>
           <p>
             Contact form submissions: name, email, subject, and message content.
-            This information is used solely to respond to your inquiry.
+            This information is used solely to respond to your inquiry. Messages
+            are delivered through Resend as a transactional email provider and
+            are not used for marketing.
           </p>
           <p>
             This site does not use cookies, tracking pixels, or third-party
@@ -47,8 +49,9 @@ export default function PrivacyPage() {
           </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Data Storage</h2>
           <p>
-            Contact form submissions are processed server-side and not stored
-            long-term. No data is sold, shared, or used for marketing purposes.
+            Contact form submissions are processed server-side and forwarded to
+            paul.ochieng.dev@gmail.com. The portfolio does not persist them in
+            its own database. No data is sold, shared, or used for marketing.
           </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">External Links</h2>
           <p>

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+  --font-sans: "Inter", "Segoe UI", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --color-bg-primary: #fafaf9;
   --color-bg-secondary: #f5f5f4;
   --color-bg-tertiary: #e7e5e4;
@@ -37,16 +37,9 @@
   --color-warning-text: #fcd34d;
 }
 
-/* Lenis smooth scroll */
-html.lenis, html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
+/* Native scrolling keeps route changes and browser translation stable. */
+html { scroll-behavior: smooth; }
+html, body { min-height: 100%; }
 
 /* Custom scrollbar — matches theme accent color */
 * {
@@ -81,8 +74,7 @@ html.lenis, html.lenis body {
 
 /* Reduced motion — kill all animations */
 @media (prefers-reduced-motion: reduce) {
-  html.lenis, html.lenis body { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -97,6 +89,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .dark body {

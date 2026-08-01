@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 
+const KONAMI_SEQUENCE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -53,9 +55,6 @@ export function CustomCursor() {
 
   // Konami code
   const konamiRef = useRef<number[]>([]);
-  const konamiSequence = [
-    38, 38, 40, 40, 37, 39, 37, 39, 66, 65,
-  ];
 
   useEffect(() => {
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -82,7 +81,7 @@ export function CustomCursor() {
     const handleKeyDown = (e: KeyboardEvent) => {
       konamiRef.current.push(e.keyCode);
       if (konamiRef.current.length > 10) konamiRef.current.shift();
-      if (konamiRef.current.join(',') === konamiSequence.join(',')) {
+      if (konamiRef.current.join(',') === KONAMI_SEQUENCE.join(',')) {
         for (let i = 0; i < 50; i++) {
           setTimeout(() => {
             const piece = document.createElement('div');

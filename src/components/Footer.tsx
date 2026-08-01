@@ -40,6 +40,7 @@ export function Footer() {
           <Link href="/about" className="hover:text-[var(--color-accent)] transition-colors duration-200">About</Link>
           <Link href="/now" className="hover:text-[var(--color-accent)] transition-colors duration-200">Now</Link>
           <Link href="/privacy" className="hover:text-[var(--color-accent)] transition-colors duration-200">Privacy</Link>
+          <a href="https://www.linkedin.com/in/paulochieng442/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">LinkedIn</a>
           <a href="https://twitter.com/OchiengTech" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">Twitter</a>
         </div>
         <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-[var(--color-border)] pt-6 sm:flex-row sm:items-center">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, useState, useEffect } from 'react';
+import { useRef, useCallback, useState, useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
 
@@ -8,11 +8,11 @@ export function ThemeToggle() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { theme, setTheme } = useTheme();
   const [isAnimating, setIsAnimating] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
 
   const toggleTheme = useCallback((e: React.MouseEvent) => {
     if (isAnimating) return;
@@ -34,7 +34,9 @@ export function ThemeToggle() {
       );
 
       // startViewTransition captures old state, runs callback, captures new state
-      const transition = (document as any).startViewTransition(() => {
+      const transition = (document as Document & {
+        startViewTransition: (callback: () => void) => { ready: Promise<void> };
+      }).startViewTransition(() => {
         setTheme(newTheme);
       });
 

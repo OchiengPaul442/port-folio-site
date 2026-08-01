@@ -20,7 +20,29 @@ export interface Project {
   image?: string;
   featured: boolean;
   order: number;
+  category?: string;
+  tags?: string[];
 }
+
+const projectTaxonomy: Record<string, { category: string; tags: string[] }> = {
+  'aeris-aq': { category: 'Applied AI', tags: ['AI agents', 'Air quality', 'Data products'] },
+  'airqo-icons-flutter': { category: 'Open source', tags: ['Flutter', 'Design systems', 'Accessibility'] },
+  'airqo-npm-packages': { category: 'Open source', tags: ['TypeScript', 'SDKs', 'Developer tooling'] },
+  'airqo-web-db': { category: 'Backend systems', tags: ['Django', 'REST APIs', 'Content platforms'] },
+  'airqo-website': { category: 'Product engineering', tags: ['Next.js', 'Internationalization', 'Low-bandwidth UX'] },
+  aqmrg: { category: 'Research platforms', tags: ['Next.js', 'Sanity CMS', 'Environmental research'] },
+  builld: { category: 'Product studio', tags: ['Product strategy', 'Web development', 'Design systems'] },
+  coinz: { category: 'Fintech & commerce', tags: ['Loyalty', 'Merchant tools', 'Real-time systems'] },
+  'dawa-ug': { category: 'Marketplaces', tags: ['E-commerce', 'Mobile-first', 'Trust & safety'] },
+  ledgerbloom: { category: 'SaaS products', tags: ['Invoicing', 'Payments', 'Small business tools'] },
+  nexcode: { category: 'Developer tools', tags: ['VS Code', 'Multi-agent AI', 'Local-first software'] },
+  'nexus-airqo': { category: 'Data platforms', tags: ['Data visualization', 'Maps', 'Environmental data'] },
+  'pdf-viewer': { category: 'Productivity tools', tags: ['PDF editing', 'Canvas UX', 'Browser-native apps'] },
+  'saving-food': { category: 'Applied machine learning', tags: ['Food systems', 'Prediction', 'Operations dashboards'] },
+  sentsafrica: { category: 'Financial products', tags: ['Analytics', 'Data visualization', 'Responsive dashboards'] },
+  sti: { category: 'Public-interest technology', tags: ['Government services', 'Innovation ecosystems', 'Accessibility'] },
+  'tic-tack-toe': { category: 'Learning projects', tags: ['Java', 'Game logic', 'Algorithms'] },
+};
 
 const contentDir = path.join(process.cwd(), 'content', 'projects');
 
@@ -31,7 +53,9 @@ export const getAllProjects = cache((): Project[] => {
       .map((file) => {
         try {
           const raw = fs.readFileSync(path.join(contentDir, file), 'utf-8');
-          return JSON.parse(raw) as Project;
+          const project = JSON.parse(raw) as Project;
+          const taxonomy = projectTaxonomy[project.slug];
+          return taxonomy ? { ...project, ...taxonomy } : project;
         } catch {
           console.warn(`Failed to parse project file: ${file}`);
           return null;

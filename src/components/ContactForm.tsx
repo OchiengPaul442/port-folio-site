@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { z } from 'zod';
 
 const contactSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100),
-  email: z.string().email('Invalid email address'),
-  subject: z.string().min(1, 'Subject is required').max(200),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
+  name: z.string().trim().min(1, 'Name is required').max(100),
+  email: z.string().trim().email('Invalid email address'),
+  subject: z.string().trim().min(1, 'Subject is required').max(200),
+  message: z.string().trim().min(10, 'Message must be at least 10 characters').max(2000),
   website: z.string().max(0),
 });
 
@@ -59,6 +59,11 @@ export function ContactForm() {
         const body = await res.json().catch(() => ({}));
         if (res.status === 429) {
           setErrors({ form: 'Too many requests. Please try again later.' });
+          setStatus('idle');
+          return;
+        }
+        if (res.status >= 500) {
+          setErrors({ form: 'Email delivery is temporarily unavailable. Please email me directly.' });
           setStatus('idle');
           return;
         }

@@ -87,10 +87,10 @@ export default function ContactPage() {
             </h2>
             <div className="mt-4 flex flex-wrap gap-6">
               <a
-                href="mailto:contact@paul.dev"
+                href="mailto:paul.ochieng.dev@gmail.com"
                 className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
               >
-                contact@paul.dev
+                paul.ochieng.dev@gmail.com
               </a>
               <a
                 href="https://github.com/OchiengPaul442"
@@ -99,6 +99,14 @@ export default function ContactPage() {
                 className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
               >
                 GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/paulochieng442/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
+              >
+                LinkedIn
               </a>
               <a
                 href="https://twitter.com/OchiengTech"

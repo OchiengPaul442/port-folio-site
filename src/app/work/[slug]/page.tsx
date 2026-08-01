@@ -65,6 +65,14 @@ export default async function CaseStudyPage({ params }: PageProps) {
           liveUrl={project.liveUrl}
         >
           <div className="space-y-10">
+            {(project.category || project.tags) && (
+              <ScrollReveal>
+                <div className="flex flex-wrap items-center gap-2" aria-label="Project classification">
+                  {project.category && <span className="section-label">{project.category}</span>}
+                  {project.tags?.map((tag) => <span key={tag} className="rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-text-secondary)]">{tag}</span>)}
+                </div>
+              </ScrollReveal>
+            )}
             <ScrollReveal>
               <div className="not-prose">
                 <ProjectVisual title={project.title} stack={project.stack} status={project.status} image={project.image} priority />
