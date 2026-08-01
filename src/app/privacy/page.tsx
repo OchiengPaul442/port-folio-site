@@ -37,8 +37,10 @@ export default function PrivacyPage() {
             are not used for marketing.
           </p>
           <p>
-            This site does not use cookies, tracking pixels, or third-party
-            analytics services. No browsing data is collected or shared.
+            When configured, this site uses Google Analytics 4 to understand
+            aggregate page visits and improve the portfolio. Google may process
+            usage data through its analytics service. No form content is sent to
+            Analytics.
           </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Translation</h2>
           <p>

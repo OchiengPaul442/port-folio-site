@@ -1,43 +1,13 @@
 import type { MetadataRoute } from 'next';
-import fs from 'fs';
-import path from 'path';
-
-const contentDir = path.join(process.cwd(), 'content', 'projects');
-
-function getProjectMtime(slug: string): Date {
-  try {
-    const stat = fs.statSync(path.join(contentDir, `${slug}.json`));
-    return stat.mtime;
-  } catch {
-    return new Date();
-  }
-}
+import { getAllProjects } from '@/lib/projects';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://paul.dev';
   const now = new Date();
 
-  const projects = [
-    'nexcode',
-    'aeris-aq',
-    'airqo-web-db',
-    'airqo-website',
-    'ledgerbloom',
-    'pdf-viewer',
-    'coinz',
-    'dawa-ug',
-    'saving-food',
-    'builld',
-    'nexus-airqo',
-    'sentsafrica',
-    'aqmrg',
-    'sti',
-    'tic-tack-toe',
-    'airqo-icons-flutter',
-    'airqo-npm-packages',
-  ].map((slug) => ({
-    url: `${baseUrl}/work/${slug}`,
-    lastModified: getProjectMtime(slug),
+  const projects = getAllProjects().map((project) => ({
+    url: `${baseUrl}/work/${project.slug}`,
+    lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));

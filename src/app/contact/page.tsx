@@ -87,12 +87,6 @@ export default function ContactPage() {
             </h2>
             <div className="mt-4 flex flex-wrap gap-6">
               <a
-                href="mailto:paul.ochieng.dev@gmail.com"
-                className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              >
-                paul.ochieng.dev@gmail.com
-              </a>
-              <a
                 href="https://github.com/OchiengPaul442"
                 target="_blank"
                 rel="noopener noreferrer"

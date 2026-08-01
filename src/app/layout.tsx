@@ -8,6 +8,7 @@ import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { CustomCursor } from '@/components/CustomCursor';
+import { Analytics } from '@/components/Analytics';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -82,6 +83,7 @@ export default function RootLayout({
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="lazyOnload"
         />
+        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrollProvider>
             <a href="#main-content" className="skip-link">
@@ -107,6 +109,7 @@ export default function RootLayout({
                 {
                   '@type': 'Person',
                   name: 'Paul Ochieng Levi',
+                  alternateName: 'paul.dev',
                   url: 'https://paul.dev',
                   jobTitle: 'Software Engineer',
                   worksFor: { '@type': 'Organization', name: 'AirQo' },
@@ -117,6 +120,7 @@ export default function RootLayout({
                 {
                   '@type': 'WebSite',
                   name: 'Paul Ochieng Levi',
+                  alternateName: 'paul.dev',
                   url: 'https://paul.dev',
                   inLanguage: 'en-UG',
                   description: 'Portfolio of Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda.',

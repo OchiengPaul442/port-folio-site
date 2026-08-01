@@ -61,8 +61,6 @@ export function LanguageSelector() {
     // Define the init callback globally
     window.googleTranslateElementInit = () => {
       if (!widgetRef.current || initAttempted.current) return;
-      initAttempted.current = true;
-
       const TranslateClass = window.google?.translate?.TranslateElement;
       if (!TranslateClass) return;
 
@@ -76,6 +74,7 @@ export function LanguageSelector() {
           },
           widgetRef.current
         );
+        initAttempted.current = true;
       } catch {
         // Silent fail
       }

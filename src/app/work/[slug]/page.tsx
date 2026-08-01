@@ -150,6 +150,22 @@ export default async function CaseStudyPage({ params }: PageProps) {
           </div>
         </CaseStudyLayout>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: project.title,
+            description: project.description,
+            url: `https://paul.dev/work/${project.slug}`,
+            image: project.image ? `https://paul.dev${project.image}` : undefined,
+            author: { '@type': 'Person', name: 'Paul Ochieng Levi', url: 'https://paul.dev' },
+            keywords: [...(project.tags ?? []), ...project.stack].join(', '),
+            isPartOf: { '@type': 'WebSite', name: 'paul.dev', url: 'https://paul.dev' },
+          }),
+        }}
+      />
     </section>
   );
 }
