@@ -33,6 +33,15 @@ function escapeHtml(value: string): string {
   })[character] ?? character);
 }
 
+function readEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  if (!value) return undefined;
+
+  // Local .env files use quotes for values containing spaces, but hosting
+  // dashboards usually store the value without shell syntax. Accept either.
+  return value.replace(/^("|')([\s\S]*)\1$/, '$2').trim() || undefined;
+}
+
 export async function POST(request: Request) {
   const forwarded = request.headers.get('x-forwarded-for');
   const ip = forwarded?.split(',')[0]?.trim() || 'unknown';
@@ -62,9 +71,9 @@ export async function POST(request: Request) {
   }
 
   const { name, email, subject, message } = result.data;
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL || 'paul.ochieng.dev@gmail.com';
-  const configuredFrom = process.env.CONTACT_FROM_EMAIL;
+  const apiKey = readEnv('RESEND_API_KEY');
+  const to = readEnv('CONTACT_TO_EMAIL') || 'paul.ochieng.dev@gmail.com';
+  const configuredFrom = readEnv('CONTACT_FROM_EMAIL');
   const from = configuredFrom
     ? configuredFrom.includes('<')
       ? configuredFrom
