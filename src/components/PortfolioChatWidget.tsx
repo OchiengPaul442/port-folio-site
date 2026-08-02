@@ -237,6 +237,7 @@ export function PortfolioChatWidget() {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
   const hasRestoredRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
@@ -312,8 +313,26 @@ export function PortfolioChatWidget() {
   }, [agentStatus]);
 
   useEffect(() => {
+    const feed = feedRef.current;
+    if (!feed) return;
+    const handleScroll = () => {
+      const distanceFromBottom = feed.scrollHeight - feed.scrollTop - feed.clientHeight;
+      setIsAtBottom(distanceFromBottom < 50);
+    };
+    feed.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => feed.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isAtBottom) {
+      feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
+    }
+  }, [messages, loading, isAtBottom]);
+
+  function scrollToBottom() {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
-  }, [messages, loading]);
+  }
 
   function checkForAppreciation(text: string) {
     const lower = text.toLowerCase().replace(/['']/g, "'").replace(/['']/g, "'").replace(/\s+/g, ' ').trim();
@@ -630,6 +649,11 @@ export function PortfolioChatWidget() {
             {messages.length === 1 && <div className="portfolio-chat-suggestions" aria-label="Suggested questions">{SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}</div>}
             {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url}>{source.title}</a>)}</aside>}
           </div>
+          {!isAtBottom && (
+            <button className="portfolio-chat-scroll-bottom" type="button" onClick={scrollToBottom} aria-label="Scroll to bottom">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3v10M3 8l5 5 5-5" /></svg>
+            </button>
+          )}
 
           <form className="portfolio-chat-form" onSubmit={submit}>
             {error && <div className="portfolio-chat-error" role="alert"><span>{error}</span>{retryText && <button type="button" onClick={() => { setInput(retryText); setError(null); inputRef.current?.focus(); }}>Try again</button>}</div>}
