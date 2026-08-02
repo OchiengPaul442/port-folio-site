@@ -75,6 +75,12 @@ export default function PrivacyPage() {
             They may collect information under their own policies once you leave
             this site.
           </p>
+          <p>
+            The Engineering Profile page links to a public profile hosted by
+            Exceeds. This site does not copy, store, or send your information to
+            Exceeds through that link. Exceeds may process visitors under its
+            own terms and privacy notice once you open the external profile.
+          </p>
 
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Cookies and local storage</h2>
           <p>
