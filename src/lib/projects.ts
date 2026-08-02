@@ -43,6 +43,7 @@ const projectTaxonomy: Record<string, { category: string; tags: string[] }> = {
   sti: { category: 'Public-interest technology', tags: ['Government services', 'Innovation ecosystems', 'Accessibility'] },
   'tic-tack-toe': { category: 'Learning projects', tags: ['Java', 'Game logic', 'Algorithms'] },
   'paul-portfolio-agent': { category: 'Applied AI', tags: ['AI agents', 'FastAPI', 'LLM orchestration', 'Rate limiting'] },
+  'oncallug-drivers': { category: 'Product engineering', tags: ['Next.js', 'Ride-hailing', 'Fintech', 'Maps'] },
 };
 
 const contentDir = path.join(process.cwd(), 'content', 'projects');

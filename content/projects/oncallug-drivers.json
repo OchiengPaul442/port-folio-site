@@ -1,0 +1,18 @@
+{
+  "slug": "oncallug-drivers",
+  "title": "OnCallUg Drivers",
+  "subtitle": "Professional driver hire platform for Kampala, Uganda",
+  "description": "A ride-hailing platform connecting riders with vetted professional drivers in Kampala. Features real-time GPS tracking, Mobile Money and card payments, driver verification via Thronos, and separate rider and driver apps on Google Play. Includes a marketing website and admin dashboard.",
+  "problem": "Professional driver hire in Kampala relies on word-of-mouth and informal networks. Riders need vetted, reliable drivers for corporate travel, airport runs, and daily commutes, while drivers need access to premium clients without high commission fees. There is no trusted platform that handles booking, verification, payments, and trip accountability in one place.",
+  "role": "Built the marketing website and admin dashboard. The site handles rider and driver onboarding, feature explanations, FAQ, safety information, and app download links. The admin dashboard manages driver applications, verification status, trip monitoring, and platform operations.",
+  "approach": "Next.js with App Router for the marketing site, using server components for static content and client components for interactive elements like the FAQ accordion. Tailwind CSS for styling with a clean, professional design that matches the brand. Admin dashboard built as a separate Next.js app with authentication, driver management workflows, and real-time status updates. Both deployed on Vercel with API routes handling form submissions and data operations.",
+  "hardestDecision": "Designing the driver verification flow. Partnering with Thronos for identity verification added complexity: drivers submit National ID, driving permit, and profile details in-app, then schedule verification appointments. Building a clear, step-by-step UI that guides drivers through document submission while keeping the admin dashboard informed of verification status required careful state management across both applications.",
+  "status": "shipped",
+  "outcome": "Live at oncallug.com with both rider and driver apps published on Google Play. The platform serves riders needing professional transport and drivers seeking premium client work across Kampala, Uganda.",
+  "whatIdChange": "Would implement real-time trip tracking on the website for shared trip links, add a business dashboard for the upcoming corporate transport feature, and build in-app chat between riders and drivers.",
+  "stack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"],
+  "repo": null,
+  "liveUrl": "https://oncallug.com",
+  "featured": false,
+  "order": 19
+}
