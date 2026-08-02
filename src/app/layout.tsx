@@ -66,7 +66,11 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
+    icon: [
+      { url: '/brand/logo-white-background-48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/brand/logo-white-background-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
     apple: [{ url: '/apple-touch-icon.png' }],
   },
   manifest: '/manifest.webmanifest',
