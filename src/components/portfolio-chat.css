@@ -131,8 +131,7 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
 
 @media (max-width: 640px) {
   .language-selector-root { right: .75rem; bottom: calc(max(.75rem, env(safe-area-inset-bottom)) + 4.05rem); }
-  .portfolio-chat-root { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); left: .75rem; }
-  .portfolio-chat-launcher { margin-left: auto; }
+  .portfolio-chat-root { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); left: .75rem; display: flex; justify-content: flex-end; }
   .portfolio-chat-scrim { display: block; position: fixed; inset: 0; z-index: -1; border: 0; background: color-mix(in srgb, #000 48%, transparent); backdrop-filter: blur(2px); }
   .portfolio-chat-panel { width: 100%; height: min(43rem, calc(100dvh - 1.5rem)); margin-left: auto; border-radius: .75rem; }
   .portfolio-chat-form-meta span:last-child { display: none; }
