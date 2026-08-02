@@ -46,6 +46,19 @@ export default function PrivacyPage() {
             message.
           </p>
 
+          <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Portfolio assistant chats</h2>
+          <p>
+            The portfolio assistant uses a temporary browser session to answer
+            questions about Paul&apos;s public work. The conversation is kept in
+            the open chat interface and is cleared when you close it. The
+            assistant service uses a signed browser cookie for its daily usage
+            limit; it does not provide a saved conversation history in this
+            portfolio interface. Requests are sent to the configured assistant
+            service to generate a response, and current-information questions
+            may use web search. Do not share passwords, payment details, health
+            information, or other sensitive information in the chat.
+          </p>
+
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">How information is used</h2>
           <p>
             Contact details and message content are used to read, respond to,

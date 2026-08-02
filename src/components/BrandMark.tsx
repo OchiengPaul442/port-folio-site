@@ -13,7 +13,6 @@ export function BrandMark({ className = 'h-9 w-9', title = 'Paul Ochieng Levi ma
       alt={title}
       width={48}
       height={48}
-      priority
     />
   );
 }

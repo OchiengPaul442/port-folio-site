@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUp, Bot, Check, ExternalLink, MessageCircle, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
@@ -14,11 +14,13 @@ type MetaEvent = {
 };
 
 const SUGGESTIONS = ['What has Paul built?', 'Tell me about his AI work', 'How can we collaborate?'];
+const INITIAL_MESSAGE: Message = {
+  id: 'welcome',
+  role: 'assistant',
+  content: "Hi, I'm Paul's portfolio assistant. Ask me about his work, skills, or AI projects.",
+};
 
-const configuredApiUrl = (process.env.NEXT_PUBLIC_PORTFOLIO_AGENT_URL ?? 'https://agent.ochiengpaul.com').replace(/\/$/, '');
-const API_URL = configuredApiUrl.startsWith('https://') || (process.env.NODE_ENV !== 'production' && configuredApiUrl.startsWith('http://localhost'))
-  ? configuredApiUrl
-  : 'https://agent.ochiengpaul.com';
+const API_URL = '/api/portfolio-agent';
 
 function newId() {
   return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
@@ -45,25 +47,138 @@ function isSafeSource(source: Source) {
   }
 }
 
+function readableLinkLabel(href: string) {
+  try {
+    const url = new URL(href);
+    const host = url.hostname.replace(/^www\./, '');
+    const path = url.pathname === '/' ? '' : decodeURIComponent(url.pathname).replace(/\/$/, '');
+    return `${host}${path}`;
+  } catch {
+    return href.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  }
+}
+
+function renderInline(value: string, keyPrefix: string): ReactNode[] {
+  const tokenPattern = /(\*\*[^*]+\*\*|__[^_]+__|`[^`]+`|\[\d+(?:,\s*\d+)*\]|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g;
+  const nodes: ReactNode[] = [];
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = tokenPattern.exec(value))) {
+    if (match.index > cursor) nodes.push(value.slice(cursor, match.index));
+    const token = match[0];
+    if (token.startsWith('**') || token.startsWith('__')) {
+      nodes.push(<strong key={`${keyPrefix}-strong-${match.index}`}>{token.slice(2, -2)}</strong>);
+    } else if (token.startsWith('`')) {
+      nodes.push(<code key={`${keyPrefix}-code-${match.index}`}>{token.slice(1, -1)}</code>);
+    } else if (/^\[\d+(?:,\s*\d+)*\]$/.test(token)) {
+      nodes.push(<sup className="portfolio-chat-citation" key={`${keyPrefix}-citation-${match.index}`}>{token}</sup>);
+    } else {
+      const markdownLink = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      const href = (markdownLink?.[2] ?? token).replace(/[.,!?;:]+$/, '');
+      if (isSafeSource({ title: '', url: href, snippet: '', provider: '' })) {
+        nodes.push(
+          <a className="portfolio-chat-inline-link" key={`${keyPrefix}-link-${match.index}`} href={href} target="_blank" rel="noreferrer">
+            <span>{markdownLink?.[1] ?? readableLinkLabel(href)}</span>
+            <ExternalLink size={11} aria-hidden="true" />
+          </a>,
+        );
+      } else {
+        nodes.push(token);
+      }
+    }
+    cursor = match.index + token.length;
+  }
+
+  if (cursor < value.length) nodes.push(value.slice(cursor));
+  return nodes;
+}
+
+function renderAssistantContent(content: string): ReactNode[] {
+  const blocks: ReactNode[] = [];
+  const lines = content.split(/\r?\n/);
+  let listItems: { text: string; ordered: boolean }[] = [];
+  let codeLines: string[] | null = null;
+  let codeLanguage = '';
+
+  const flushList = () => {
+    if (!listItems.length) return;
+    const ordered = listItems[0].ordered;
+    const List = ordered ? 'ol' : 'ul';
+    blocks.push(<List key={`list-${blocks.length}`}>{listItems.map((item, index) => <li key={`item-${index}`}>{renderInline(item.text, `item-${index}`)}</li>)}</List>);
+    listItems = [];
+  };
+
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('```')) {
+      if (codeLines) {
+        blocks.push(<pre key={`code-block-${index}`}><code data-language={codeLanguage || undefined}>{codeLines.join('\n')}</code></pre>);
+        codeLines = null;
+        codeLanguage = '';
+      } else {
+        flushList();
+        codeLines = [];
+        codeLanguage = trimmed.slice(3).trim();
+      }
+      return;
+    }
+    if (codeLines) {
+      codeLines.push(line);
+      return;
+    }
+    const bullet = trimmed.match(/^[-*+]\s+(.+)$/);
+    const numbered = trimmed.match(/^\d+[.)]\s+(.+)$/);
+    if (bullet || numbered) {
+      const ordered = Boolean(numbered);
+      if (listItems.length && listItems[0].ordered !== ordered) flushList();
+      listItems.push({ text: (bullet ?? numbered)?.[1] ?? '', ordered });
+      return;
+    }
+    flushList();
+    if (/^(?:[-*_]\s*){3,}$/.test(trimmed)) {
+      blocks.push(<hr key={`rule-${index}`} />);
+      return;
+    }
+    if (trimmed.startsWith('>')) {
+      blocks.push(<blockquote key={`quote-${index}`}>{renderInline(trimmed.replace(/^>\s?/, ''), `quote-${index}`)}</blockquote>);
+      return;
+    }
+    if (!trimmed) {
+      blocks.push(<span className="portfolio-chat-rich-break" key={`break-${index}`} aria-hidden="true" />);
+      return;
+    }
+    const heading = trimmed.match(/^#{1,3}\s+(.+)$/);
+    if (heading) {
+      blocks.push(<h3 key={`heading-${index}`}>{renderInline(heading[1], `heading-${index}`)}</h3>);
+      return;
+    }
+    blocks.push(<p key={`paragraph-${index}`}>{renderInline(trimmed, `paragraph-${index}`)}</p>);
+  });
+
+  flushList();
+  const remainingCode = codeLines as string[] | null;
+  if (remainingCode !== null) blocks.push(<pre key="code-block-final"><code data-language={codeLanguage || undefined}>{remainingCode.join('\n')}</code></pre>);
+  return blocks;
+}
+
 export function PortfolioChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: newId(),
-      role: 'assistant',
-      content: "Hi, I’m Paul’s portfolio assistant. Ask me about his work, skills, or AI projects.",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [sources, setSources] = useState<Source[]>([]);
   const [quota, setQuota] = useState<Quota | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryText, setRetryText] = useState<string | null>(null);
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const revealQueueRef = useRef('');
+  const revealedTextRef = useRef('');
+  const revealTimerRef = useRef<number | null>(null);
 
   const history = useMemo(
     () => messages.slice(1).filter((message) => message.content.trim()).slice(-12).map(({ role, content }) => ({ role, content })),
@@ -72,7 +187,7 @@ export function PortfolioChatWidget() {
 
   useEffect(() => {
     if (!open) return;
-    fetch(`${API_URL}/api/v1/chat/quota`, { credentials: 'include' })
+    fetch(`${API_URL}/chat/quota`, { credentials: 'include' })
       .then(async (response) => {
         if (!response.ok) throw new Error('Quota unavailable');
         return (await response.json()) as Quota;
@@ -89,19 +204,72 @@ export function PortfolioChatWidget() {
   useEffect(() => {
     if (!open) return;
     function handleEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape' && !loading) {
-        setOpen(false);
-        closeRef.current?.focus();
-      }
+      if (event.key === 'Escape') requestClose();
     }
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [open, loading]);
 
-  useEffect(() => () => abortRef.current?.abort(), []);
+  useEffect(() => () => {
+    abortRef.current?.abort();
+    if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
+  }, []);
 
   function updateAssistant(id: string, content: string) {
     setMessages((current) => current.map((message) => (message.id === id ? { ...message, content } : message)));
+  }
+
+  function closeChat() {
+    setShowCloseConfirm(false);
+    setOpen(false);
+    setMessages([INITIAL_MESSAGE]);
+    setSources([]);
+    setError(null);
+    setRetryText(null);
+    setInput('');
+  }
+
+  function requestClose() {
+    if (loading) return;
+    if (messages.length > 1) {
+      setShowCloseConfirm(true);
+      return;
+    }
+    closeChat();
+  }
+
+  function queueReveal(id: string, chunk: string) {
+    revealQueueRef.current += chunk;
+    if (revealTimerRef.current) return;
+    revealTimerRef.current = window.setInterval(() => {
+      if (!revealQueueRef.current) {
+        if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
+        revealTimerRef.current = null;
+        return;
+      }
+      const step = revealQueueRef.current.length > 140 ? 3 : 1;
+      revealedTextRef.current += revealQueueRef.current.slice(0, step);
+      revealQueueRef.current = revealQueueRef.current.slice(step);
+      updateAssistant(id, revealedTextRef.current);
+    }, 15);
+  }
+
+  function waitForReveal() {
+    return new Promise<void>((resolve) => {
+      const check = () => {
+        if (!revealQueueRef.current && !revealTimerRef.current) resolve();
+        else window.setTimeout(check, 16);
+      };
+      check();
+    });
+  }
+
+  function handleInputChange(value: string) {
+    setInput(value);
+    const textarea = inputRef.current;
+    if (!textarea) return;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 96)}px`;
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -110,8 +278,13 @@ export function PortfolioChatWidget() {
     if (!text || loading || quota?.remaining === 0) return;
 
     const assistantId = newId();
+    revealQueueRef.current = '';
+    revealedTextRef.current = '';
+    if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
+    revealTimerRef.current = null;
     setMessages((current) => [...current, { id: newId(), role: 'user', content: text }, { id: assistantId, role: 'assistant', content: '' }]);
     setInput('');
+    if (inputRef.current) inputRef.current.style.height = 'auto';
     setSources([]);
     setError(null);
     setRetryText(null);
@@ -121,7 +294,7 @@ export function PortfolioChatWidget() {
     abortRef.current = controller;
 
     try {
-      const response = await fetch(`${API_URL}/api/v1/chat/stream`, {
+      const response = await fetch(`${API_URL}/chat/stream`, {
         method: 'POST',
         credentials: 'include',
         signal: controller.signal,
@@ -139,8 +312,6 @@ export function PortfolioChatWidget() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
-      let answer = '';
-
       while (true) {
         const { done, value } = await reader.read();
         buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
@@ -156,13 +327,13 @@ export function PortfolioChatWidget() {
             setSources((meta.sources ?? []).filter(isSafeSource));
           }
           if (parsed.event === 'token') {
-            answer += (JSON.parse(parsed.data) as { text: string }).text;
-            updateAssistant(assistantId, answer);
+            queueReveal(assistantId, (JSON.parse(parsed.data) as { text: string }).text);
           }
           if (parsed.event === 'error') throw new Error('The response stream ended unexpectedly.');
         }
         if (done) break;
       }
+      await waitForReveal();
     } catch (caught) {
       if (controller.signal.aborted) return;
       const caughtMessage = caught instanceof Error ? caught.message : '';
@@ -180,7 +351,7 @@ export function PortfolioChatWidget() {
 
   return (
     <div className="portfolio-chat-root">
-      {open && <button className="portfolio-chat-scrim" aria-label="Close chat" onClick={() => !loading && setOpen(false)} />}
+      {open && <button className="portfolio-chat-scrim" aria-label="Close chat" onClick={requestClose} />}
       {open ? (
         <section id="portfolio-chat-panel" className="portfolio-chat-panel" aria-label="Paul’s portfolio assistant" role="dialog" aria-modal="false">
           <header className="portfolio-chat-header">
@@ -188,17 +359,17 @@ export function PortfolioChatWidget() {
               <span className="portfolio-chat-avatar" aria-hidden="true"><Bot size={18} strokeWidth={1.8} /></span>
               <div><h2>Ask the assistant</h2></div>
             </div>
-            <button ref={closeRef} className="portfolio-chat-icon" onClick={() => !loading && setOpen(false)} aria-label="Close chat" disabled={loading}><X size={18} /></button>
+            <button ref={closeRef} className="portfolio-chat-icon" onClick={requestClose} aria-label="Close chat" disabled={loading}><X size={18} /></button>
           </header>
 
-          <div className="portfolio-chat-feed" ref={feedRef} aria-live="polite" aria-label="Conversation">
+          <div className="portfolio-chat-feed" ref={feedRef} role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation">
             <div className="portfolio-chat-context"><span className="portfolio-chat-status-dot" /> Answers from Paul's public work</div>
             {messages.map((message) => (
               <article key={message.id} className={`portfolio-chat-message portfolio-chat-message-${message.role}`}>
                 {message.role === 'assistant' && <span className="portfolio-chat-message-avatar" aria-hidden="true"><Bot size={13} /></span>}
                 <div className="portfolio-chat-message-body">
                   <span className="portfolio-chat-message-label">{message.role === 'assistant' ? 'Assistant' : 'You'}</span>
-                  <p>{message.content || <span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span>}</p>
+                  {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span></p>}
                 </div>
               </article>
             ))}
@@ -210,15 +381,17 @@ export function PortfolioChatWidget() {
             {error && <div className="portfolio-chat-error" role="alert"><span>{error}</span>{retryText && <button type="button" onClick={() => { setInput(retryText); setError(null); inputRef.current?.focus(); }}>Try again</button>}</div>}
             <label htmlFor="portfolio-chat-input">Message the assistant</label>
             <div className="portfolio-chat-input-wrap">
-              <textarea ref={inputRef} id="portfolio-chat-input" value={input} onChange={(event) => setInput(event.target.value)} maxLength={2000} rows={1} disabled={loading || quota?.remaining === 0} placeholder="Ask about a project, skill, or experience…" onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} />
+              <textarea ref={inputRef} id="portfolio-chat-input" value={input} onChange={(event) => handleInputChange(event.target.value)} maxLength={2000} rows={1} disabled={loading || quota?.remaining === 0} placeholder="Ask about a project, skill, or experience…" onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} />
               <button className="portfolio-chat-send" type="submit" aria-label="Send message" disabled={loading || !input.trim() || quota?.remaining === 0}>{loading ? <span className="portfolio-chat-spinner" /> : <ArrowUp size={17} />}</button>
             </div>
+            <div className="portfolio-chat-disclaimer">Temporary chat. Closing this panel clears the conversation. Please avoid sharing sensitive information. <a href="/privacy">Privacy details</a></div>
             <div className="portfolio-chat-form-meta"><span>{quota ? `${quota.remaining} of ${quota.limit} questions left today` : '15 questions per day'}</span><span><Check size={12} /> Enter to send</span></div>
           </form>
         </section>
       ) : (
-        <button ref={closeRef} className="portfolio-chat-launcher" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="portfolio-chat-panel"><span className="portfolio-chat-launcher-icon"><MessageCircle size={19} /></span><span>Ask Paul’s assistant</span><span className="portfolio-chat-launcher-pulse" aria-hidden="true" /></button>
+        <button ref={closeRef} className="portfolio-chat-launcher" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="portfolio-chat-panel"><span className="portfolio-chat-launcher-icon"><MessageCircle size={19} /></span><span>Ask Paul's assistant</span><span className="portfolio-chat-launcher-pulse" aria-hidden="true" /></button>
       )}
+      {showCloseConfirm && <div className="portfolio-chat-confirm-backdrop"><section className="portfolio-chat-confirm" role="alertdialog" aria-modal="true" aria-labelledby="portfolio-chat-confirm-title" aria-describedby="portfolio-chat-confirm-description"><div className="portfolio-chat-confirm-icon"><X size={16} /></div><h2 id="portfolio-chat-confirm-title">Close this chat?</h2><p id="portfolio-chat-confirm-description">This conversation is temporary and will be cleared when you close the chat. You will not be able to recover it.</p><div className="portfolio-chat-confirm-actions"><button type="button" onClick={() => setShowCloseConfirm(false)}>Keep chatting</button><button type="button" onClick={closeChat}>Close chat</button></div></section></div>}
     </div>
   );
 }

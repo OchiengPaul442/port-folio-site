@@ -47,6 +47,7 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
   height: min(39rem, calc(100dvh - 2rem));
   display: grid;
   grid-template-rows: auto 1fr auto;
+  min-height: 0;
   overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: .75rem;
@@ -65,17 +66,36 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
 .portfolio-chat-icon { display: grid; place-items: center; width: 2rem; height: 2rem; border: 0; border-radius: .5rem; background: transparent; color: var(--color-text-secondary); cursor: pointer; }
 .portfolio-chat-icon:hover { background: var(--color-bg-tertiary); color: var(--color-text-primary); }
 .portfolio-chat-icon:disabled { cursor: default; opacity: .5; }
-.portfolio-chat-feed { overflow-y: auto; padding: .9rem 1rem 1.1rem; overscroll-behavior: contain; }
+.portfolio-chat-feed { min-height: 0; overflow-y: auto; padding: .9rem 1rem 1.1rem; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .portfolio-chat-context { display: flex; align-items: center; gap: .45rem; margin-bottom: 1.15rem; color: var(--color-text-tertiary); font-size: .69rem; }
 .portfolio-chat-status-dot { width: .4rem; height: .4rem; border-radius: 50%; background: #34d399; box-shadow: 0 0 0 .16rem color-mix(in srgb, #34d399 14%, transparent); }
 .portfolio-chat-message { display: flex; align-items: flex-start; gap: .45rem; max-width: 91%; margin-bottom: 1rem; }
-.portfolio-chat-message-user { margin-left: auto; }
+.portfolio-chat-message-user { width: fit-content; max-width: 91%; margin-left: auto; align-self: flex-end; }
 .portfolio-chat-message-body { min-width: 0; }
 .portfolio-chat-message-avatar { display: grid; place-items: center; width: 1.45rem; height: 1.45rem; flex: 0 0 auto; margin-top: 1.1rem; border: 1px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border)); border-radius: .45rem; background: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-primary)); color: var(--color-accent); }
 .portfolio-chat-message-label { display: block; margin-bottom: .3rem; color: var(--color-text-tertiary); font: .63rem var(--font-mono); letter-spacing: .04em; }
 .portfolio-chat-message-user .portfolio-chat-message-label { text-align: right; }
 .portfolio-chat-message p { margin: 0; padding: .72rem .85rem; border: 1px solid var(--color-border); border-radius: .35rem .9rem .9rem .9rem; background: var(--color-bg-primary); color: var(--color-text-secondary); font-size: .83rem; line-height: 1.58; white-space: pre-wrap; }
 .portfolio-chat-message-user p { border-color: color-mix(in srgb, var(--color-accent) 50%, transparent); border-radius: .75rem .75rem .25rem .75rem; background: color-mix(in srgb, var(--color-accent) 15%, var(--color-bg-primary)); color: var(--color-text-primary); }
+.portfolio-chat-rich-text { padding: .72rem .85rem; border: 1px solid var(--color-border); border-radius: .35rem .9rem .9rem .9rem; background: var(--color-bg-primary); color: var(--color-text-secondary); font-size: .83rem; line-height: 1.58; overflow-wrap: anywhere; }
+.portfolio-chat-rich-text p, .portfolio-chat-rich-text h3 { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; }
+.portfolio-chat-rich-text p + p, .portfolio-chat-rich-text ul + p, .portfolio-chat-rich-text ol + p, .portfolio-chat-rich-text p + ul, .portfolio-chat-rich-text p + ol { margin-top: .8rem; }
+.portfolio-chat-rich-text h3 { color: var(--color-text-primary); font-weight: 650; }
+.portfolio-chat-rich-text ul, .portfolio-chat-rich-text ol { display: grid; gap: .45rem; margin: .7rem 0 0; padding-left: 1.2rem; }
+.portfolio-chat-rich-text li { padding-left: .15rem; }
+.portfolio-chat-rich-text strong { color: var(--color-text-primary); font-weight: 700; }
+.portfolio-chat-rich-text code { padding: .1rem .3rem; border: 1px solid var(--color-border); border-radius: .3rem; background: var(--color-bg-secondary); color: var(--color-accent); font: .78em var(--font-mono); }
+.portfolio-chat-rich-text pre { max-width: 100%; margin: .8rem 0 0; overflow-x: auto; padding: .75rem; border: 1px solid var(--color-border); border-radius: .55rem; background: var(--color-bg-secondary); color: var(--color-text-primary); font: .78rem/1.55 var(--font-mono); white-space: pre; }
+.portfolio-chat-rich-text pre code { padding: 0; border: 0; background: transparent; color: inherit; }
+.portfolio-chat-rich-text blockquote { margin: .75rem 0 0; padding: .15rem 0 .15rem .75rem; border-left: 2px solid var(--color-accent); color: var(--color-text-secondary); font-style: italic; }
+.portfolio-chat-rich-text hr { margin: .9rem 0; border: 0; border-top: 1px solid var(--color-border); }
+.portfolio-chat-citation { display: inline-block; margin-left: .15rem; padding: .05rem .25rem; border: 1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border)); border-radius: .3rem; color: var(--color-accent); font: .65rem var(--font-mono); line-height: 1.2; vertical-align: .25em; }
+.portfolio-chat-rich-text a { color: var(--color-accent); text-decoration: underline; text-underline-offset: .16rem; }
+.portfolio-chat-rich-text .portfolio-chat-inline-link { display: inline-flex; align-items: center; gap: .25rem; max-width: 100%; padding: .12rem .38rem; border: 1px solid color-mix(in srgb, var(--color-accent) 32%, var(--color-border)); border-radius: .4rem; background: color-mix(in srgb, var(--color-accent) 8%, transparent); text-decoration: none; vertical-align: .04em; overflow-wrap: anywhere; }
+.portfolio-chat-rich-text .portfolio-chat-inline-link:hover { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 14%, transparent); }
+.portfolio-chat-rich-break { display: block; height: .5rem; }
+.portfolio-chat-caret { display: inline-block; width: .42rem; height: 1em; margin-left: .16rem; vertical-align: -.14em; border-radius: .1rem; background: var(--color-accent); animation: portfolio-chat-caret .85s steps(1, end) infinite; }
+@keyframes portfolio-chat-caret { 50% { opacity: 0; } }
 .portfolio-chat-skeleton { display: grid; gap: .42rem; width: 10rem; padding: .12rem 0; }
 .portfolio-chat-skeleton i { display: block; height: .45rem; border-radius: 999px; background: linear-gradient(90deg, var(--color-bg-tertiary) 20%, color-mix(in srgb, var(--color-accent) 22%, var(--color-bg-tertiary)) 50%, var(--color-bg-tertiary) 80%); background-size: 220% 100%; animation: portfolio-chat-shimmer 1.35s ease-in-out infinite; }
 .portfolio-chat-skeleton i:nth-child(1) { width: 82%; }.portfolio-chat-skeleton i:nth-child(2) { width: 100%; animation-delay: .08s; }.portfolio-chat-skeleton i:nth-child(3) { width: 58%; animation-delay: .16s; }
@@ -90,12 +110,19 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
 .portfolio-chat-form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .portfolio-chat-input-wrap { display: flex; align-items: flex-end; gap: .5rem; padding: .45rem .45rem .45rem .75rem; border: 1px solid var(--color-border); border-radius: .78rem; background: var(--color-bg-secondary); transition: border-color .2s ease, box-shadow .2s ease; }
 .portfolio-chat-input-wrap:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent); }
-.portfolio-chat-form textarea { width: 100%; max-height: 6rem; resize: none; border: 0; outline: 0; background: transparent; color: var(--color-text-primary); font: inherit; font-size: .82rem; line-height: 1.45; }.portfolio-chat-form textarea::placeholder { color: var(--color-text-tertiary); }
+.portfolio-chat-form textarea { width: 100%; max-height: 6rem; overflow-y: auto; resize: none; border: 0; outline: 0; background: transparent; color: var(--color-text-primary); font: inherit; font-size: .82rem; line-height: 1.45; }.portfolio-chat-form textarea::placeholder { color: var(--color-text-tertiary); }
 .portfolio-chat-send { display: grid; place-items: center; width: 2rem; height: 2rem; flex: 0 0 auto; border: 0; border-radius: .55rem; background: var(--color-accent); color: var(--color-accent-text); cursor: pointer; transition: transform .2s ease, opacity .2s ease; }.portfolio-chat-send:hover:not(:disabled) { transform: translateY(-2px); }.portfolio-chat-send:disabled { cursor: not-allowed; opacity: .4; }
 .portfolio-chat-spinner { width: .85rem; height: .85rem; border: 2px solid color-mix(in srgb, var(--color-accent-text) 35%, transparent); border-top-color: var(--color-accent-text); border-radius: 50%; animation: portfolio-chat-spin .7s linear infinite; }@keyframes portfolio-chat-spin { to { transform: rotate(360deg); } }
 .portfolio-chat-form-meta { display: flex; justify-content: space-between; gap: .75rem; margin-top: .55rem; color: var(--color-text-tertiary); font: .61rem var(--font-mono); }.portfolio-chat-form-meta span:last-child { display: inline-flex; align-items: center; gap: .2rem; }
+.portfolio-chat-disclaimer { margin-top: .6rem; color: var(--color-text-tertiary); font-size: .63rem; line-height: 1.45; }
+.portfolio-chat-disclaimer a { color: var(--color-text-secondary); text-decoration: underline; text-underline-offset: .14rem; }
 .portfolio-chat-error { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 0 0 .65rem; padding: .65rem .7rem; border: 1px solid color-mix(in srgb, var(--color-error) 30%, var(--color-border)); border-radius: .65rem; background: color-mix(in srgb, var(--color-error) 8%, var(--color-bg-secondary)); color: var(--color-error); font-size: .72rem; line-height: 1.4; }
 .portfolio-chat-error button { flex: 0 0 auto; border: 0; background: transparent; color: inherit; font: 600 .72rem var(--font-mono); text-decoration: underline; text-underline-offset: .16rem; cursor: pointer; }
+.portfolio-chat-confirm-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 1rem; background: color-mix(in srgb, #000 38%, transparent); backdrop-filter: blur(3px); }
+.portfolio-chat-confirm { width: min(22rem, calc(100vw - 2rem)); padding: 1.1rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-bg-primary); color: var(--color-text-primary); box-shadow: 0 1.5rem 4rem color-mix(in srgb, #000 30%, transparent); }
+.portfolio-chat-confirm-icon { display: grid; place-items: center; width: 2rem; height: 2rem; margin-bottom: .75rem; border: 1px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border)); border-radius: .55rem; background: color-mix(in srgb, var(--color-accent) 10%, transparent); color: var(--color-accent); }
+.portfolio-chat-confirm h2 { margin: 0; font-size: .95rem; }.portfolio-chat-confirm p { margin: .5rem 0 0; color: var(--color-text-secondary); font-size: .78rem; line-height: 1.5; }
+.portfolio-chat-confirm-actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1rem; }.portfolio-chat-confirm-actions button { padding: .55rem .7rem; border: 1px solid var(--color-border); border-radius: .55rem; background: transparent; color: var(--color-text-secondary); font: 600 .7rem var(--font-mono); cursor: pointer; }.portfolio-chat-confirm-actions button:last-child { border-color: var(--color-accent); background: var(--color-accent); color: var(--color-accent-text); }.portfolio-chat-confirm-actions button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 
 @media (max-width: 640px) {
   .language-selector-root { right: .75rem; bottom: calc(max(.75rem, env(safe-area-inset-bottom)) + 4.05rem); }

@@ -39,6 +39,15 @@ export default function TermsPage() {
             the security verification fails or the request exceeds the rate
             limit.
           </p>
+          <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Portfolio assistant</h2>
+          <p>
+            The portfolio assistant is provided for general information about
+            Paul Ochieng Levi&apos;s public work. Responses may be incomplete,
+            outdated, or incorrect and are not professional advice. Chat
+            sessions are temporary and are cleared when you close the chat.
+            Please do not submit passwords, payment details, health information,
+            trade secrets, or other confidential material.
+          </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Availability and disclaimer</h2>
           <p>
             The website and its content are provided on an “as available” basis. Reasonable care is taken to keep information accurate, but no guarantee is made that the website will always be complete, current, uninterrupted, or error-free. Portfolio material is not legal, financial, medical, security, or other professional advice.
