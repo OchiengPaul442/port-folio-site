@@ -51,9 +51,9 @@ export default async function Home() {
             {/* Statement + CTAs */}
             <div className="mt-10 max-w-2xl reveal-up-delay-2">
               <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
-                I write code that ships. Developer tools, data platforms, and
-                web products built for real constraints: slow networks,
-                limited devices, and users who depend on it working.
+                I engineer reliable digital products from AI-powered tools and
+                data platforms to scalable web applications built to perform
+                under real-world constraints.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link

@@ -22,6 +22,23 @@ const INITIAL_MESSAGE: Message = {
   content: "Hi, I'm Paul's assistant. Ask me about his work, skills, or AI projects.",
 };
 
+const APPRECIATIVE_WORDS = [
+  'nice', 'great', 'awesome', 'amazing', 'perfect', 'excellent', 'fantastic', 'brilliant',
+  'wonderful', 'superb', 'outstanding', 'bravo', 'wow', 'love', 'thanks', 'thank you',
+  'helpful', 'cool', 'impressive', 'incredible', 'remarkable', 'exceptional', 'magnificent',
+  'splendid', 'terrific', 'fabulous', 'marvelous', 'phenomenal', 'stellar', 'top notch',
+  'well done', 'good job', 'great job', 'awesome work', 'amazing work', 'great work',
+  'nice work', 'good work', 'keep it up', 'props', 'kudos', 'hats off', 'big ups',
+  'solid', 'clean', 'smooth', 'fire', 'lit', 'dope', 'sick', 'epic', 'legend',
+  'genius', 'masterpiece', 'gold', 'elite', 'premium', 'flawless', 'seamless',
+  'this is good', 'thats good', 'that is good', 'this is great', 'thats great', 'that is great',
+  'this is amazing', 'thats amazing', 'this is awesome', 'thats awesome', 'this is nice', 'thats nice',
+  'love it', 'love this', 'loving it', 'so good', 'really good', 'very good', 'pretty good',
+  'so helpful', 'really helpful', 'very helpful', 'so useful', 'really useful',
+  'you rock', 'you are awesome', 'youre awesome', 'you are great', 'youre great',
+  'best', 'favorite', 'fav', 'top', ' elite', 'goat', 'fire', 'banger', 'slaps',
+];
+
 const API_URL = '/api/portfolio-agent';
 
 function newId() {
@@ -192,6 +209,8 @@ export function PortfolioChatWidget() {
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [agentStatus, setAgentStatus] = useState<AgentStatus>('checking');
   const [warmupIndex, setWarmupIndex] = useState(0);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -251,6 +270,17 @@ export function PortfolioChatWidget() {
   useEffect(() => {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, loading]);
+
+  function checkForAppreciation(text: string) {
+    const lower = text.toLowerCase().replace(/['']/g, "'").replace(/['']/g, "'").replace(/\s+/g, ' ').trim();
+    return APPRECIATIVE_WORDS.some((word) => lower.includes(word));
+  }
+
+  function triggerEasterEgg() {
+    setSparklePositions([...Array(12)].map(() => ({ left: 10 + Math.random() * 80, delay: Math.random() * 0.5 })));
+    setShowEasterEgg(true);
+    setTimeout(() => setShowEasterEgg(false), 3000);
+  }
 
   function updateAssistant(id: string, content: string) {
     setMessages((current) => current.map((message) => (message.id === id ? { ...message, content } : message)));
@@ -342,6 +372,8 @@ export function PortfolioChatWidget() {
     setRetryText(null);
     setLoading(true);
 
+    if (checkForAppreciation(text)) triggerEasterEgg();
+
     const controller = new AbortController();
     abortRef.current = controller;
 
@@ -418,7 +450,21 @@ export function PortfolioChatWidget() {
     <div className="portfolio-chat-root">
       {open && <button className="portfolio-chat-scrim" aria-label="Close chat" onClick={requestClose} />}
       {open ? (
-        <section id="portfolio-chat-panel" className="portfolio-chat-panel" aria-label="Paul’s assistant" role="dialog" aria-modal="false">
+        <section id="portfolio-chat-panel" className="portfolio-chat-panel" aria-label="Paul's assistant" role="dialog" aria-modal="false">
+          {showEasterEgg && (
+            <div className="portfolio-chat-easter-egg" aria-hidden="true">
+              <div className="portfolio-chat-flash" />
+              {sparklePositions.map((pos, i) => (
+                <span key={`s${i}`} className={`portfolio-chat-sparkle portfolio-chat-sparkle-${i % 4}`} style={{ left: `${pos.left}%`, animationDelay: `${pos.delay}s` }} />
+              ))}
+              {['&#127881;', '&#127882;', '&#11088;', '&#128079;', '&#127880;', '&#128171;'].map((emoji, i) => (
+                <span key={`e${i}`} className={`portfolio-chat-emoji portfolio-chat-emoji-${i}`} style={{ animationDelay: `${0.1 + i * 0.15}s` }} dangerouslySetInnerHTML={{ __html: emoji }} />
+              ))}
+              {sparklePositions.slice(0, 6).map((pos, i) => (
+                <span key={`c${i}`} className={`portfolio-chat-confetti portfolio-chat-confetti-${i % 6}`} style={{ left: `${pos.left + 5}%`, animationDelay: `${0.2 + i * 0.1}s` }} />
+              ))}
+            </div>
+          )}
           <header className="portfolio-chat-header">
             <div className="portfolio-chat-heading">
               <span className="portfolio-chat-avatar" aria-hidden="true"><Bot size={18} strokeWidth={1.8} /></span>
@@ -439,7 +485,7 @@ export function PortfolioChatWidget() {
               </article>
             ))}
             {messages.length === 1 && <div className="portfolio-chat-suggestions" aria-label="Suggested questions">{SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}</div>}
-            {sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.title}<ExternalLink size={12} /></a>)}</aside>}
+            {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.title}<ExternalLink size={12} /></a>)}</aside>}
           </div>
 
           <form className="portfolio-chat-form" onSubmit={submit}>
