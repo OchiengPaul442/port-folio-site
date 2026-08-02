@@ -207,12 +207,27 @@ function renderAssistantContent(content: string): ReactNode[] {
   return blocks;
 }
 
+function getSavedChatState(): { messages: Message[]; sources: Source[]; quota: Quota | null; hasHistory: boolean } {
+  try {
+    const saved = localStorage.getItem('portfolio-chat-state');
+    if (saved) {
+      const state = JSON.parse(saved) as { messages?: Message[]; sources?: Source[]; quota?: Quota };
+      if (state.messages && state.messages.length > 0) {
+        return { messages: state.messages, sources: state.sources ?? [], quota: state.quota ?? null, hasHistory: true };
+      }
+    }
+  } catch {
+    // Ignore parse errors
+  }
+  return { messages: [INITIAL_MESSAGE], sources: [], quota: null, hasHistory: false };
+}
+
 export function PortfolioChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
-  const [sources, setSources] = useState<Source[]>([]);
-  const [quota, setQuota] = useState<Quota | null>(null);
+  const [messages, setMessages] = useState<Message[]>(() => getSavedChatState().messages);
+  const [sources, setSources] = useState<Source[]>(() => getSavedChatState().sources);
+  const [quota, setQuota] = useState<Quota | null>(() => getSavedChatState().quota);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryText, setRetryText] = useState<string | null>(null);
@@ -222,6 +237,7 @@ export function PortfolioChatWidget() {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const hasRestoredRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -235,6 +251,23 @@ export function PortfolioChatWidget() {
     () => messages.slice(1).filter((message) => message.content.trim()).slice(-12).map(({ role, content }) => ({ role, content })),
     [messages],
   );
+
+  useEffect(() => {
+    if (messages.length > 1) {
+      try {
+        localStorage.setItem('portfolio-chat-state', JSON.stringify({ messages, sources, quota }));
+      } catch {
+        // Ignore storage errors
+      }
+    }
+  }, [messages, sources, quota]);
+
+  useEffect(() => {
+    if (!hasRestoredRef.current && messages.length > 1) {
+      hasRestoredRef.current = true;
+      setOpen(true);
+    }
+  }, [messages.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -305,6 +338,11 @@ export function PortfolioChatWidget() {
     setError(null);
     setRetryText(null);
     setInput('');
+    try {
+      localStorage.removeItem('portfolio-chat-state');
+    } catch {
+      // Ignore storage errors
+    }
   }
 
   const requestClose = useCallback(() => {
