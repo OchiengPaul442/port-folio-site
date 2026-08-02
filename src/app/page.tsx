@@ -29,7 +29,7 @@ export default async function Home() {
         />
         <div className="hero-accent-line" aria-hidden="true" />
 
-        <div className="relative px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
+        <div className="relative px-6 pt-4 pb-24 sm:pt-12 sm:pb-32">
           <div className="mx-auto max-w-5xl">
             {/* Top meta line */}
             <div className="flex items-center gap-3 text-sm text-[var(--color-text-tertiary)] reveal-up">

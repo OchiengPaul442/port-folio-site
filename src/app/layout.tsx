@@ -95,7 +95,7 @@ export default function RootLayout({
             <ClickFeedback />
             <CustomCursor />
             <Navigation />
-            <main id="main-content" className="flex-1">
+            <main id="main-content" className="flex-1 pt-16">
               {children}
             </main>
             <Footer />
