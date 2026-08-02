@@ -53,7 +53,7 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image, categ
       <div className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
       {image && previewVisible && (
-        <div className="project-preview-tooltip absolute left-4 right-4 top-4 z-20 overflow-hidden rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-bg-primary)] shadow-2xl shadow-black/40" aria-hidden="true">
+        <div className="project-preview-tooltip pointer-events-none absolute left-4 right-4 top-4 z-20 overflow-hidden rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-bg-primary)] shadow-2xl shadow-black/40" aria-hidden="true">
           <div className="relative h-40 w-full overflow-hidden bg-stone-950">
             {!imageLoaded && !imageFailed && (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
