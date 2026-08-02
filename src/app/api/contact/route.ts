@@ -133,19 +133,40 @@ export async function POST(request: Request) {
   const allowedActions = isLocalVerification
     ? new Set(['contact_form', 'test'])
     : new Set(['contact_form']);
-  if (
-    !verification.success ||
-    !verifiedHostname ||
-    !allowedHostnames.has(verifiedHostname) ||
-    !verification.action ||
-    !allowedActions.has(verification.action)
-  ) {
+  const hostnameMatches = verifiedHostname
+    ? allowedHostnames.has(verifiedHostname)
+    : false;
+  const actionMatches = verification.action
+    ? allowedActions.has(verification.action)
+    : false;
+  const verificationAccepted = isLocalVerification
+    ? verification.success
+    : verification.success &&
+      hostnameMatches &&
+      actionMatches;
+
+  if (!verificationAccepted) {
     console.warn('Rejected Turnstile verification', {
       hostname: verification.hostname,
       action: verification.action,
       errors: verification['error-codes'],
     });
-    return NextResponse.json({ error: 'Security verification failed. Please try again.' }, { status: 403 });
+    return NextResponse.json(
+      {
+        error: 'Security verification failed. Please try again.',
+        ...(isLocalVerification
+          ? {
+              turnstile: {
+                success: verification.success,
+                hostname: verification.hostname,
+                action: verification.action,
+                errors: verification['error-codes'],
+              },
+            }
+          : {}),
+      },
+      { status: 403 },
+    );
   }
 
   const apiKey = readEnv('RESEND_API_KEY');
