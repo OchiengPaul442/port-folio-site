@@ -187,7 +187,10 @@ export async function POST(request: Request) {
   const safeEmail = escapeHtml(email);
   const safeSubject = escapeHtml(subject);
   const safeMessage = escapeHtml(message).replace(/\n/g, '<br />');
-  const cleanSubject = subject.replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+  // Keep the transport subject stable and predictable. Visitor-controlled
+  // text belongs in the body, not the subject line, where it can resemble
+  // spam or create misleading headers.
+  const emailSubject = '[ochiengpaul.com] New contact form message';
 
   try {
     const response = await fetch('https://api.resend.com/emails', {
@@ -201,9 +204,18 @@ export async function POST(request: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `New portfolio enquiry - ${cleanSubject}`,
-        text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
-        html: `<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p>${safeMessage}</p>`,
+        subject: emailSubject,
+        text: [
+          'A new message was submitted through the ochiengpaul.com contact form.',
+          '',
+          `Name: ${name}`,
+          `Email: ${email}`,
+          `Subject: ${subject}`,
+          '',
+          'Message:',
+          message,
+        ].join('\n'),
+        html: `<p>A new message was submitted through the ochiengpaul.com contact form.</p><p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${safeEmail}</p><p><strong>Subject:</strong> ${safeSubject}</p><p><strong>Message:</strong><br />${safeMessage}</p>`,
       }),
       signal: AbortSignal.timeout(10_000),
     });
