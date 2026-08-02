@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import { z } from 'zod';
 import { CheckCircle2, MailPlus } from 'lucide-react';
@@ -8,7 +8,13 @@ import { CheckCircle2, MailPlus } from 'lucide-react';
 declare global {
   interface Window {
     turnstile?: {
-      reset: () => void;
+      render: (container: HTMLElement, options: {
+        sitekey: string;
+        action: string;
+        theme: 'auto';
+      }) => string;
+      reset: (widgetId?: string) => void;
+      remove?: (widgetId: string) => void;
     };
   }
 }
@@ -26,6 +32,39 @@ const contactSchema = z.object({
 export function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [turnstileReady, setTurnstileReady] = useState(false);
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (
+      status === 'success' ||
+      !turnstileReady ||
+      !turnstileSiteKey ||
+      !turnstileContainerRef.current ||
+      !window.turnstile
+    ) {
+      return;
+    }
+
+    const widgetId = window.turnstile.render(turnstileContainerRef.current, {
+      sitekey: turnstileSiteKey,
+      action: 'contact_form',
+      theme: 'auto',
+    });
+    turnstileWidgetIdRef.current = widgetId;
+
+    return () => {
+      if (turnstileWidgetIdRef.current) {
+        window.turnstile?.remove?.(turnstileWidgetIdRef.current);
+        turnstileWidgetIdRef.current = null;
+      }
+    };
+  }, [status, turnstileReady]);
+
+  function resetTurnstile() {
+    window.turnstile?.reset(turnstileWidgetIdRef.current ?? undefined);
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -74,7 +113,7 @@ export function ContactForm() {
       });
 
       if (!res.ok) {
-        window.turnstile?.reset();
+        resetTurnstile();
         const body = await res.json().catch(() => ({}));
         if (res.status === 429) {
           setErrors({ form: 'Too many requests. Please try again later.' });
@@ -93,20 +132,26 @@ export function ContactForm() {
 
       setStatus('success');
       form.reset();
-      window.turnstile?.reset();
+      resetTurnstile();
     } catch {
-      window.turnstile?.reset();
+      resetTurnstile();
       setStatus('error');
     }
   }
 
   if (status === 'success') {
     return (
-      <div
-        className="rounded-xl border border-[var(--color-success-text)]/20 bg-[var(--color-success-bg)] p-6 sm:p-7"
-        role="status"
-        aria-live="polite"
-      >
+      <>
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          strategy="afterInteractive"
+          onReady={() => setTurnstileReady(true)}
+        />
+        <div
+          className="rounded-xl border border-[var(--color-success-text)]/20 bg-[var(--color-success-bg)] p-6 sm:p-7"
+          role="status"
+          aria-live="polite"
+        >
         <div className="flex items-start gap-3">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-success-text)]" aria-hidden="true" />
           <div>
@@ -137,7 +182,8 @@ export function ContactForm() {
             Email directly
           </a>
         </div>
-      </div>
+        </div>
+      </>
     );
   }
 
@@ -146,6 +192,7 @@ export function ContactForm() {
       <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
         strategy="afterInteractive"
+        onReady={() => setTurnstileReady(true)}
       />
       <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       <div className="hidden" aria-hidden="true">
@@ -213,12 +260,7 @@ export function ContactForm() {
 
       <div className="space-y-2">
         {turnstileSiteKey ? (
-          <div
-            className="cf-turnstile"
-            data-sitekey={turnstileSiteKey}
-            data-action="contact_form"
-            data-theme="auto"
-          />
+          <div ref={turnstileContainerRef} aria-label="Security verification" />
         ) : (
           <p className="text-xs text-[var(--color-error)]">
             Security verification is not configured. Please email me directly instead.
