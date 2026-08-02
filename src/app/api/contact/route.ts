@@ -7,7 +7,15 @@ const contactSchema = z.object({
   subject: z.string().trim().min(1, 'Subject is required').max(200),
   message: z.string().trim().min(10, 'Message must be at least 10 characters').max(2000),
   website: z.string().max(0),
+  turnstileToken: z.string().trim().min(1, 'Security verification is required').max(2048),
 });
+
+type TurnstileVerification = {
+  success: boolean;
+  hostname?: string;
+  action?: string;
+  'error-codes'?: string[];
+};
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 
@@ -71,6 +79,67 @@ export async function POST(request: Request) {
   }
 
   const { name, email, subject, message } = result.data;
+  const { turnstileToken } = result.data;
+
+  const turnstileSecret = readEnv('TURNSTILE_SECRET_KEY');
+  const allowedHostnames = new Set(
+    (readEnv('TURNSTILE_ALLOWED_HOSTNAMES') ?? '')
+      .split(',')
+      .map((hostname) => hostname.trim().toLowerCase())
+      .filter(Boolean),
+  );
+
+  if (!turnstileSecret || allowedHostnames.size === 0) {
+    console.error('Turnstile is not configured. Set TURNSTILE_SECRET_KEY and TURNSTILE_ALLOWED_HOSTNAMES.');
+    return NextResponse.json({ error: 'Security verification is temporarily unavailable.' }, { status: 503 });
+  }
+
+  const visitorIp =
+    request.headers.get('cf-connecting-ip')?.trim() ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+
+  let verification: TurnstileVerification;
+  try {
+    const verificationResponse = await fetch(
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          secret: turnstileSecret,
+          response: turnstileToken,
+          ...(visitorIp ? { remoteip: visitorIp } : {}),
+        }),
+        cache: 'no-store',
+        signal: AbortSignal.timeout(10_000),
+      },
+    );
+
+    if (!verificationResponse.ok) {
+      throw new Error(`Turnstile verification returned ${verificationResponse.status}`);
+    }
+
+    verification = (await verificationResponse.json()) as TurnstileVerification;
+  } catch (error) {
+    console.error('Turnstile verification request failed:', error);
+    return NextResponse.json({ error: 'Security verification is temporarily unavailable.' }, { status: 503 });
+  }
+
+  const verifiedHostname = verification.hostname?.toLowerCase();
+  if (
+    !verification.success ||
+    !verifiedHostname ||
+    !allowedHostnames.has(verifiedHostname) ||
+    verification.action !== 'contact_form'
+  ) {
+    console.warn('Rejected Turnstile verification', {
+      hostname: verification.hostname,
+      action: verification.action,
+      errors: verification['error-codes'],
+    });
+    return NextResponse.json({ error: 'Security verification failed. Please try again.' }, { status: 403 });
+  }
+
   const apiKey = readEnv('RESEND_API_KEY');
   const to = readEnv('CONTACT_TO_EMAIL') || 'paul.ochieng.dev@gmail.com';
   const configuredFrom = readEnv('CONTACT_FROM_EMAIL');

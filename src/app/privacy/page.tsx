@@ -90,6 +90,14 @@ export default function PrivacyPage() {
             messages.
           </p>
           <p>
+            The contact form uses Cloudflare Turnstile to help distinguish
+            genuine visitors from automated spam. When you use the form,
+            Cloudflare may process technical information such as your IP
+            address, browser, device, and challenge signals to perform the
+            security check. The Turnstile token is sent to this site only for
+            server-side verification and is not stored with your message.
+          </p>
+          <p>
             Google Translate may set a <code>googtrans</code> cookie when you
             request a translation. It is used to remember the selected
             translation. Google Analytics uses its own cookies only after you

@@ -1,8 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import Script from 'next/script';
 import { z } from 'zod';
 import { CheckCircle2, MailPlus } from 'lucide-react';
+
+declare global {
+  interface Window {
+    turnstile?: {
+      reset: () => void;
+    };
+  }
+}
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
@@ -29,10 +40,16 @@ export function ContactForm() {
       subject: formData.get('subject') as string,
       message: formData.get('message') as string,
       website: formData.get('website') as string,
+      turnstileToken: formData.get('cf-turnstile-response') as string,
     };
 
     if (data.website) {
       setStatus('success');
+      return;
+    }
+
+    if (!data.turnstileToken) {
+      setErrors({ form: 'Please complete the security check before sending your message.' });
       return;
     }
 
@@ -53,10 +70,11 @@ export function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, turnstileToken: data.turnstileToken }),
       });
 
       if (!res.ok) {
+        window.turnstile?.reset();
         const body = await res.json().catch(() => ({}));
         if (res.status === 429) {
           setErrors({ form: 'Too many requests. Please try again later.' });
@@ -75,7 +93,9 @@ export function ContactForm() {
 
       setStatus('success');
       form.reset();
+      window.turnstile?.reset();
     } catch {
+      window.turnstile?.reset();
       setStatus('error');
     }
   }
@@ -122,7 +142,12 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+    <>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+      />
+      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
         <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
@@ -186,6 +211,24 @@ export function ContactForm() {
 
       {errors.form && <p className="text-xs text-[var(--color-error)]">{errors.form}</p>}
 
+      <div className="space-y-2">
+        {turnstileSiteKey ? (
+          <div
+            className="cf-turnstile"
+            data-sitekey={turnstileSiteKey}
+            data-action="contact_form"
+            data-theme="auto"
+          />
+        ) : (
+          <p className="text-xs text-[var(--color-error)]">
+            Security verification is not configured. Please email me directly instead.
+          </p>
+        )}
+        <p className="text-xs text-[var(--color-text-tertiary)]">
+          This security check helps prevent automated spam. See the <a href="/privacy" className="underline underline-offset-2">Privacy Policy</a> for details.
+        </p>
+      </div>
+
       <button
         type="submit"
         disabled={status === 'submitting'}
@@ -199,6 +242,7 @@ export function ContactForm() {
           Something went wrong. Please try again or email me directly.
         </p>
       )}
-    </form>
+      </form>
+    </>
   );
 }

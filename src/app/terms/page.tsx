@@ -33,6 +33,12 @@ export default function TermsPage() {
           <p>
             You agree not to submit unlawful, abusive, malicious, or confidential information through the contact form. Do not send passwords, payment details, health information, trade secrets, or other sensitive material. The contact form is for genuine professional enquiries and is subject to the Privacy Policy.
           </p>
+          <p>
+            The contact form uses Cloudflare Turnstile and server-side rate
+            limiting to reduce automated abuse. Submissions may be rejected if
+            the security verification fails or the request exceeds the rate
+            limit.
+          </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Availability and disclaimer</h2>
           <p>
             The website and its content are provided on an “as available” basis. Reasonable care is taken to keep information accurate, but no guarantee is made that the website will always be complete, current, uninterrupted, or error-free. Portfolio material is not legal, financial, medical, security, or other professional advice.
