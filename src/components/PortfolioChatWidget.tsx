@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Bot, Check, Copy, Edit3, ExternalLink, MessageCircle, RefreshCw, Square, X } from 'lucide-react';
+import { ArrowUp, Bot, Check, Copy, Edit3, MessageCircle, RefreshCw, Square, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
 type Message = { id: string; role: Role; content: string; truncated?: boolean; continue_token?: string };
@@ -115,9 +115,8 @@ function renderInline(value: string, keyPrefix: string): ReactNode[] {
       const href = (markdownLink?.[2] ?? token).replace(/[.,!?;:]+$/, '');
       if (isSafeSource({ title: '', url: href, snippet: '', provider: '' })) {
         nodes.push(
-          <a className="portfolio-chat-inline-link" key={`${keyPrefix}-link-${match.index}`} href={href} target="_blank" rel="noreferrer">
+          <a className="portfolio-chat-inline-link" key={`${keyPrefix}-link-${match.index}`} href={href}>
             <span>{markdownLink?.[1] ?? readableLinkLabel(href)}</span>
-            <ExternalLink size={11} aria-hidden="true" />
           </a>,
         );
       } else {
@@ -591,7 +590,7 @@ export function PortfolioChatWidget() {
               </article>
             ))}
             {messages.length === 1 && <div className="portfolio-chat-suggestions" aria-label="Suggested questions">{SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}</div>}
-            {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.title}<ExternalLink size={12} /></a>)}</aside>}
+            {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url}>{source.title}</a>)}</aside>}
           </div>
 
           <form className="portfolio-chat-form" onSubmit={submit}>
