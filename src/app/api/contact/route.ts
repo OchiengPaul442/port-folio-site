@@ -126,11 +126,19 @@ export async function POST(request: Request) {
   }
 
   const verifiedHostname = verification.hostname?.toLowerCase();
+  const isLocalVerification =
+    allowedHostnames.has('localhost') ||
+    allowedHostnames.has('127.0.0.1') ||
+    allowedHostnames.has('0.0.0.0');
+  const allowedActions = isLocalVerification
+    ? new Set(['contact_form', 'test'])
+    : new Set(['contact_form']);
   if (
     !verification.success ||
     !verifiedHostname ||
     !allowedHostnames.has(verifiedHostname) ||
-    verification.action !== 'contact_form'
+    !verification.action ||
+    !allowedActions.has(verification.action)
   ) {
     console.warn('Rejected Turnstile verification', {
       hostname: verification.hostname,
