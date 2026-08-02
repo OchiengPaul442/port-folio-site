@@ -1,36 +1,177 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+
+# Paul Ochieng - Portfolio
+
+A personal portfolio and engineering showcase built with **Next.js 16**, **React 19**, and **Tailwind CSS v4**. Features 18 project case studies, an AI-powered chat assistant, multi-language support, and a contact form with enterprise-grade spam protection.
+
+<p>
+  <a href="https://nextjs.org"><img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js"></a>
+  <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-61DAFB?logo=react" alt="React"></a>
+  <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" alt="TypeScript"></a>
+  <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss" alt="Tailwind CSS"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-lts-339933?logo=node.js" alt="Node.js"></a>
+  <a href="https://eslint.org"><img src="https://img.shields.io/badge/ESLint-9-4B32C3?logo=eslint" alt="ESLint"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-orange" alt="License: MIT"></a>
+</p>
+
+</div>
+
+---
+
+## Features
+
+- **18 Project Case Studies** - Detailed write-ups with problem, approach, outcome, and tech stack
+- **AI Chat Assistant** - SSE-streaming FastAPI portfolio agent with multi-provider LLM support, web search, and daily quota enforcement
+- **Multi-Language Support** - Google Translate integration with 7 languages
+- **Contact Form** - Cloudflare Turnstile CAPTCHA, Zod validation, honeypot field, rate limiting
+- **GitHub Integration** - Contribution calendar with year selector, proxied through API
+- **Dark / Light Theme** - Class-based toggle via `next-themes`
+- **Custom Cursor** - Dot + ring follower with sparkle effects and Konami code easter egg
+- **Smooth Scroll** - Lenis-powered smooth scrolling with scroll-triggered reveal animations
+- **SEO Optimized** - JSON-LD structured data, dynamic OpenGraph images, auto-generated sitemap
+- **GDPR Consent** - Privacy-first analytics with accept/reject banner
+- **Accessibility** - Semantic HTML, ARIA attributes, keyboard navigation, `prefers-reduced-motion`
+
+## Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 16 (App Router) |
+| UI Library | React 19 |
+| Language | TypeScript 5 (strict), Python 3.11+ |
+| Styling | Tailwind CSS 4 |
+| Animations | Motion (Framer Motion) 12, GSAP 3 |
+| Smooth Scroll | Lenis |
+| Icons | Lucide React |
+| Validation | Zod 4 |
+| AI Agent | FastAPI, OpenAI, Ollama, OpenRouter, HuggingFace |
+| Search | Tavily, DuckDuckGo |
+| Email | Resend |
+| CAPTCHA | Cloudflare Turnstile |
+| Analytics | Google Analytics 4 |
+| Translation | Google Translate |
+| Fonts | Inter, IBM Plex Mono |
+| Deployment | Vercel (frontend), Render (agent API) |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- **Node.js** ≥ 18
+- **npm**, **yarn**, **pnpm**, or **bun**
+
+### Installation
+
+```bash
+git clone https://github.com/your-username/port-folio-site.git
+cd port-folio-site
+npm install
+```
+
+### Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```env
+# Contact form (Resend)
+RESEND_API_KEY=re_...
+CONTACT_TO_EMAIL=you@example.com
+CONTACT_FROM_EMAIL=noreply@yourdomain.com
+
+# Cloudflare Turnstile
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
+TURNSTILE_SECRET_KEY=...
+TURNSTILE_ALLOWED_HOSTNAMES=localhost
+
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# AI Portfolio Agent (optional)
+PORTFOLIO_AGENT_URL=https://your-agent-url.com
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+### Linting
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+├── src/
+│   ├── app/                # Next.js App Router pages and API routes
+│   │   ├── page.tsx        # Home page
+│   │   ├── work/           # Projects listing + dynamic case study pages
+│   │   ├── about/          # Bio and experience timeline
+│   │   ├── now/            # Current focus and active projects
+│   │   ├── contact/        # Contact form with Turnstile
+│   │   ├── privacy/        # Privacy policy
+│   │   └── terms/          # Terms of service
+│   ├── components/         # 26 React components
+│   └── lib/                # Utilities (site config, projects, GitHub)
+├── content/projects/       # 18 JSON case study files
+├── public/                 # Static assets (brand logos, images)
+└── src/components/portfolio-chat.css  # Chat widget styles
+```
 
-## Deploy on Vercel
+## API Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/api/contact` | POST | Submit contact form (Turnstile + Zod + Resend) |
+| `/api/github/contributions` | GET | Proxy GitHub contribution data (24h cache) |
+| `/api/portfolio-agent/[...path]` | * | Reverse proxy to AI assistant service |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Create production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+## Companion Project
+
+The AI chat assistant is powered by a separate FastAPI service:
+
+| Repository | Description |
+|------------|-------------|
+| [paul-portfolio-agent](https://github.com/OchiengPaul442/paul-portfolio-agent) | FastAPI backend with multi-provider LLM support, SSE streaming, curated knowledge retrieval, web search, and anonymous rate limiting |
+
+```bash
+# Agent API (Python)
+git clone https://github.com/OchiengPaul442/paul-portfolio-agent.git
+cd paul-portfolio-agent
+cp .env.example .env
+uv sync --all-extras
+uv run uvicorn app.main:app --reload
+```
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+<div align="built-with-love">
+
+Built with **Next.js 16** + **React 19** + **Tailwind CSS 4**
+
+</div>

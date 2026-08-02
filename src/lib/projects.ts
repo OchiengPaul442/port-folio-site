@@ -42,6 +42,7 @@ const projectTaxonomy: Record<string, { category: string; tags: string[] }> = {
   sentsafrica: { category: 'Financial products', tags: ['Analytics', 'Data visualization', 'Responsive dashboards'] },
   sti: { category: 'Public-interest technology', tags: ['Government services', 'Innovation ecosystems', 'Accessibility'] },
   'tic-tack-toe': { category: 'Learning projects', tags: ['Java', 'Game logic', 'Algorithms'] },
+  'paul-portfolio-agent': { category: 'Applied AI', tags: ['AI agents', 'FastAPI', 'LLM orchestration', 'Rate limiting'] },
 };
 
 const contentDir = path.join(process.cwd(), 'content', 'projects');
