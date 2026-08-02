@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Bot, Check, ExternalLink, MessageCircle, X } from 'lucide-react';
+import { ArrowUp, Bot, Check, ExternalLink, MessageCircle, Square, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
 type Message = { id: string; role: Role; content: string };
@@ -305,6 +305,19 @@ export function PortfolioChatWidget() {
     closeChat();
   }, [loading, messages.length]);
 
+  function stopRequest() {
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+    if (revealTimerRef.current) {
+      window.clearInterval(revealTimerRef.current);
+      revealTimerRef.current = null;
+    }
+    revealQueueRef.current = '';
+    setLoading(false);
+  }
+
   useEffect(() => {
     if (!open) return;
     function handleEscape(event: KeyboardEvent) {
@@ -432,14 +445,17 @@ export function PortfolioChatWidget() {
       }
       await waitForReveal();
     } catch (caught) {
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted) {
+        setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'Response stopped.' } : item));
+        return;
+      }
       const caughtMessage = caught instanceof Error ? caught.message : '';
       const message = caughtMessage.includes('NetworkError') || caughtMessage.includes('Failed to fetch')
         ? 'I could not connect to the assistant. Check your connection and try again.'
         : caughtMessage || 'Something went wrong. Please try again.';
       setError(message);
       setRetryText(text);
-      setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'I couldn’t complete that response. Please try again.' } : item));
+      setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'I couldn\u2019t complete that response. Please try again.' } : item));
     } finally {
       setLoading(false);
       abortRef.current = null;
@@ -494,7 +510,11 @@ export function PortfolioChatWidget() {
             <label htmlFor="portfolio-chat-input">Message the assistant</label>
             <div className="portfolio-chat-input-wrap">
               <textarea ref={inputRef} id="portfolio-chat-input" value={input} onChange={(event) => handleInputChange(event.target.value)} maxLength={2000} rows={1} disabled={loading || quota?.remaining === 0} placeholder="Ask about a project, skill, or experience…" onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} />
-              <button className="portfolio-chat-send" type="submit" aria-label="Send message" disabled={loading || !input.trim() || quota?.remaining === 0}>{loading ? <span className="portfolio-chat-spinner" /> : <ArrowUp size={17} />}</button>
+              {loading ? (
+                <button className="portfolio-chat-send portfolio-chat-stop" type="button" aria-label="Stop response" onClick={stopRequest}><Square size={15} /></button>
+              ) : (
+                <button className="portfolio-chat-send" type="submit" aria-label="Send message" disabled={!input.trim() || quota?.remaining === 0}><ArrowUp size={17} /></button>
+              )}
             </div>
             <div className="portfolio-chat-disclaimer">Temporary chat. Closing this panel clears the conversation. Please avoid sharing sensitive information. <a href="/privacy">Privacy details</a></div>
             <div className="portfolio-chat-form-meta"><span>{quota ? `${quota.remaining} of ${quota.limit} questions left today` : '15 questions per day'}</span><span><Check size={12} /> Enter to send</span></div>
