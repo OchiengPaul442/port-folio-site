@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Bot, Check, Copy, ExternalLink, MessageCircle, RefreshCw, Square, X } from 'lucide-react';
+import { ArrowUp, Bot, Check, Copy, Edit3, ExternalLink, MessageCircle, RefreshCw, Square, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
 type Message = { id: string; role: Role; content: string; truncated?: boolean; continue_token?: string };
@@ -347,11 +347,10 @@ export function PortfolioChatWidget() {
       }
 
       const data = await response.json() as { answer: string; truncated?: boolean; continue_token?: string; quota?: Quota };
-      const continuedContent = data.answer.split('\n').slice(1).join('\n') || data.answer;
 
       setMessages((current) => current.map((item) => item.id === messageId ? {
         ...item,
-        content: item.content + '\n' + continuedContent,
+        content: data.answer,
         truncated: data.truncated,
         continue_token: data.continue_token,
       } : item));
@@ -572,14 +571,20 @@ export function PortfolioChatWidget() {
                       Continue reading...
                     </button>
                   )}
-                  {message.content && message.role === 'assistant' && !loading && (
-                    <div className="portfolio-chat-actions">
+                  {message.content && !loading && (
+                    <div className={`portfolio-chat-actions ${message.role === 'user' ? 'portfolio-chat-actions-user' : ''}`}>
                       <button className={`portfolio-chat-action ${copiedMessageId === message.id ? 'portfolio-chat-action-active' : ''}`} type="button" onClick={() => copyMessage(message.content, message.id)} aria-label={copiedMessageId === message.id ? 'Copied' : 'Copy message'}>
                         {copiedMessageId === message.id ? <Check size={14} /> : <Copy size={14} />}
                       </button>
-                      <button className="portfolio-chat-action" type="button" onClick={() => { setInput(message.content); inputRef.current?.focus(); }} aria-label="Edit message">
-                        <RefreshCw size={14} />
-                      </button>
+                      {message.role === 'assistant' ? (
+                        <button className="portfolio-chat-action" type="button" onClick={() => { setInput(message.content); inputRef.current?.focus(); }} aria-label="Edit and resend">
+                          <RefreshCw size={14} />
+                        </button>
+                      ) : (
+                        <button className="portfolio-chat-action" type="button" onClick={() => { setInput(message.content); inputRef.current?.focus(); }} aria-label="Edit message">
+                          <Edit3 size={14} />
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
