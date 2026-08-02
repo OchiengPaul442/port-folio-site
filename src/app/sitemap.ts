@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { getAllProjects } from '@/lib/projects';
+import { SITE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://paul.dev';
+  const baseUrl = SITE_URL;
   const now = new Date();
 
   const projects = getAllProjects().map((project) => ({

@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${project.title} | Paul Ochieng Levi`,
       description: project.description,
       type: 'article',
-      url: `https://paul.dev/work/${slug}`,
+      url: `https://www.ochiengpaul.com/work/${slug}`,
       siteName: 'Paul Ochieng Levi',
       images: project.image
         ? [{ url: project.image, width: 1200, height: 750, alt: `${project.title} screenshot` }]
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       creator: '@OchiengTech',
     },
     alternates: {
-      canonical: `https://paul.dev/work/${slug}`,
+      canonical: `https://www.ochiengpaul.com/work/${slug}`,
     },
   };
 }
@@ -158,11 +158,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
             '@type': 'CreativeWork',
             name: project.title,
             description: project.description,
-            url: `https://paul.dev/work/${project.slug}`,
-            image: project.image ? `https://paul.dev${project.image}` : undefined,
-            author: { '@type': 'Person', name: 'Paul Ochieng Levi', url: 'https://paul.dev' },
+            url: `https://www.ochiengpaul.com/work/${project.slug}`,
+            image: project.image ? `https://www.ochiengpaul.com${project.image}` : undefined,
+            author: { '@type': 'Person', name: 'Paul Ochieng Levi', url: 'https://www.ochiengpaul.com' },
             keywords: [...(project.tags ?? []), ...project.stack].join(', '),
-            isPartOf: { '@type': 'WebSite', name: 'paul.dev', url: 'https://paul.dev' },
+            isPartOf: { '@type': 'WebSite', name: 'ochiengpaul.com', url: 'https://www.ochiengpaul.com' },
           }),
         }}
       />

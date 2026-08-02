@@ -11,7 +11,7 @@ export function Footer() {
               href="/"
               className="font-mono text-sm font-semibold text-[var(--color-text-primary)]"
             >
-              paul.dev
+              ochiengpaul.com
             </Link>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
               Software engineer in Kampala, Uganda.

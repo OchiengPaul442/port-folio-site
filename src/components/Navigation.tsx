@@ -97,7 +97,7 @@ export function Navigation() {
             aria-label="Paul Ochieng Levi - Home"
           >
             <BrandMark className="h-8 w-8 shrink-0 text-[var(--color-accent)] transition-transform duration-300 group-hover:rotate-[-7deg]" />
-            <span>paul.dev</span>
+            <span>ochiengpaul.com</span>
           </Link>
 
           <ul className="hidden items-center gap-1 md:flex" role="list">
@@ -179,7 +179,7 @@ export function Navigation() {
               onClick={() => setMobileOpen(false)}
             >
               <BrandMark className="h-7 w-7 shrink-0 text-[var(--color-accent)]" />
-              <span>paul.dev</span>
+              <span>ochiengpaul.com</span>
             </Link>
             <button
               onClick={() => setMobileOpen(false)}

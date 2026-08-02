@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Privacy policy for paul.dev — how Paul Ochieng Levi collects, uses, and protects personal data on this portfolio website.',
+  description: 'Privacy policy for ochiengpaul.com — how Paul Ochieng Levi collects, uses, and protects personal data on this portfolio website.',
   openGraph: {
     title: 'Privacy Policy | Paul Ochieng Levi',
-    description: 'Privacy policy for paul.dev portfolio website.',
-    url: 'https://paul.dev/privacy',
+    description: 'Privacy policy for ochiengpaul.com portfolio website.',
+    url: 'https://www.ochiengpaul.com/privacy',
   },
   alternates: {
-    canonical: 'https://paul.dev/privacy',
+    canonical: 'https://www.ochiengpaul.com/privacy',
   },
 };
 

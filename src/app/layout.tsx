@@ -9,18 +9,18 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { CustomCursor } from '@/components/CustomCursor';
 import { Analytics } from '@/components/Analytics';
 import { ConsentBanner } from '@/components/ConsentBanner';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, SOCIAL_PROFILES } from '@/lib/site';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://paul.dev'),
-  applicationName: 'Paul Ochieng Levi',
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   category: 'technology',
   title: {
     default: 'Paul Ochieng Levi — Full-Stack Software Engineer',
     template: '%s | Paul Ochieng Levi',
   },
-  description:
-    'Full-stack software engineer in Kampala, Uganda building reliable web products, APIs, developer tools, and data platforms for real-world users.',
+  description: SITE_DESCRIPTION,
   keywords: [
     'Paul Ochieng Levi',
     'Software Engineer Uganda',
@@ -29,23 +29,24 @@ export const metadata: Metadata = {
     'backend and frontend engineer',
     'environmental technology',
   ],
-  authors: [{ name: 'Paul Ochieng Levi' }],
-  creator: 'Paul Ochieng Levi',
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://paul.dev',
+    url: SITE_URL,
     siteName: 'Paul Ochieng Levi',
     title: 'Paul Ochieng Levi — Full-Stack Software Engineer',
-    description:
-      'Full-stack software engineer building reliable web products, APIs, developer tools, and data platforms.',
+    description: SITE_DESCRIPTION,
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE_TITLE }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Paul Ochieng Levi — Full-Stack Software Engineer',
-    description:
-      'Full-stack software engineer building reliable web products, APIs, developer tools, and data platforms.',
+    description: SITE_DESCRIPTION,
     creator: '@OchiengTech',
+    images: [{ url: '/twitter-image', width: 1200, height: 630, alt: SITE_TITLE }],
   },
   robots: {
     index: true,
@@ -59,11 +60,17 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://paul.dev',
+    canonical: SITE_URL,
     languages: {
-      'en-UG': 'https://paul.dev',
+      'en-UG': SITE_URL,
     },
   },
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
+    apple: [{ url: '/apple-touch-icon.png' }],
+  },
+  manifest: '/manifest.webmanifest',
+  formatDetection: { email: false, address: false, telephone: false },
 };
 
 export default function RootLayout({
@@ -104,22 +111,34 @@ export default function RootLayout({
               '@graph': [
                 {
                   '@type': 'Person',
+                  '@id': `${SITE_URL}/#person`,
                   name: 'Paul Ochieng Levi',
-                  alternateName: 'paul.dev',
-                  url: 'https://paul.dev',
+                  alternateName: 'ochiengpaul.com',
+                  url: SITE_URL,
                   jobTitle: 'Software Engineer',
                   worksFor: { '@type': 'Organization', name: 'AirQo' },
                   address: { '@type': 'PostalAddress', addressLocality: 'Kampala', addressCountry: 'UG' },
-                  sameAs: ['https://github.com/OchiengPaul442', 'https://www.linkedin.com/in/paulochieng442/', 'https://twitter.com/OchiengTech'],
+                  sameAs: SOCIAL_PROFILES,
+                  image: `${SITE_URL}/brand/logo-transparent-512.png`,
                   knowsAbout: ['Software Engineering', 'Applied AI', 'Environmental Technology', 'TypeScript', 'Python', 'React', 'Next.js'],
                 },
                 {
                   '@type': 'WebSite',
+                  '@id': `${SITE_URL}/#website`,
                   name: 'Paul Ochieng Levi',
-                  alternateName: 'paul.dev',
-                  url: 'https://paul.dev',
+                  alternateName: 'ochiengpaul.com',
+                  url: SITE_URL,
                   inLanguage: 'en-UG',
-                  description: 'Portfolio of Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda.',
+                  description: SITE_DESCRIPTION,
+                  publisher: { '@id': `${SITE_URL}/#person` },
+                },
+                {
+                  '@type': 'ProfilePage',
+                  '@id': `${SITE_URL}/#profilepage`,
+                  url: SITE_URL,
+                  name: SITE_TITLE,
+                  isPartOf: { '@id': `${SITE_URL}/#website` },
+                  mainEntity: { '@id': `${SITE_URL}/#person` },
                 },
               ],
             }),

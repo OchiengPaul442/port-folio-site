@@ -9,10 +9,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contact Paul Ochieng Levi',
     description: 'Full-stack software engineer open to opportunities and collaboration.',
-    url: 'https://paul.dev/contact',
+    url: 'https://www.ochiengpaul.com/contact',
   },
   alternates: {
-    canonical: 'https://paul.dev/contact',
+    canonical: 'https://www.ochiengpaul.com/contact',
   },
 };
 
