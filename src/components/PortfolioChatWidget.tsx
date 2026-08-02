@@ -1,16 +1,18 @@
 'use client';
 
 import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Bot, Check, ExternalLink, MessageCircle, Square, X } from 'lucide-react';
+import { ArrowUp, Bot, Check, Copy, ExternalLink, MessageCircle, RefreshCw, Square, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
-type Message = { id: string; role: Role; content: string };
+type Message = { id: string; role: Role; content: string; truncated?: boolean; continue_token?: string };
 type Source = { title: string; url: string; snippet: string; provider: string };
 type Quota = { limit: number; remaining: number; reset_at: string };
 
 type MetaEvent = {
   quota: Quota;
   sources: Source[];
+  truncated?: boolean;
+  continue_token?: string;
 };
 type AgentStatus = 'checking' | 'ready' | 'warming' | 'offline';
 
@@ -180,6 +182,15 @@ function renderAssistantContent(content: string): ReactNode[] {
       return;
     }
     if (!trimmed) {
+      if (listItems.length > 0 && index + 1 < lines.length) {
+        const nextLine = lines.slice(index + 1).find((l) => l.trim().length > 0)?.trim() ?? '';
+        const nextIsBullet = /^[-*+]\s+/.test(nextLine);
+        const nextIsNumbered = /^\d+[.)]\s+/.test(nextLine);
+        if ((nextIsBullet || nextIsNumbered) && listItems[0].ordered === Boolean(nextIsNumbered)) {
+          return;
+        }
+      }
+      flushList();
       blocks.push(<span className="portfolio-chat-rich-break" key={`break-${index}`} aria-hidden="true" />);
       return;
     }
@@ -211,6 +222,7 @@ export function PortfolioChatWidget() {
   const [warmupIndex, setWarmupIndex] = useState(0);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -316,6 +328,59 @@ export function PortfolioChatWidget() {
     }
     revealQueueRef.current = '';
     setLoading(false);
+  }
+
+  async function handleContinue(continueToken: string, messageId: string) {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${API_URL}/chat/continue`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ continue_token: continueToken }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to continue response.');
+      }
+
+      const data = await response.json() as { answer: string; truncated?: boolean; continue_token?: string; quota?: Quota };
+      const continuedContent = data.answer.split('\n').slice(1).join('\n') || data.answer;
+
+      setMessages((current) => current.map((item) => item.id === messageId ? {
+        ...item,
+        content: item.content + '\n' + continuedContent,
+        truncated: data.truncated,
+        continue_token: data.continue_token,
+      } : item));
+
+      if (data.quota) setQuota(data.quota);
+    } catch {
+      setError('Failed to continue the response. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function copyMessage(content: string, messageId: string) {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedMessageId(messageId);
+      setTimeout(() => setCopiedMessageId(null), 2000);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = content;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopiedMessageId(messageId);
+      setTimeout(() => setCopiedMessageId(null), 2000);
+    }
   }
 
   useEffect(() => {
@@ -435,6 +500,9 @@ export function PortfolioChatWidget() {
             const meta = JSON.parse(parsed.data) as MetaEvent;
             setQuota(meta.quota);
             setSources((meta.sources ?? []).filter(isSafeSource));
+            if (meta.truncated !== undefined || meta.continue_token !== undefined) {
+              setMessages((current) => current.map((item) => item.id === assistantId ? { ...item, truncated: meta.truncated, continue_token: meta.continue_token } : item));
+            }
           }
           if (parsed.event === 'token') {
             queueReveal(assistantId, (JSON.parse(parsed.data) as { text: string }).text);
@@ -496,7 +564,24 @@ export function PortfolioChatWidget() {
                 {message.role === 'assistant' && <span className="portfolio-chat-message-avatar" aria-hidden="true"><Bot size={13} /></span>}
                 <div className="portfolio-chat-message-body">
                   <span className="portfolio-chat-message-label">{message.role === 'assistant' ? 'Assistant' : 'You'}</span>
-                  {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span></p>}
+                  <div className="portfolio-chat-message-content">
+                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span></p>}
+                  </div>
+                  {message.role === 'assistant' && message.truncated && message.continue_token && !loading && (
+                    <button className="portfolio-chat-continue" type="button" onClick={() => message.continue_token && handleContinue(message.continue_token, message.id)} disabled={loading}>
+                      Continue reading...
+                    </button>
+                  )}
+                  {message.content && message.role === 'assistant' && !loading && (
+                    <div className="portfolio-chat-actions">
+                      <button className={`portfolio-chat-action ${copiedMessageId === message.id ? 'portfolio-chat-action-active' : ''}`} type="button" onClick={() => copyMessage(message.content, message.id)} aria-label={copiedMessageId === message.id ? 'Copied' : 'Copy message'}>
+                        {copiedMessageId === message.id ? <Check size={14} /> : <Copy size={14} />}
+                      </button>
+                      <button className="portfolio-chat-action" type="button" onClick={() => { setInput(message.content); inputRef.current?.focus(); }} aria-label="Edit message">
+                        <RefreshCw size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </article>
             ))}
