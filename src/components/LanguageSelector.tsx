@@ -131,7 +131,7 @@ export function LanguageSelector() {
       />
 
       {/* Custom language selector */}
-      <div ref={containerRef} className="fixed bottom-5 left-5 z-50" data-notranslate="true">
+      <div ref={containerRef} className="language-selector-root" data-notranslate="true">
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -159,7 +159,7 @@ export function LanguageSelector() {
             <div
               role="listbox"
               aria-label="Select language"
-              className="absolute bottom-full mb-2 left-0 min-w-[160px] overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/95 backdrop-blur-xl shadow-2xl shadow-black/20 animate-in fade-in slide-in-from-bottom-2 duration-200"
+              className="language-selector-menu absolute bottom-full right-0 mb-2 min-w-[160px] overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/95 backdrop-blur-xl shadow-2xl shadow-black/20 animate-in fade-in slide-in-from-bottom-2 duration-200"
             >
               {languages.map((lang) => (
                 <button

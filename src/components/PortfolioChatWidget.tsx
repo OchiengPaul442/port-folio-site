@@ -186,7 +186,7 @@ export function PortfolioChatWidget() {
           <header className="portfolio-chat-header">
             <div className="portfolio-chat-heading">
               <span className="portfolio-chat-avatar" aria-hidden="true"><Bot size={18} strokeWidth={1.8} /></span>
-              <div><p className="portfolio-chat-eyebrow">Paul’s portfolio</p><h2>Ask the assistant</h2></div>
+              <div><h2>Ask the assistant</h2></div>
             </div>
             <button ref={closeRef} className="portfolio-chat-icon" onClick={() => !loading && setOpen(false)} aria-label="Close chat" disabled={loading}><X size={18} /></button>
           </header>
