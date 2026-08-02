@@ -12,8 +12,10 @@ type MetaEvent = {
   quota: Quota;
   sources: Source[];
 };
+type AgentStatus = 'checking' | 'ready' | 'warming' | 'offline';
 
 const SUGGESTIONS = ['What has Paul built?', 'Tell me about his AI work', 'How can we collaborate?'];
+const WARMUP_MESSAGES = ['Waking up the assistant...', 'Connecting to the portfolio agent...', 'Preparing your response...'];
 const INITIAL_MESSAGE: Message = {
   id: 'welcome',
   role: 'assistant',
@@ -56,6 +58,22 @@ function readableLinkLabel(href: string) {
   } catch {
     return href.replace(/^https?:\/\//, '').replace(/\/$/, '');
   }
+}
+
+function formatResetTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'later today';
+  return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
+function waitForRetry(milliseconds: number, signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    const timer = window.setTimeout(resolve, milliseconds);
+    signal.addEventListener('abort', () => {
+      window.clearTimeout(timer);
+      reject(new DOMException('Request aborted', 'AbortError'));
+    }, { once: true });
+  });
 }
 
 function renderInline(value: string, keyPrefix: string): ReactNode[] {
@@ -172,6 +190,8 @@ export function PortfolioChatWidget() {
   const [error, setError] = useState<string | null>(null);
   const [retryText, setRetryText] = useState<string | null>(null);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+  const [agentStatus, setAgentStatus] = useState<AgentStatus>('checking');
+  const [warmupIndex, setWarmupIndex] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -179,6 +199,7 @@ export function PortfolioChatWidget() {
   const revealQueueRef = useRef('');
   const revealedTextRef = useRef('');
   const revealTimerRef = useRef<number | null>(null);
+  const readinessTimerRef = useRef<number | null>(null);
 
   const history = useMemo(
     () => messages.slice(1).filter((message) => message.content.trim()).slice(-12).map(({ role, content }) => ({ role, content })),
@@ -187,7 +208,28 @@ export function PortfolioChatWidget() {
 
   useEffect(() => {
     if (!open) return;
-    fetch(`${API_URL}/chat/quota`, { credentials: 'include' })
+    const controller = new AbortController();
+    setAgentStatus('checking');
+    const checkReadiness = async () => {
+      try {
+        const response = await fetch(`${API_URL}/health/ready`, { credentials: 'include', signal: controller.signal, cache: 'no-store' });
+        if (response.ok) {
+          setAgentStatus('ready');
+          return;
+        }
+        if (response.status === 503) {
+          setAgentStatus('warming');
+          const retryAfter = Number(response.headers.get('retry-after'));
+          readinessTimerRef.current = window.setTimeout(checkReadiness, Math.min(Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 3000, 8000));
+          return;
+        }
+        setAgentStatus('offline');
+      } catch {
+        if (!controller.signal.aborted) setAgentStatus('offline');
+      }
+    };
+    checkReadiness();
+    fetch(`${API_URL}/chat/quota`, { credentials: 'include', signal: controller.signal, cache: 'no-store' })
       .then(async (response) => {
         if (!response.ok) throw new Error('Quota unavailable');
         return (await response.json()) as Quota;
@@ -195,7 +237,17 @@ export function PortfolioChatWidget() {
       .then(setQuota)
       .catch(() => undefined);
     window.setTimeout(() => inputRef.current?.focus(), 120);
+    return () => {
+      controller.abort();
+      if (readinessTimerRef.current) window.clearTimeout(readinessTimerRef.current);
+    };
   }, [open]);
+
+  useEffect(() => {
+    if (agentStatus !== 'warming') return;
+    const timer = window.setInterval(() => setWarmupIndex((current) => (current + 1) % WARMUP_MESSAGES.length), 1800);
+    return () => window.clearInterval(timer);
+  }, [agentStatus]);
 
   useEffect(() => {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
@@ -213,6 +265,7 @@ export function PortfolioChatWidget() {
   useEffect(() => () => {
     abortRef.current?.abort();
     if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
+    if (readinessTimerRef.current) window.clearTimeout(readinessTimerRef.current);
   }, []);
 
   function updateAssistant(id: string, content: string) {
@@ -294,19 +347,32 @@ export function PortfolioChatWidget() {
     abortRef.current = controller;
 
     try {
-      const response = await fetch(`${API_URL}/chat/stream`, {
-        method: 'POST',
-        credentials: 'include',
-        signal: controller.signal,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history, search: 'auto' }),
-      });
+      let response: Response | undefined;
+      for (let attempt = 0; attempt < 4; attempt += 1) {
+        response = await fetch(`${API_URL}/chat/stream`, {
+          method: 'POST',
+          credentials: 'include',
+          signal: controller.signal,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history, search: 'auto' }),
+        });
+        if (response.status !== 503) break;
+        setAgentStatus('warming');
+        if (attempt < 3) {
+          const retryAfter = Number(response.headers.get('retry-after'));
+          const delay = Math.min(Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 3000, 8000);
+          await waitForRetry(delay, controller.signal);
+        }
+      }
 
+      if (!response) throw new Error('The assistant did not return a response.');
+      if (response.status === 503) throw new Error('The assistant is still waking up. Please try again in a moment.');
       if (!response.ok) {
         const payload = await response.json().catch(() => null);
         if (payload?.error?.quota) setQuota(payload.error.quota as Quota);
         throw new Error(payload?.error?.message ?? (response.status === 429 ? 'Today’s chat limit has been reached. Please try again tomorrow.' : 'The assistant is temporarily unavailable.'));
       }
+      setAgentStatus('ready');
       if (!response.body) throw new Error('Streaming is not supported by this browser.');
 
       const reader = response.body.getReader();
@@ -363,7 +429,7 @@ export function PortfolioChatWidget() {
           </header>
 
           <div className="portfolio-chat-feed" ref={feedRef} role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation">
-            <div className="portfolio-chat-context"><span className="portfolio-chat-status-dot" /> Answers from Paul's public work</div>
+            <div className={`portfolio-chat-context portfolio-chat-context-${agentStatus}`} role="status"><span className="portfolio-chat-status-dot" /> {agentStatus === 'warming' ? WARMUP_MESSAGES[warmupIndex] : agentStatus === 'checking' ? 'Checking the assistant...' : agentStatus === 'offline' ? 'Assistant temporarily unavailable' : quota?.remaining === 0 ? 'Daily chat limit reached' : "Answers from Paul's public work"}</div>
             {messages.map((message) => (
               <article key={message.id} className={`portfolio-chat-message portfolio-chat-message-${message.role}`}>
                 {message.role === 'assistant' && <span className="portfolio-chat-message-avatar" aria-hidden="true"><Bot size={13} /></span>}
@@ -379,6 +445,7 @@ export function PortfolioChatWidget() {
 
           <form className="portfolio-chat-form" onSubmit={submit}>
             {error && <div className="portfolio-chat-error" role="alert"><span>{error}</span>{retryText && <button type="button" onClick={() => { setInput(retryText); setError(null); inputRef.current?.focus(); }}>Try again</button>}</div>}
+            {quota?.remaining === 0 && <div className="portfolio-chat-quota-message" role="status">You have used all {quota.limit} questions for today. Your quota resets at {formatResetTime(quota.reset_at)}.</div>}
             <label htmlFor="portfolio-chat-input">Message the assistant</label>
             <div className="portfolio-chat-input-wrap">
               <textarea ref={inputRef} id="portfolio-chat-input" value={input} onChange={(event) => handleInputChange(event.target.value)} maxLength={2000} rows={1} disabled={loading || quota?.remaining === 0} placeholder="Ask about a project, skill, or experience…" onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); event.currentTarget.form?.requestSubmit(); } }} />
