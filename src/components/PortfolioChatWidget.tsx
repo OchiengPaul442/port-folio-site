@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUp, Bot, Check, ExternalLink, MessageCircle, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
@@ -19,7 +19,7 @@ const WARMUP_MESSAGES = ['Waking up the assistant...', 'Connecting to the portfo
 const INITIAL_MESSAGE: Message = {
   id: 'welcome',
   role: 'assistant',
-  content: "Hi, I'm Paul's portfolio assistant. Ask me about his work, skills, or AI projects.",
+  content: "Hi, I'm Paul's assistant. Ask me about his work, skills, or AI projects.",
 };
 
 const API_URL = '/api/portfolio-agent';
@@ -209,7 +209,6 @@ export function PortfolioChatWidget() {
   useEffect(() => {
     if (!open) return;
     const controller = new AbortController();
-    setAgentStatus('checking');
     const checkReadiness = async () => {
       try {
         const response = await fetch(`${API_URL}/health/ready`, { credentials: 'include', signal: controller.signal, cache: 'no-store' });
@@ -253,21 +252,6 @@ export function PortfolioChatWidget() {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, loading]);
 
-  useEffect(() => {
-    if (!open) return;
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape') requestClose();
-    }
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [open, loading]);
-
-  useEffect(() => () => {
-    abortRef.current?.abort();
-    if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
-    if (readinessTimerRef.current) window.clearTimeout(readinessTimerRef.current);
-  }, []);
-
   function updateAssistant(id: string, content: string) {
     setMessages((current) => current.map((message) => (message.id === id ? { ...message, content } : message)));
   }
@@ -282,14 +266,29 @@ export function PortfolioChatWidget() {
     setInput('');
   }
 
-  function requestClose() {
+  const requestClose = useCallback(() => {
     if (loading) return;
     if (messages.length > 1) {
       setShowCloseConfirm(true);
       return;
     }
     closeChat();
-  }
+  }, [loading, messages.length]);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') requestClose();
+    }
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [open, loading, requestClose]);
+
+  useEffect(() => () => {
+    abortRef.current?.abort();
+    if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
+    if (readinessTimerRef.current) window.clearTimeout(readinessTimerRef.current);
+  }, []);
 
   function queueReveal(id: string, chunk: string) {
     revealQueueRef.current += chunk;
@@ -419,7 +418,7 @@ export function PortfolioChatWidget() {
     <div className="portfolio-chat-root">
       {open && <button className="portfolio-chat-scrim" aria-label="Close chat" onClick={requestClose} />}
       {open ? (
-        <section id="portfolio-chat-panel" className="portfolio-chat-panel" aria-label="Paul’s portfolio assistant" role="dialog" aria-modal="false">
+        <section id="portfolio-chat-panel" className="portfolio-chat-panel" aria-label="Paul’s assistant" role="dialog" aria-modal="false">
           <header className="portfolio-chat-header">
             <div className="portfolio-chat-heading">
               <span className="portfolio-chat-avatar" aria-hidden="true"><Bot size={18} strokeWidth={1.8} /></span>
@@ -456,7 +455,7 @@ export function PortfolioChatWidget() {
           </form>
         </section>
       ) : (
-        <button ref={closeRef} className="portfolio-chat-launcher" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="portfolio-chat-panel"><span className="portfolio-chat-launcher-icon"><MessageCircle size={19} /></span><span>Ask Paul's assistant</span><span className="portfolio-chat-launcher-pulse" aria-hidden="true" /></button>
+        <button ref={closeRef} className="portfolio-chat-launcher" onClick={() => { setAgentStatus('checking'); setOpen(true); }} aria-expanded={open} aria-controls="portfolio-chat-panel"><span className="portfolio-chat-launcher-icon"><MessageCircle size={19} /></span><span>Ask Paul&apos;s assistant</span><span className="portfolio-chat-launcher-pulse" aria-hidden="true" /></button>
       )}
       {showCloseConfirm && <div className="portfolio-chat-confirm-backdrop"><section className="portfolio-chat-confirm" role="alertdialog" aria-modal="true" aria-labelledby="portfolio-chat-confirm-title" aria-describedby="portfolio-chat-confirm-description"><div className="portfolio-chat-confirm-icon"><X size={16} /></div><h2 id="portfolio-chat-confirm-title">Close this chat?</h2><p id="portfolio-chat-confirm-description">This conversation is temporary and will be cleared when you close the chat. You will not be able to recover it.</p><div className="portfolio-chat-confirm-actions"><button type="button" onClick={() => setShowCloseConfirm(false)}>Keep chatting</button><button type="button" onClick={closeChat}>Close chat</button></div></section></div>}
     </div>

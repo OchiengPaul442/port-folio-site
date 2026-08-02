@@ -13,6 +13,7 @@
   "stack": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"],
   "repo": null,
   "liveUrl": "https://oncallug.com",
+  "image": "/images/oncall.webp",
   "featured": false,
   "order": 19
 }

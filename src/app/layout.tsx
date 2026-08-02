@@ -10,7 +10,7 @@ import { CustomCursor } from '@/components/CustomCursor';
 import { Analytics } from '@/components/Analytics';
 import { ConsentBanner } from '@/components/ConsentBanner';
 import { PortfolioChatWidget } from '@/components/PortfolioChatWidget';
-import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, SOCIAL_PROFILES } from '@/lib/site';
+import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME, SITE_TITLE, SITE_URL, SOCIAL_PROFILES } from '@/lib/site';
 import './globals.css';
 import '@/components/portfolio-chat.css';
 
@@ -23,14 +23,7 @@ export const metadata: Metadata = {
     template: '%s | Paul Ochieng Levi',
   },
   description: SITE_DESCRIPTION,
-  keywords: [
-    'Paul Ochieng Levi',
-    'Software Engineer Uganda',
-    'full-stack software engineer',
-    'React Next.js developer Uganda',
-    'backend and frontend engineer',
-    'environmental technology',
-  ],
+  keywords: SITE_KEYWORDS,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
