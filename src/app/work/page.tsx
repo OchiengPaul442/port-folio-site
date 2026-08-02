@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Work | Paul Ochieng Levi',
     description: 'Full-stack projects including AI agents, SaaS platforms, and developer tools.',
-    url: 'https://www.ochiengpaul.com/work',
+    url: '/work',
   },
   alternates: {
-    canonical: 'https://www.ochiengpaul.com/work',
+    canonical: '/work',
   },
 };
 

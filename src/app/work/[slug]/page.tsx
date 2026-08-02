@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { SITE_URL } from '@/lib/site';
 import { CaseStudyLayout } from '@/components/CaseStudyLayout';
 import { ProjectVisual } from '@/components/ProjectVisual';
 import { getProjectBySlug, getAllProjects } from '@/lib/projects';
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${project.title} | Paul Ochieng Levi`,
       description: project.description,
       type: 'article',
-      url: `https://www.ochiengpaul.com/work/${slug}`,
+      url: `/work/${slug}`,
       siteName: 'Paul Ochieng Levi',
       images: project.image
         ? [{ url: project.image, width: 1200, height: 750, alt: `${project.title} screenshot` }]
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       creator: '@OchiengTech',
     },
     alternates: {
-      canonical: `https://www.ochiengpaul.com/work/${slug}`,
+      canonical: `/work/${slug}`,
     },
   };
 }
@@ -158,11 +159,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
             '@type': 'CreativeWork',
             name: project.title,
             description: project.description,
-            url: `https://www.ochiengpaul.com/work/${project.slug}`,
-            image: project.image ? `https://www.ochiengpaul.com${project.image}` : undefined,
-            author: { '@type': 'Person', name: 'Paul Ochieng Levi', url: 'https://www.ochiengpaul.com' },
+            url: `${SITE_URL}/work/${project.slug}`,
+            image: project.image ? `${SITE_URL}${project.image}` : undefined,
+            author: { '@type': 'Person', name: 'Paul Ochieng Levi', url: SITE_URL },
             keywords: [...(project.tags ?? []), ...project.stack].join(', '),
-            isPartOf: { '@type': 'WebSite', name: 'ochiengpaul.com', url: 'https://www.ochiengpaul.com' },
+            isPartOf: { '@type': 'WebSite', name: 'ochiengpaul.com', url: SITE_URL },
           }),
         }}
       />

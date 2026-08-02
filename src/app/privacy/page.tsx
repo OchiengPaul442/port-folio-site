@@ -6,10 +6,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Privacy Policy | Paul Ochieng Levi',
     description: 'Privacy policy for ochiengpaul.com portfolio website.',
-    url: 'https://www.ochiengpaul.com/privacy',
+    url: '/privacy',
   },
   alternates: {
-    canonical: 'https://www.ochiengpaul.com/privacy',
+    canonical: '/privacy',
   },
 };
 

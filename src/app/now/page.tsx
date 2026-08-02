@@ -8,10 +8,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Now | Paul Ochieng Levi',
     description: 'Current projects and focus areas of a full-stack software engineer in Kampala, Uganda.',
-    url: 'https://www.ochiengpaul.com/now',
+    url: '/now',
   },
   alternates: {
-    canonical: 'https://www.ochiengpaul.com/now',
+    canonical: '/now',
   },
 };
 
