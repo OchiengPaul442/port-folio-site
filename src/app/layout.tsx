@@ -9,15 +9,17 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { CustomCursor } from '@/components/CustomCursor';
 import { Analytics } from '@/components/Analytics';
 import { ConsentBanner } from '@/components/ConsentBanner';
+import { PortfolioChatWidget } from '@/components/PortfolioChatWidget';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, SOCIAL_PROFILES } from '@/lib/site';
 import './globals.css';
+import '@/components/portfolio-chat.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
   category: 'technology',
   title: {
-    default: 'Paul Ochieng Levi — Full-Stack Software Engineer',
+    default: 'Paul Ochieng Levi | Full-Stack Software Engineer',
     template: '%s | Paul Ochieng Levi',
   },
   description: SITE_DESCRIPTION,
@@ -37,13 +39,13 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: SITE_URL,
     siteName: 'Paul Ochieng Levi',
-    title: 'Paul Ochieng Levi — Full-Stack Software Engineer',
+    title: 'Paul Ochieng Levi | Full-Stack Software Engineer',
     description: SITE_DESCRIPTION,
     images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE_TITLE }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Paul Ochieng Levi — Full-Stack Software Engineer',
+    title: 'Paul Ochieng Levi | Full-Stack Software Engineer',
     description: SITE_DESCRIPTION,
     creator: '@OchiengTech',
     images: [{ url: '/twitter-image', width: 1200, height: 630, alt: SITE_TITLE }],
@@ -105,6 +107,7 @@ export default function RootLayout({
             <Footer />
             <LanguageSelector />
             <ConsentBanner />
+            <PortfolioChatWidget />
           </SmoothScrollProvider>
         </ThemeProvider>
         <script

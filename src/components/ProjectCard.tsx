@@ -83,7 +83,7 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image, categ
         </div>
       )}
 
-      {/* Card content — always visible, consistent sizing */}
+      {/* Card content: always visible, consistent sizing */}
       <div className="relative z-10 flex flex-1 flex-col p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">

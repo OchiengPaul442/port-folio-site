@@ -4,7 +4,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'Now',
   description:
-    'What Paul Ochieng Levi is currently building, learning, and exploring — active projects, current focus areas, and open problems in software engineering.',
+    'What Paul Ochieng Levi is currently building, learning, and exploring. Active projects, current focus areas, and open problems in software engineering.',
   openGraph: {
     title: 'Now | Paul Ochieng Levi',
     description: 'Current projects and focus areas of a full-stack software engineer in Kampala, Uganda.',
@@ -56,15 +56,15 @@ export default function NowPage() {
               <ul className="mt-4 space-y-3 text-[var(--color-text-secondary)]">
                 <li className="flex items-start gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
-                  Full-stack product craft — creating clear interfaces and dependable services that work well together
+                  Full-stack product craft: creating clear interfaces and dependable services that work well together
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
-                  Developer tooling — making everyday engineering workflows calmer, faster, and easier to understand
+                  Developer tooling: making everyday engineering workflows calmer, faster, and easier to understand
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
-                  Environmental data infrastructure — contributing to AirQo&apos;s platform and its community-facing products
+                  Environmental data infrastructure: contributing to AirQo&apos;s platform and its community-facing products
                 </li>
               </ul>
             </div>

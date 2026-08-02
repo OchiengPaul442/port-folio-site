@@ -5,10 +5,10 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { GitHubStats } from '@/components/GitHubStats';
 
 const capabilities = [
-  ['Product engineering', 'From problem to production — I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.'],
+  ['Product engineering', 'From problem to production. I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.'],
   ['Frontend systems', 'React and Next.js applications built for real users: accessible, fast on slow connections, and maintainable months after launch.'],
   ['Backend & data', 'Python, Django, TypeScript, and PostgreSQL. APIs, authentication, data pipelines, and the integrations that connect systems.'],
-  ['Applied AI', 'AI where it earns its place — coding assistants, data agents, and developer tools built for real workflows, not demos.'],
+  ['Applied AI', 'AI where it earns its place. Coding assistants, data agents, and developer tools built for real workflows, not demos.'],
 ];
 
 export default async function Home() {
@@ -38,7 +38,7 @@ export default async function Home() {
               <span className="font-mono">Software Engineer</span>
             </div>
 
-            {/* Main heading — asymmetric, weight contrast */}
+                {/* Main heading: asymmetric, weight contrast */}
             <div className="mt-10 reveal-up-delay">
               <h1 className="text-6xl font-light tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-7xl lg:text-8xl">
                 Paul
@@ -52,7 +52,7 @@ export default async function Home() {
             <div className="mt-10 max-w-2xl reveal-up-delay-2">
               <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
                 I write code that ships. Developer tools, data platforms, and
-                web products built for real constraints — slow networks,
+                web products built for real constraints: slow networks,
                 limited devices, and users who depend on it working.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -72,10 +72,10 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Status strip — horizontal on desktop */}
+                {/* Status strip: horizontal on desktop */}
             <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3 reveal-up-delay-2">
               {[
-                { label: 'Now', text: 'Building NexCode — a multi-agent AI coding assistant for VS Code' },
+                { label: 'Now', text: 'Building NexCode, a multi-agent AI coding assistant for VS Code' },
                 { label: 'Thinking', text: 'Resilient systems that work when dependencies fail' },
                 { label: 'Focus', text: 'Full-stack craft · developer tools · environmental data' },
               ].map((item) => (

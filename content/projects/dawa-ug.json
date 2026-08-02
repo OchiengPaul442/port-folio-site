@@ -6,7 +6,7 @@
   "problem": "The marketplace needed to feel simple and trustworthy on the devices and connections many Ugandan users rely on. Buyers had to scan listings quickly, while sellers needed a low-friction path from posting to conversation.",
   "role": "Focused on the frontend implementation: responsive listing and search views, product detail pages, user-facing profile and wishlist flows, messaging interfaces, and mobile interaction patterns.",
   "approach": "Built the interface with React and Next.js, prioritizing server-rendered product content, clear information hierarchy, responsive layouts, and lightweight interactions for mobile users. The UI makes verification, safety guidance, and seller communication visible without adding friction.",
-  "hardestDecision": "Building trust features — implementing safety tips, secure meeting location suggestions, and verification systems without adding friction that would discourage adoption in a market where simplicity drives usage.",
+  "hardestDecision": "Building trust features: safety tips, secure meeting location suggestions, and verification systems without adding friction that would discourage adoption in a market where simplicity drives usage.",
   "status": "shipped",
   "outcome": "Live at dawa.ug as a frontend experience for a trusted Ugandan marketplace, covering product discovery, listing presentation, account surfaces, messaging, and safety-oriented interaction patterns.",
   "whatIdChange": "Would integrate mobile money payment escrow, add location-based search for local pickups, and implement a rating/review system for buyer-seller trust.",

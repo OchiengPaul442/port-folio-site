@@ -5,7 +5,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'About Paul Ochieng Levi — a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience with AirQo, React, Next.js, Python, and Django.',
+    'About Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience with AirQo, React, Next.js, Python, and Django.',
   openGraph: {
     title: 'About Paul Ochieng Levi',
     description: 'Full-stack software engineer in Kampala, Uganda building reliable web products and developer tools.',
@@ -27,13 +27,13 @@ const experience = [
     period: 'Active Contributor',
     title: 'AirQo Platform',
     description:
-      'Contributing to AirQo\'s frontend and backend — internationalization supporting 40+ languages including African languages, REST API development, and dashboard components for air quality monitoring across Africa.',
+      'Contributing to AirQo\'s frontend and backend. Internationalization supporting 40+ languages including African languages, REST API development, and dashboard components for air quality monitoring across Africa.',
   },
   {
     period: 'Ongoing',
     title: 'Full-Stack Product Development',
     description:
-      'Building web applications across the stack with TypeScript, React, Next.js, Python, Django, and PostgreSQL — from interface design through production APIs.',
+      'Building web applications across the stack with TypeScript, React, Next.js, Python, Django, and PostgreSQL, from interface design through production APIs.',
   },
 ];
 
@@ -98,7 +98,7 @@ export default function AboutPage() {
                 <p>
                   Build for the constraints you actually have. If your users are on
                   3G connections and mid-range Android devices, your performance
-                  budget starts there — not on your development laptop.
+                  budget starts there, not on your development laptop.
                 </p>
                 <p>
                   Write code that the next developer (including future you) can

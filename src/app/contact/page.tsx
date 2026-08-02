@@ -5,7 +5,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Get in touch with Paul Ochieng Levi — full-stack software engineer in Kampala, Uganda. Open to full-time roles, remote engineering, climate-tech collaboration, and consulting.',
+    'Get in touch with Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda. Open to full-time roles, remote engineering, climate-tech collaboration, and consulting.',
   openGraph: {
     title: 'Contact Paul Ochieng Levi',
     description: 'Full-stack software engineer open to opportunities and collaboration.',

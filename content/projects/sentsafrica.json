@@ -6,7 +6,7 @@
   "problem": "Financial research interfaces can become dense and difficult to navigate. Sents Africa needed a clear way to introduce its market intelligence product, guide users into company discovery, and make complex information feel approachable on desktop and mobile.",
   "role": "Focused on the frontend implementation: landing page composition, responsive layouts, visual storytelling, dark-mode styling, data-oriented UI patterns, and the interaction details that support company and market exploration.",
   "approach": "Built the interface with React and Next.js, using a dark-mode-first design direction, green accent color system, responsive content sections, and data visualization patterns. The layout gives users a clear entry point before progressively introducing deeper financial information.",
-  "hardestDecision": "Designing financial data visualizations that are informative without being overwhelming — finding the right level of detail for dashboards that serve both quick daily checks and deeper monthly reviews.",
+  "hardestDecision": "Designing financial data visualizations that are informative without being overwhelming. The goal was to find the right level of detail for dashboards that serve both quick daily checks and deeper monthly reviews.",
   "status": "shipped",
   "outcome": "Live at sentsafrica.com as a frontend experience for Sents Africa's financial insights and publicly traded company research product.",
   "whatIdChange": "Would add automated bank statement imports, implement budget forecasting models, and add team collaboration features for shared financial reviews.",

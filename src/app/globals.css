@@ -19,7 +19,7 @@
   --color-warning-text: #92400e;
 }
 
-/* Class-based dark mode — warm, premium palette */
+/* Class-based dark mode: warm, premium palette */
 .dark {
   --color-bg-primary: #111110;
   --color-bg-secondary: #1a1918;
@@ -41,7 +41,7 @@
 html { scroll-behavior: smooth; }
 html, body { min-height: 100%; }
 
-/* Custom scrollbar — matches theme accent color */
+/* Custom scrollbar: matches theme accent color */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-accent) transparent;
@@ -72,7 +72,7 @@ html, body { min-height: 100%; }
   background: transparent;
 }
 
-/* Reduced motion — kill all animations */
+/* Reduced motion: minimize animations */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -118,7 +118,7 @@ body {
 }
 
 /* ============================================
-   GOOGLE TRANSLATE — hide UI, keep functional
+   GOOGLE TRANSLATE: hide UI, keep functional
    ============================================ */
 /* Move banner off-screen but keep it in DOM */
 body > .goog-te-banner-frame,
@@ -194,13 +194,13 @@ iframe.skiptranslate {
    ============================================ */
 
 /* ============================================
-   THEME TOGGLE — View Transition API
+   THEME TOGGLE: View Transition API
    ============================================ */
 html {
   view-transition-name: root;
 }
 
-/* Disable default cross-fade — we use custom clip-path */
+/* Disable default cross-fade: use custom clip-path */
 ::view-transition-image-pair(root) {
   isolation: auto;
 }
@@ -213,7 +213,7 @@ html {
 }
 
 /* ============================================
-   CUSTOM CURSOR — Dot + Ring Follower
+   CUSTOM CURSOR: Dot + Ring Follower
    ============================================ */
 .has-custom-cursor,
 .has-custom-cursor * {
@@ -262,7 +262,7 @@ html {
   box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 50%, transparent);
 }
 
-/* Hover states — ring expands on interactive elements */
+/* Hover states: ring expands on interactive elements */
 a:hover ~ .cursor-ring,
 button:hover ~ .cursor-ring,
 [role="link"]:hover ~ .cursor-ring {
@@ -273,7 +273,7 @@ button:hover ~ .cursor-ring,
   box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
-/* Active hover — dot scales on interactive elements */
+/* Active hover: dot scales on interactive elements */
 a:hover ~ .cursor-dot,
 button:hover ~ .cursor-dot,
 [role="link"]:hover ~ .cursor-dot {
@@ -370,7 +370,7 @@ button:hover ~ .cursor-dot,
 }
 
 /* ============================================
-   SECTION DIVIDERS — Gradient fade lines
+   SECTION DIVIDERS: Gradient fade lines
    ============================================ */
 .section-divider {
   height: 1px;
@@ -399,7 +399,7 @@ button:hover ~ .cursor-dot,
 }
 
 /* ============================================
-   SECTION LABEL — Consistent mono uppercase
+   SECTION LABEL: Consistent mono uppercase
    ============================================ */
 .section-label {
   font-family: var(--font-mono);
@@ -411,7 +411,7 @@ button:hover ~ .cursor-dot,
 }
 
 /* ============================================
-   CARD — Shared base styles
+   CARD: Shared base styles
    ============================================ */
 .card {
   border-radius: 0.75rem;
@@ -505,7 +505,7 @@ button:hover ~ .cursor-dot,
 }
 
 /* ============================================
-   ANIMATIONS — Unified system
+   ANIMATIONS: Unified system
    ============================================ */
 .consent-panel {
   animation: consent-panel-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -623,7 +623,7 @@ button:hover ~ .cursor-dot,
 .skip-link:focus { top: 0; }
 
 /* ============================================
-   PROSE — Content typography
+   PROSE: Content typography
    ============================================ */
 .prose { line-height: 1.75; }
 .prose > * + * { margin-top: 1.25em; }

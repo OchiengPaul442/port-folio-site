@@ -54,7 +54,7 @@ export function ConsentBanner() {
           {feedback ? (
             <div className="consent-confirmation" role="status" aria-live="assertive">
               <span className="consent-confirmation-icon" aria-hidden="true">
-                {choice === 'granted' ? '✓' : '—'}
+                {choice === 'granted' ? '✓' : 'Not set'}
               </span>
               <div>
                 <h2 className="text-base font-semibold text-[var(--color-text-primary)]">Choice saved</h2>

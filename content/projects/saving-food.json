@@ -6,7 +6,7 @@
   "problem": "Food waste data is only useful when people can understand it quickly and act on it. The product needed to make spoilage signals, waste trends, and inventory guidance feel practical rather than like another complex analytics tool.",
   "role": "Focused on the frontend implementation: dashboard layouts, waste tracking views, inventory-oriented summaries, prediction result states, responsive interaction patterns, and the visual language for communicating operational insights.",
   "approach": "Built the frontend with React and Next.js, shaping a clean dashboard experience around prediction results, trend visualization, and actionable inventory information. The UI prioritizes clear status, readable data summaries, and quick paths for users working on smaller screens.",
-  "hardestDecision": "Making the predictions useful without requiring extensive data input — finding the balance between prediction accuracy and the practical data entry burden on users who are often busy food service operators.",
+  "hardestDecision": "Making the predictions useful without requiring extensive data input. The challenge was balancing prediction accuracy with the practical data entry burden on busy food service operators.",
   "status": "shipped",
   "outcome": "Live at sf-project-topaz.vercel.app as a frontend experience for spoilage prediction, waste tracking, and inventory optimization workflows.",
   "whatIdChange": "Would add integration with point-of-sale systems for automatic waste tracking, implement computer vision for food quality assessment, and add community sharing features for surplus food redistribution.",

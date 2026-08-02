@@ -117,7 +117,7 @@ export function LanguageSelector() {
 
   return (
     <>
-      {/* Hidden Google Translate widget — must be in DOM but invisible */}
+      {/* Hidden Google Translate widget: must be in DOM but invisible */}
       <div
         ref={widgetRef}
         className="fixed bottom-0 left-0 z-[1] overflow-hidden"

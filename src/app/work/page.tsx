@@ -6,7 +6,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 export const metadata: Metadata = {
   title: 'Work',
   description:
-    'Projects and case studies by Paul Ochieng Levi — full-stack products, developer tools, AI agents, and open-source contributions. Built with React, Next.js, Python, and Django.',
+    'Projects and case studies by Paul Ochieng Levi. Full-stack products, developer tools, AI agents, and open-source contributions built with React, Next.js, Python, and Django.',
   openGraph: {
     title: 'Work | Paul Ochieng Levi',
     description: 'Full-stack projects including AI agents, SaaS platforms, and developer tools.',
@@ -33,7 +33,7 @@ export default function WorkPage() {
             Work
           </h1>
           <p className="mt-2 text-base text-[var(--color-text-secondary)]">
-            A selection of products I&apos;ve built, shipped, or contributed to — spanning
+            A selection of products I&apos;ve built, shipped, or contributed to, spanning
             product interfaces, backend systems, environmental data, and developer tools.
           </p>
         </ScrollReveal>

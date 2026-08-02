@@ -21,11 +21,11 @@ const directionOffsets = {
 };
 
 /**
- * ScrollReveal — Applies the 6 transition animation principles:
+ * ScrollReveal: applies the 6 transition animation principles:
  * 1. Fade in/out with opacity (always)
  * 2. Scale to add liveliness (optional, via `scale` prop)
  * 3. Consistent directionality (via `direction` prop)
- * 4. Balanced speed (350ms default — within 100-500ms ideal range)
+ * 4. Balanced speed (350ms default, within the 100-500ms ideal range)
  * 5. Prioritize, order, group (via `delay` prop for cascading)
  * 6. Establish spatiality (subtle translate creates depth)
  */
