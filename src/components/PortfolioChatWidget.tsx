@@ -16,6 +16,7 @@ type MetaEvent = {
 };
 type AgentStatus = 'checking' | 'ready' | 'warming' | 'offline';
 
+const MAX_LOCAL_MESSAGES = 50;
 const SUGGESTIONS = ['What has Paul built?', 'Tell me about his AI work', 'How can we collaborate?'];
 const WARMUP_MESSAGES = ['Waking up the assistant...', 'Connecting to the portfolio agent...', 'Preparing your response...'];
 const INITIAL_MESSAGE: Message = {
@@ -249,7 +250,7 @@ export function PortfolioChatWidget() {
   const readinessTimerRef = useRef<number | null>(null);
 
   const history = useMemo(
-    () => messages.slice(1).filter((message) => message.content.trim()).slice(-12).map(({ role, content }) => ({ role, content })),
+    () => messages.slice(1).filter((message) => message.content.trim()).slice(-8).map(({ role, content }) => ({ role, content })),
     [messages],
   );
 
@@ -497,7 +498,10 @@ export function PortfolioChatWidget() {
     revealedTextRef.current = '';
     if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
     revealTimerRef.current = null;
-    setMessages((current) => [...current, { id: newId(), role: 'user', content: text }, { id: assistantId, role: 'assistant', content: '' }]);
+    setMessages((current) => {
+      const updated: Message[] = [...current, { id: newId(), role: 'user', content: text }, { id: assistantId, role: 'assistant', content: '' }];
+      return updated.length > MAX_LOCAL_MESSAGES ? updated.slice(-MAX_LOCAL_MESSAGES) : updated;
+    });
     setInput('');
     if (inputRef.current) inputRef.current.style.height = 'auto';
     setSources([]);
@@ -646,6 +650,9 @@ export function PortfolioChatWidget() {
                 </div>
               </article>
             ))}
+            {messages.length > 7 && !loading && (
+              <p className="portfolio-chat-notice">Older messages were summarized for context efficiency.</p>
+            )}
             {messages.length === 1 && <div className="portfolio-chat-suggestions" aria-label="Suggested questions">{SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}</div>}
             {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url}>{source.title}</a>)}</aside>}
             {!isAtBottom && (
