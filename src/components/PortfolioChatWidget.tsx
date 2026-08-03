@@ -96,6 +96,27 @@ function waitForRetry(milliseconds: number, signal: AbortSignal) {
   });
 }
 
+function readWithTimeout(reader: ReadableStreamDefaultReader<Uint8Array>, timeoutMs: number, signal: AbortSignal) {
+  return new Promise<{ done: boolean; value: Uint8Array | undefined }>((resolve, reject) => {
+    const timer = window.setTimeout(() => {
+      reader.cancel('Stream timed out').catch(() => {});
+      reject(new Error('The response stream timed out. The assistant may be processing a long request.'));
+    }, timeoutMs);
+    signal.addEventListener('abort', () => {
+      window.clearTimeout(timer);
+      reader.cancel('Request aborted').catch(() => {});
+      reject(new DOMException('Request aborted', 'AbortError'));
+    }, { once: true });
+    reader.read().then((result) => {
+      window.clearTimeout(timer);
+      resolve(result);
+    }, (err) => {
+      window.clearTimeout(timer);
+      reject(err);
+    });
+  });
+}
+
 function renderInline(value: string, keyPrefix: string): ReactNode[] {
   const tokenPattern = /(\*\*[^*]+\*\*|__[^_]+__|`[^`]+`|\[\d+(?:,\s*\d+)*\]|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g;
   const nodes: ReactNode[] = [];
@@ -470,11 +491,20 @@ export function PortfolioChatWidget() {
     }, 15);
   }
 
-  function waitForReveal() {
+  function waitForReveal(timeoutMs = 30000) {
     return new Promise<void>((resolve) => {
+      const start = Date.now();
       const check = () => {
-        if (!revealQueueRef.current && !revealTimerRef.current) resolve();
-        else window.setTimeout(check, 16);
+        if (!revealQueueRef.current && !revealTimerRef.current) {
+          resolve();
+        } else if (Date.now() - start > timeoutMs) {
+          if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
+          revealTimerRef.current = null;
+          revealQueueRef.current = '';
+          resolve();
+        } else {
+          window.setTimeout(check, 16);
+        }
       };
       check();
     });
@@ -547,7 +577,7 @@ export function PortfolioChatWidget() {
       const decoder = new TextDecoder();
       let buffer = '';
       while (true) {
-        const { done, value } = await reader.read();
+        const { done, value } = await readWithTimeout(reader, 30000, controller.signal);
         buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
         const blocks = buffer.split('\n\n');
         buffer = blocks.pop() ?? '';
@@ -571,6 +601,7 @@ export function PortfolioChatWidget() {
         if (done) break;
       }
       await waitForReveal();
+      setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'The assistant returned an empty response. Please try again.' } : item));
     } catch (caught) {
       if (controller.signal.aborted) {
         setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'Response stopped.' } : item));
