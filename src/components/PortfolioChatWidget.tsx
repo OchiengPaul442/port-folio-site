@@ -260,6 +260,7 @@ export function PortfolioChatWidget() {
   const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const [researching, setResearching] = useState(false);
   const hasRestoredRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
@@ -491,7 +492,7 @@ export function PortfolioChatWidget() {
     }, 15);
   }
 
-  function waitForReveal(timeoutMs = 30000) {
+  function waitForReveal(timeoutMs = 60000) {
     return new Promise<void>((resolve) => {
       const start = Date.now();
       const check = () => {
@@ -538,6 +539,7 @@ export function PortfolioChatWidget() {
     setError(null);
     setRetryText(null);
     setLoading(true);
+    setResearching(true);
 
     if (checkForAppreciation(text)) triggerEasterEgg();
 
@@ -577,7 +579,7 @@ export function PortfolioChatWidget() {
       const decoder = new TextDecoder();
       let buffer = '';
       while (true) {
-        const { done, value } = await readWithTimeout(reader, 30000, controller.signal);
+        const { done, value } = await readWithTimeout(reader, 60000, controller.signal);
         buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
         const blocks = buffer.split('\n\n');
         buffer = blocks.pop() ?? '';
@@ -586,6 +588,7 @@ export function PortfolioChatWidget() {
           const parsed = parseSseBlock(block);
           if (!parsed) continue;
           if (parsed.event === 'meta') {
+            setResearching(false);
             const meta = JSON.parse(parsed.data) as MetaEvent;
             setQuota(meta.quota);
             setSources((meta.sources ?? []).filter(isSafeSource));
@@ -597,6 +600,7 @@ export function PortfolioChatWidget() {
             queueReveal(assistantId, (JSON.parse(parsed.data) as { text: string }).text);
           }
           if (parsed.event === 'error') throw new Error('The response stream ended unexpectedly.');
+          if (parsed.event === 'done') break;
         }
         if (done) break;
       }
@@ -616,6 +620,7 @@ export function PortfolioChatWidget() {
       setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'I couldn\u2019t complete that response. Please try again.' } : item));
     } finally {
       setLoading(false);
+      setResearching(false);
       abortRef.current = null;
     }
   }
@@ -655,7 +660,7 @@ export function PortfolioChatWidget() {
                 <div className="portfolio-chat-message-body">
                   <span className="portfolio-chat-message-label">{message.role === 'assistant' ? 'Assistant' : 'You'}</span>
                   <div className="portfolio-chat-message-content">
-                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span></p>}
+                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label={researching ? 'Assistant is researching' : 'Assistant is preparing a response'}>{researching ? 'Researching...' : <><i /><i /><i /></>}</span></p>}
                   </div>
                   {message.role === 'assistant' && message.truncated && message.continue_token && !loading && (
                     <button className="portfolio-chat-continue" type="button" onClick={() => message.continue_token && handleContinue(message.continue_token, message.id)} disabled={loading}>
