@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Bot, Check, Copy, Edit3, MessageCircle, RefreshCw, Square, X } from 'lucide-react';
+import { ArrowUp, Bot, Check, Copy, Edit3, MessageCircle, Square, X } from 'lucide-react';
 
 type Role = 'user' | 'assistant';
 type Message = { id: string; role: Role; content: string; truncated?: boolean; continue_token?: string };
@@ -39,7 +39,7 @@ const APPRECIATIVE_WORDS = [
   'love it', 'love this', 'loving it', 'so good', 'really good', 'very good', 'pretty good',
   'so helpful', 'really helpful', 'very helpful', 'so useful', 'really useful',
   'you rock', 'you are awesome', 'youre awesome', 'you are great', 'youre great',
-  'best', 'favorite', 'fav', 'top', 'elite', 'goat', 'fire', 'banger', 'slaps',
+  'best', 'favorite', 'fav', 'top', 'goat', 'fire', 'banger', 'slaps',
 ];
 
 const API_URL = '/api/portfolio-agent';
@@ -260,7 +260,6 @@ export function PortfolioChatWidget() {
   const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
-  const [researching, setResearching] = useState(false);
   const hasRestoredRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement | null>(null);
@@ -380,7 +379,6 @@ export function PortfolioChatWidget() {
     setError(null);
     setRetryText(null);
     setInput('');
-    setResearching(false);
     try {
       localStorage.removeItem('portfolio-chat-state');
     } catch {
@@ -408,7 +406,6 @@ export function PortfolioChatWidget() {
     }
     revealQueueRef.current = '';
     setLoading(false);
-    setResearching(false);
   }
 
   async function handleContinue(continueToken: string, messageId: string) {
@@ -541,7 +538,6 @@ export function PortfolioChatWidget() {
     setError(null);
     setRetryText(null);
     setLoading(true);
-    setResearching(true);
 
     if (checkForAppreciation(text)) triggerEasterEgg();
 
@@ -580,7 +576,8 @@ export function PortfolioChatWidget() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
-      while (true) {
+      let streamDone = false;
+      while (!streamDone) {
         const { done, value } = await readWithTimeout(reader, 60000, controller.signal);
         buffer += decoder.decode(value, { stream: !done }).replace(/\r\n/g, '\n');
         const blocks = buffer.split('\n\n');
@@ -590,7 +587,6 @@ export function PortfolioChatWidget() {
           const parsed = parseSseBlock(block);
           if (!parsed) continue;
           if (parsed.event === 'meta') {
-            setResearching(false);
             const meta = JSON.parse(parsed.data) as MetaEvent;
             setQuota(meta.quota);
             setSources((meta.sources ?? []).filter(isSafeSource));
@@ -602,7 +598,7 @@ export function PortfolioChatWidget() {
             queueReveal(assistantId, (JSON.parse(parsed.data) as { text: string }).text);
           }
           if (parsed.event === 'error') throw new Error('The response stream ended unexpectedly.');
-          if (parsed.event === 'done') break;
+          if (parsed.event === 'done') { streamDone = true; break; }
         }
         if (done) break;
       }
@@ -622,7 +618,6 @@ export function PortfolioChatWidget() {
       setMessages((current) => current.map((item) => item.id === assistantId && !item.content ? { ...item, content: 'I couldn\u2019t complete that response. Please try again.' } : item));
     } finally {
       setLoading(false);
-      setResearching(false);
       abortRef.current = null;
     }
   }
@@ -662,7 +657,7 @@ export function PortfolioChatWidget() {
                 <div className="portfolio-chat-message-body">
                   <span className="portfolio-chat-message-label">{message.role === 'assistant' ? 'Assistant' : 'You'}</span>
                   <div className="portfolio-chat-message-content">
-                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label={researching ? 'Assistant is researching' : 'Assistant is preparing a response'}>{researching ? 'Researching...' : <><i /><i /><i /></>}</span></p>}
+                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span></p>}
                   </div>
                   {message.role === 'assistant' && message.truncated && message.continue_token && !loading && (
                     <button className="portfolio-chat-continue" type="button" onClick={() => message.continue_token && handleContinue(message.continue_token, message.id)} disabled={loading}>
@@ -674,11 +669,7 @@ export function PortfolioChatWidget() {
                       <button className={`portfolio-chat-action ${copiedMessageId === message.id ? 'portfolio-chat-action-active' : ''}`} type="button" onClick={() => copyMessage(message.content, message.id)} aria-label={copiedMessageId === message.id ? 'Copied' : 'Copy message'}>
                         {copiedMessageId === message.id ? <Check size={14} /> : <Copy size={14} />}
                       </button>
-                      {message.role === 'assistant' ? (
-                        <button className="portfolio-chat-action" type="button" onClick={() => { setInput(message.content); inputRef.current?.focus(); }} aria-label="Edit and resend">
-                          <RefreshCw size={14} />
-                        </button>
-                      ) : (
+                      {message.role === 'user' && (
                         <button className="portfolio-chat-action" type="button" onClick={() => { setInput(message.content); inputRef.current?.focus(); }} aria-label="Edit message">
                           <Edit3 size={14} />
                         </button>
