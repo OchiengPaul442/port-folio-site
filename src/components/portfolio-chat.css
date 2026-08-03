@@ -114,6 +114,7 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
 @keyframes portfolio-chat-caret { 50% { opacity: 0; } }
 .portfolio-chat-skeleton { display: grid; gap: .42rem; width: 10rem; padding: .12rem 0; }
 .portfolio-chat-skeleton i { display: block; height: .45rem; border-radius: 999px; background: linear-gradient(90deg, var(--color-bg-tertiary) 20%, color-mix(in srgb, var(--color-accent) 22%, var(--color-bg-tertiary)) 50%, var(--color-bg-tertiary) 80%); background-size: 220% 100%; animation: portfolio-chat-shimmer 1.35s ease-in-out infinite; }
+.dark .portfolio-chat-skeleton i { background: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-tertiary)) 20%, color-mix(in srgb, var(--color-accent) 45%, var(--color-bg-tertiary)) 50%, color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-tertiary)) 80%); box-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 15%, transparent); }
 .portfolio-chat-skeleton i:nth-child(1) { width: 82%; }.portfolio-chat-skeleton i:nth-child(2) { width: 100%; animation-delay: .08s; }.portfolio-chat-skeleton i:nth-child(3) { width: 58%; animation-delay: .16s; }
 @keyframes portfolio-chat-shimmer { 0% { background-position: 100% 0; opacity: .55; } 50% { opacity: 1; } 100% { background-position: -100% 0; opacity: .55; } }
 .portfolio-chat-suggestions { display: flex; flex-wrap: wrap; gap: .45rem; margin: -.15rem 0 1.05rem 1.9rem; }
