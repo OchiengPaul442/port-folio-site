@@ -39,7 +39,7 @@ const APPRECIATIVE_WORDS = [
   'love it', 'love this', 'loving it', 'so good', 'really good', 'very good', 'pretty good',
   'so helpful', 'really helpful', 'very helpful', 'so useful', 'really useful',
   'you rock', 'you are awesome', 'youre awesome', 'you are great', 'youre great',
-  'best', 'favorite', 'fav', 'top', ' elite', 'goat', 'fire', 'banger', 'slaps',
+  'best', 'favorite', 'fav', 'top', 'elite', 'goat', 'fire', 'banger', 'slaps',
 ];
 
 const API_URL = '/api/portfolio-agent';
@@ -137,7 +137,7 @@ function renderInline(value: string, keyPrefix: string): ReactNode[] {
       const href = (markdownLink?.[2] ?? token).replace(/[.,!?;:]+$/, '');
       if (isSafeSource({ title: '', url: href, snippet: '', provider: '' })) {
         nodes.push(
-          <a className="portfolio-chat-inline-link" key={`${keyPrefix}-link-${match.index}`} href={href}>
+          <a className="portfolio-chat-inline-link" key={`${keyPrefix}-link-${match.index}`} href={href} target="_blank" rel="noopener noreferrer">
             <span>{markdownLink?.[1] ?? readableLinkLabel(href)}</span>
           </a>,
         );
@@ -380,6 +380,7 @@ export function PortfolioChatWidget() {
     setError(null);
     setRetryText(null);
     setInput('');
+    setResearching(false);
     try {
       localStorage.removeItem('portfolio-chat-state');
     } catch {
@@ -407,6 +408,7 @@ export function PortfolioChatWidget() {
     }
     revealQueueRef.current = '';
     setLoading(false);
+    setResearching(false);
   }
 
   async function handleContinue(continueToken: string, messageId: string) {
@@ -690,7 +692,7 @@ export function PortfolioChatWidget() {
               <p className="portfolio-chat-notice">Older messages were summarized for context efficiency.</p>
             )}
             {messages.length === 1 && <div className="portfolio-chat-suggestions" aria-label="Suggested questions">{SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}</div>}
-            {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url}>{source.title}</a>)}</aside>}
+            {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>)}</aside>}
             {!isAtBottom && (
               <button className="portfolio-chat-scroll-bottom" type="button" onClick={scrollToBottom} aria-label="Scroll to bottom">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3v10M3 8l5 5 5-5" /></svg>

@@ -34,22 +34,30 @@ function copyResponseHeaders(upstream: Response) {
 }
 
 async function proxy(request: Request, path: string[]) {
-  const response = await fetch(getUpstreamUrl(request, path), {
-    method: request.method,
-    headers: {
-      Accept: request.headers.get('accept') ?? '*/*',
-      ...(request.headers.get('content-type') ? { 'Content-Type': request.headers.get('content-type') as string } : {}),
-      ...(request.headers.get('cookie') ? { Cookie: request.headers.get('cookie') as string } : {}),
-    },
-    body: request.method === 'GET' ? undefined : await request.arrayBuffer(),
-    cache: 'no-store',
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 90_000);
 
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: copyResponseHeaders(response),
-  });
+  try {
+    const response = await fetch(getUpstreamUrl(request, path), {
+      method: request.method,
+      headers: {
+        Accept: request.headers.get('accept') ?? '*/*',
+        ...(request.headers.get('content-type') ? { 'Content-Type': request.headers.get('content-type') as string } : {}),
+        ...(request.headers.get('cookie') ? { Cookie: request.headers.get('cookie') as string } : {}),
+      },
+      body: request.method === 'GET' ? undefined : await request.arrayBuffer(),
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: copyResponseHeaders(response),
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export async function GET(request: Request, context: { params: Promise<{ path: string[] }> }) {
