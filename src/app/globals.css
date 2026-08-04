@@ -39,7 +39,7 @@
 
 /* Native scrolling keeps route changes and browser translation stable. */
 html { scroll-behavior: smooth; }
-html, body { min-height: 100%; }
+html, body { min-height: 100%; overflow-x: hidden; }
 
 /* Custom scrollbar: matches theme accent color */
 * {
@@ -100,7 +100,7 @@ body {
   position: relative;
   z-index: 1;
   min-height: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
   overflow-y: visible;
 }
 

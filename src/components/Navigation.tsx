@@ -149,7 +149,7 @@ export function Navigation() {
 
       {/* Mobile drawer */}
       <div
-        className={`fixed inset-0 z-[60] md:hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        className={`fixed inset-0 z-[95] overflow-hidden md:hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
         aria-hidden={!mobileOpen}
