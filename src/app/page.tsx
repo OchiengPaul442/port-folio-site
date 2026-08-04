@@ -151,6 +151,7 @@ export default async function Home() {
                   slug={project.slug}
                   title={project.title}
                   subtitle={project.subtitle}
+                  client={project.client}
                   status={project.status}
                   stack={project.stack}
                   image={project.image}

@@ -2,6 +2,7 @@
   "slug": "sti",
   "title": "STI One Stop Center",
   "subtitle": "Government innovation portal for Uganda",
+  "client": "Science, Technology and Innovation Secretariat",
   "description": "A government-commissioned digital platform for Uganda's Science, Technology and Innovation (STI) One-Stop Center. Provides innovation submission, assessment, mentorship, funding opportunities, and IP registration support through a structured 4-step innovation journey.",
   "problem": "Uganda's science and technology innovators lack a centralized digital platform to submit innovations, access support services, and connect with funding and mentorship opportunities. Fragmented processes across government agencies slow down the innovation pipeline.",
   "role": "Built the complete government portal including innovation submission workflows, assessment tracking, partner organization integration, and the responsive frontend with i18n support and government accessibility standards.",

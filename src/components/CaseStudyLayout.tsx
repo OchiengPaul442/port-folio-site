@@ -3,6 +3,7 @@ import Link from 'next/link';
 interface CaseStudyLayoutProps {
   title: string;
   subtitle: string;
+  client?: string;
   status: string;
   stack: string[];
   repo?: string | null;
@@ -13,6 +14,7 @@ interface CaseStudyLayoutProps {
 export function CaseStudyLayout({
   title,
   subtitle,
+  client,
   status,
   stack,
   repo,
@@ -34,6 +36,11 @@ export function CaseStudyLayout({
         <p className="mt-2 text-lg text-[var(--color-text-secondary)]">
           {subtitle}
         </p>
+        {client && (
+          <p className="mt-2 text-sm font-medium text-[var(--color-text-tertiary)]">
+            Client: {client}
+          </p>
+        )}
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <span
             className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${

@@ -2,6 +2,7 @@
   "slug": "airqo-icons-flutter",
   "title": "AirQo Icons Flutter",
   "subtitle": "Open-source icon package for Flutter developers",
+  "client": "AirQo",
   "description": "A published Flutter icon package for environmental and air-quality interfaces. The package provides a broad, consistently named icon system across 22 categories, with semantic labels and theme-friendly sizing for production Flutter apps.",
   "problem": "Flutter developers building air quality and environmental monitoring applications lack a consistent, well-designed set of domain-specific icons. Using generic icons reduces the professionalism and clarity of data-heavy interfaces.",
   "role": "Designed 30+ icons covering air quality monitoring use cases, implemented the Flutter package structure, and published to pub.dev with proper documentation, versioning, and cross-platform compatibility testing.",

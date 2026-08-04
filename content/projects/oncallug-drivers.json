@@ -2,6 +2,7 @@
   "slug": "oncallug-drivers",
   "title": "OnCallUg Drivers",
   "subtitle": "Professional driver hire platform for Kampala, Uganda",
+  "client": "ONCALL DRIVERS LIMITED",
   "description": "A ride-hailing platform connecting riders with vetted professional drivers in Kampala. Features real-time GPS tracking, Mobile Money and card payments, driver verification via Thronos, and separate rider and driver apps on Google Play. Includes a marketing website and admin dashboard.",
   "problem": "Professional driver hire in Kampala relies on word-of-mouth and informal networks. Riders need vetted, reliable drivers for corporate travel, airport runs, and daily commutes, while drivers need access to premium clients without high commission fees. There is no trusted platform that handles booking, verification, payments, and trip accountability in one place.",
   "role": "Built the marketing website and admin dashboard. The site handles rider and driver onboarding, feature explanations, FAQ, safety information, and app download links. The admin dashboard manages driver applications, verification status, trip monitoring, and platform operations.",

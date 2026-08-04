@@ -6,6 +6,7 @@ export interface Project {
   slug: string;
   title: string;
   subtitle: string;
+  client?: string;
   description: string;
   problem: string;
   role: string;

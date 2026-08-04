@@ -2,6 +2,7 @@
   "slug": "coinz",
   "title": "Coinz",
   "subtitle": "Digital loyalty rewards platform",
+  "client": "SENTZEUS LIMITED",
   "description": "A dual-platform loyalty rewards system with a consumer app for earning and redeeming rewards, and a merchant dashboard for creating campaigns, managing teams, and tracking reward distribution across outlets.",
   "problem": "Businesses in East Africa need modern loyalty systems that integrate with digital payment methods. Existing solutions are either too expensive, too complex, or not adapted to the mobile-first market where WhatsApp and SMS dominate customer communication.",
   "role": "Built both the consumer-facing rewards app (dev.coinzz.club) and the merchant management dashboard (merchant.dev.coinzz.club) with campaign creation, team access controls, multi-outlet support, and real-time reward tracking.",

@@ -16,7 +16,6 @@ declare global {
         'error-callback'?: (error: string) => void;
       }) => string;
       reset: (widgetId?: string) => void;
-      remove?: (widgetId: string) => void;
     };
   }
 }
@@ -40,11 +39,11 @@ export function ContactForm() {
 
   useEffect(() => {
     if (
-      status === 'success' ||
       !turnstileReady ||
       !turnstileSiteKey ||
       !turnstileContainerRef.current ||
-      !window.turnstile
+      !window.turnstile ||
+      turnstileWidgetIdRef.current
     ) {
       return;
     }
@@ -55,25 +54,24 @@ export function ContactForm() {
       theme: 'auto',
       'expired-callback': () => {
         setErrors({ form: 'Security verification expired. Please complete the check again.' });
-        resetTurnstile();
       },
       'error-callback': () => {
         setErrors({ form: 'Security verification failed. Please try again.' });
-        resetTurnstile();
       },
     });
     turnstileWidgetIdRef.current = widgetId;
-
-    return () => {
-      if (turnstileWidgetIdRef.current) {
-        window.turnstile?.remove?.(turnstileWidgetIdRef.current);
-        turnstileWidgetIdRef.current = null;
-      }
-    };
-  }, [status, turnstileReady]);
+  }, [turnstileReady]);
 
   function resetTurnstile() {
-    window.turnstile?.reset(turnstileWidgetIdRef.current ?? undefined);
+    if (turnstileWidgetIdRef.current) {
+      window.turnstile?.reset(turnstileWidgetIdRef.current);
+    }
+  }
+
+  function handleSendAnother() {
+    setErrors({});
+    setStatus('idle');
+    resetTurnstile();
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -142,60 +140,13 @@ export function ContactForm() {
 
       setStatus('success');
       form.reset();
-      resetTurnstile();
     } catch {
       resetTurnstile();
       setStatus('error');
     }
   }
 
-  if (status === 'success') {
-    return (
-      <>
-        <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          strategy="afterInteractive"
-          onReady={() => setTurnstileReady(true)}
-        />
-        <div
-          className="rounded-xl border border-[var(--color-success-text)]/20 bg-[var(--color-success-bg)] p-6 sm:p-7"
-          role="status"
-          aria-live="polite"
-        >
-        <div className="flex items-start gap-3">
-          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-success-text)]" aria-hidden="true" />
-          <div>
-            <p className="text-sm font-semibold text-[var(--color-success-text)]">
-              Message sent successfully.
-            </p>
-            <p className="mt-1 text-sm text-[var(--color-success-text)]/80">
-              Thanks for reaching out. I&apos;ll get back to you soon.
-            </p>
-          </div>
-        </div>
-        <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[var(--color-success-text)]/15 pt-5">
-          <button
-            type="button"
-            onClick={() => {
-              setErrors({});
-              setStatus('idle');
-            }}
-            className="inline-flex items-center gap-2 rounded-md bg-[var(--color-success-text)] px-4 py-2.5 text-sm font-semibold text-[var(--color-success-bg)] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-success-text)]"
-          >
-            <MailPlus className="h-4 w-4" aria-hidden="true" />
-            Send another message
-          </button>
-          <a
-            href="mailto:paul.ochieng.dev@gmail.com"
-            className="text-sm font-medium text-[var(--color-success-text)] underline decoration-[var(--color-success-text)]/40 underline-offset-4 hover:decoration-[var(--color-success-text)]"
-          >
-            Email directly
-          </a>
-        </div>
-        </div>
-      </>
-    );
-  }
+  const isShowingForm = status !== 'success';
 
   return (
     <>
@@ -204,96 +155,138 @@ export function ContactForm() {
         strategy="afterInteractive"
         onReady={() => setTurnstileReady(true)}
       />
-      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-      <div className="hidden" aria-hidden="true">
-        <label htmlFor="website">Website</label>
-        <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
-      </div>
 
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-[var(--color-text-primary)]">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
-        />
-        {errors.name && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.name}</p>}
-      </div>
+      {status === 'success' && (
+        <div
+          className="rounded-xl border border-[var(--color-success-text)]/20 bg-[var(--color-success-bg)] p-6 sm:p-7"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-success-text)]" aria-hidden="true" />
+            <div>
+              <p className="text-sm font-semibold text-[var(--color-success-text)]">
+                Message sent successfully.
+              </p>
+              <p className="mt-1 text-sm text-[var(--color-success-text)]/80">
+                Thanks for reaching out. I&apos;ll get back to you soon.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[var(--color-success-text)]/15 pt-5">
+            <button
+              type="button"
+              onClick={handleSendAnother}
+              className="inline-flex items-center gap-2 rounded-md bg-[var(--color-success-text)] px-4 py-2.5 text-sm font-semibold text-[var(--color-success-bg)] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-success-text)]"
+            >
+              <MailPlus className="h-4 w-4" aria-hidden="true" />
+              Send another message
+            </button>
+            <a
+              href="mailto:paul.ochieng.dev@gmail.com"
+              className="text-sm font-medium text-[var(--color-success-text)] underline decoration-[var(--color-success-text)]/40 underline-offset-4 hover:decoration-[var(--color-success-text)]"
+            >
+              Email directly
+            </a>
+          </div>
+        </div>
+      )}
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text-primary)]">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
-        />
-        {errors.email && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.email}</p>}
-      </div>
+      <form
+        onSubmit={handleSubmit}
+        className={`space-y-6 ${isShowingForm ? '' : 'hidden'}`}
+        noValidate
+        aria-hidden={!isShowingForm}
+      >
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="website">Website</label>
+          <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+        </div>
 
-      <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-[var(--color-text-primary)]">
-          Subject
-        </label>
-        <input
-          type="text"
-          id="subject"
-          name="subject"
-          required
-          className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
-        />
-        {errors.subject && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.subject}</p>}
-      </div>
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-[var(--color-text-primary)]">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
+          />
+          {errors.name && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.name}</p>}
+        </div>
 
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-[var(--color-text-primary)]">
-          Message
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={5}
-          className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
-        />
-        {errors.message && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.message}</p>}
-      </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text-primary)]">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
+          />
+          {errors.email && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.email}</p>}
+        </div>
 
-      {errors.form && <p className="text-xs text-[var(--color-error)]">{errors.form}</p>}
+        <div>
+          <label htmlFor="subject" className="block text-sm font-medium text-[var(--color-text-primary)]">
+            Subject
+          </label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            required
+            className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
+          />
+          {errors.subject && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.subject}</p>}
+        </div>
 
-      <div className="space-y-2">
-        {turnstileSiteKey ? (
-          <div ref={turnstileContainerRef} aria-label="Security verification" />
-        ) : (
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-[var(--color-text-primary)]">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows={5}
+            className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
+          />
+          {errors.message && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.message}</p>}
+        </div>
+
+        {errors.form && <p className="text-xs text-[var(--color-error)]">{errors.form}</p>}
+
+        <div className="space-y-2">
+          {turnstileSiteKey ? (
+            <div ref={turnstileContainerRef} aria-label="Security verification" />
+          ) : (
+            <p className="text-xs text-[var(--color-error)]">
+              Security verification is not configured. Please email me directly instead.
+            </p>
+          )}
+          <p className="text-xs text-[var(--color-text-tertiary)]">
+            This security check helps prevent automated spam. See the <a href="/privacy" className="underline underline-offset-2">Privacy Policy</a> for details.
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          className="inline-flex items-center rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-accent-text)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:opacity-50"
+        >
+          {status === 'submitting' ? 'Sending...' : 'Send Message'}
+        </button>
+
+        {status === 'error' && (
           <p className="text-xs text-[var(--color-error)]">
-            Security verification is not configured. Please email me directly instead.
+            Something went wrong. Please try again or email me directly.
           </p>
         )}
-        <p className="text-xs text-[var(--color-text-tertiary)]">
-          This security check helps prevent automated spam. See the <a href="/privacy" className="underline underline-offset-2">Privacy Policy</a> for details.
-        </p>
-      </div>
-
-      <button
-        type="submit"
-        disabled={status === 'submitting'}
-        className="inline-flex items-center rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-accent-text)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:opacity-50"
-      >
-        {status === 'submitting' ? 'Sending...' : 'Send Message'}
-      </button>
-
-      {status === 'error' && (
-        <p className="text-xs text-[var(--color-error)]">
-          Something went wrong. Please try again or email me directly.
-        </p>
-      )}
       </form>
     </>
   );

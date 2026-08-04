@@ -2,6 +2,7 @@
   "slug": "dawa-ug",
   "title": "Dawa.ug",
   "subtitle": "Mobile-first marketplace experience for Uganda",
+  "client": "Dawa",
   "description": "A responsive marketplace interface for buying, selling, and discovering products in Uganda. The frontend brings listings, search, wishlists, buyer-seller conversations, and trust signals together in a flow designed for mobile-first users.",
   "problem": "The marketplace needed to feel simple and trustworthy on the devices and connections many Ugandan users rely on. Buyers had to scan listings quickly, while sellers needed a low-friction path from posting to conversation.",
   "role": "Focused on the frontend implementation: responsive listing and search views, product detail pages, user-facing profile and wishlist flows, messaging interfaces, and mobile interaction patterns.",

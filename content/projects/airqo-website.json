@@ -2,6 +2,7 @@
   "slug": "airqo-website",
   "title": "AirQo Website",
   "subtitle": "Multilingual web platform serving African communities",
+  "client": "AirQo",
   "description": "The main public-facing website for AirQo, built to serve communities across Africa in over 40 languages including Luganda, Ateso, and Runyankole. A comprehensive product marketing site with 8+ distinct product pages, developer documentation, and community resources.",
   "problem": "AirQo needed a modern, accessible website that communicates its mission and products to diverse audiences, from community members checking local air quality to researchers accessing documentation. The site needed to perform well on low-bandwidth connections and support African languages with no existing digital tooling.",
   "role": "Contributed to the frontend development of the AirQo website, building responsive components, implementing internationalization supporting 40+ languages including African languages, and optimizing performance for constrained networks.",

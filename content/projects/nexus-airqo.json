@@ -2,6 +2,7 @@
   "slug": "nexus-airqo",
   "title": "AirQo Nexus",
   "subtitle": "Real-time air quality data platform",
+  "client": "AirQo",
   "description": "The interactive analytics platform for AirQo, visualizing real-time and historical air quality data from Binos monitoring stations across African cities. Provides dashboards, interactive maps, and historical trend analysis for researchers, city planners, and communities.",
   "problem": "Air quality data in Africa is sparse, fragmented, and difficult to access. Communities, researchers, and policymakers need a unified platform to visualize real-time and historical pollution data to make informed decisions about environmental health.",
   "role": "Contributed to the AirQo Nexus platform development, building data visualization components, real-time data pipelines, and the interactive map interface for exploring air quality monitoring stations across Africa.",

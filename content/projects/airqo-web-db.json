@@ -2,6 +2,7 @@
   "slug": "airqo-web-db",
   "title": "AirQo Website API",
   "subtitle": "Backend infrastructure for the AirQo website",
+  "client": "AirQo",
   "description": "The backend API powering the AirQo website. A content management and delivery layer that serves pages, research publications, events, team information, and organizational content. Built with Django REST Framework to keep the website fast, maintainable, and easy to extend.",
   "problem": "The AirQo website needed a clean, well-structured backend to manage and deliver content across pages, blog posts, research publications, events, and team profiles. The existing setup lacked proper API versioning, consistent data structures, and the developer-friendly tooling needed to iterate quickly.",
   "role": "Built the V2 API layer including content endpoints for pages, publications, events, and team data. Implemented caching, pagination, slug-based routing, and OpenAPI documentation to make the backend easy to consume and extend.",

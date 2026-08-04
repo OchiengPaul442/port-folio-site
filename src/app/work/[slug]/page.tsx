@@ -22,13 +22,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const project = getProjectBySlug(slug);
   if (!project) return {};
 
+  const clientSuffix = project.client ? ` for ${project.client}` : '';
+
   return {
-    title: `${project.title} Case Study | Paul Ochieng`,
-    description: project.description,
+    title: `${project.title}${clientSuffix} Case Study | Paul Ochieng`,
+    description: project.client
+      ? `${project.description} Built for ${project.client}.`
+      : project.description,
     keywords: project.stack.concat(['Paul Ochieng Levi', 'portfolio', 'case study']),
     openGraph: {
-      title: `${project.title} | Paul Ochieng Levi`,
-      description: project.description,
+      title: `${project.title}${clientSuffix} | Paul Ochieng Levi`,
+      description: project.client
+        ? `${project.description} Built for ${project.client}.`
+        : project.description,
       type: 'article',
       url: `/work/${slug}`,
       siteName: 'Paul Ochieng Levi',
@@ -38,8 +44,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${project.title} | Paul Ochieng Levi`,
-      description: project.description,
+      title: `${project.title}${clientSuffix} | Paul Ochieng Levi`,
+      description: project.client
+        ? `${project.description} Built for ${project.client}.`
+        : project.description,
       creator: '@OchiengTech',
     },
     alternates: {
@@ -63,6 +71,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
         <CaseStudyLayout
           title={project.title}
           subtitle={project.subtitle}
+          client={project.client}
           status={project.status}
           stack={project.stack}
           repo={project.repo}

@@ -9,6 +9,7 @@ interface ProjectCardProps {
   slug: string;
   title: string;
   subtitle: string;
+  client?: string;
   status: string;
   stack: string[];
   image?: string;
@@ -18,7 +19,7 @@ interface ProjectCardProps {
 
 const blurPlaceholder = 'data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAACQAQCdASoBAAEAAkA4JYgCdAEO/hepgAAA/v3Mn/gP3MpSh6J/OaE7L/63rD0X+7Z3f+b7f/67rL0X+7Z3f+b7f/67';
 
-export function ProjectCard({ slug, title, subtitle, status, stack, image, category, tags }: ProjectCardProps) {
+export function ProjectCard({ slug, title, subtitle, client, status, stack, image, category, tags }: ProjectCardProps) {
   const [previewStarted, setPreviewStarted] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -93,6 +94,11 @@ export function ProjectCard({ slug, title, subtitle, status, stack, image, categ
             <p className="mt-1 text-sm text-[var(--color-text-secondary)] transition-colors duration-300 group-hover:text-[var(--color-text-primary)]">
               {subtitle}
             </p>
+            {client && (
+              <p className="mt-1.5 text-xs font-medium text-[var(--color-text-tertiary)]">
+                Client: {client}
+              </p>
+            )}
           </div>
           <span
             className={`shrink-0 flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${
