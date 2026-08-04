@@ -77,9 +77,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className="h-full antialiased"
+      className="h-full antialiased overflow-x-hidden"
     >
-      <body className="site-shell min-h-full flex flex-col">
+      <body className="site-shell min-h-full flex flex-col overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrollProvider>
             <a href="#main-content" className="skip-link">

@@ -14,6 +14,7 @@ type TurnstileVerification = {
   success: boolean;
   hostname?: string;
   action?: string;
+  challenge_ts?: string;
   'error-codes'?: string[];
 };
 
@@ -169,6 +170,12 @@ export async function POST(request: Request) {
     );
   }
 
+  console.log('Turnstile verification succeeded', {
+    hostname: verification.hostname,
+    action: verification.action,
+    challenge_ts: verification.challenge_ts,
+  });
+
   const apiKey = readEnv('RESEND_API_KEY');
   const to = readEnv('CONTACT_TO_EMAIL') || 'paul.ochieng.dev@gmail.com';
   const configuredFrom = readEnv('CONTACT_FROM_EMAIL');
@@ -225,6 +232,8 @@ export async function POST(request: Request) {
       console.error('Resend rejected contact email:', response.status, providerError);
       return NextResponse.json({ error: 'Email delivery is temporarily unavailable.' }, { status: 502 });
     }
+
+    console.log('Contact email sent successfully', { to, from, name, email });
   } catch (error) {
     console.error('Contact email delivery failed:', error);
     return NextResponse.json({ error: 'Email delivery is temporarily unavailable.' }, { status: 502 });

@@ -12,6 +12,8 @@ declare global {
         sitekey: string;
         action: string;
         theme: 'auto';
+        'expired-callback'?: (token: string) => void;
+        'error-callback'?: (error: string) => void;
       }) => string;
       reset: (widgetId?: string) => void;
       remove?: (widgetId: string) => void;
@@ -51,6 +53,14 @@ export function ContactForm() {
       sitekey: turnstileSiteKey,
       action: 'contact_form',
       theme: 'auto',
+      'expired-callback': () => {
+        setErrors({ form: 'Security verification expired. Please complete the check again.' });
+        resetTurnstile();
+      },
+      'error-callback': () => {
+        setErrors({ form: 'Security verification failed. Please try again.' });
+        resetTurnstile();
+      },
     });
     turnstileWidgetIdRef.current = widgetId;
 

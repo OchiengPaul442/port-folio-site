@@ -40,6 +40,8 @@
 /* Native scrolling keeps route changes and browser translation stable. */
 html { scroll-behavior: smooth; }
 html, body { min-height: 100%; overflow-x: hidden; }
+html::-webkit-scrollbar { height: 0; width: 0; }
+html { scrollbar-width: none; }
 
 /* Custom scrollbar: matches theme accent color */
 * {
@@ -100,8 +102,6 @@ body {
   position: relative;
   z-index: 1;
   min-height: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
 }
 
 /* Click feedback spark */
