@@ -2,7 +2,6 @@
   "slug": "aeris-aq",
   "title": "AERIS-AQ",
   "subtitle": "AI agent for air quality analysis across African cities",
-  "client": "AirQo",
   "description": "A conversational AI agent that synthesizes air quality data from seven sources across Africa and translates it into plain-language health guidance. Ask questions in natural language, get source-aware answers about pollution levels, trends, and health recommendations.",
   "problem": "Air quality data across African cities is fragmented across seven providers: WAQI, AirQo, OpenMeteo, Carbon Intensity, DEFRA, UBA, and NSW. Each has different formats, update frequencies, and coverage areas. Communities and policymakers need a single interface that combines these sources into actionable answers.",
   "role": "Built the complete system: Python backend with LangGraph agent orchestration, seven-source data integration layer, conversational session management, and a TypeScript/React frontend with chat interface, session history, and animated UI.",
