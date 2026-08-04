@@ -5,6 +5,8 @@ import { CaseStudyLayout } from '@/components/CaseStudyLayout';
 import { ProjectVisual } from '@/components/ProjectVisual';
 import { getProjectBySlug, getAllProjects } from '@/lib/projects';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { projectBreadcrumbs } from '@/lib/seo';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -21,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return {};
 
   return {
-    title: project.title,
+    title: `${project.title} Case Study | Paul Ochieng`,
     description: project.description,
     keywords: project.stack.concat(['Paul Ochieng Levi', 'portfolio', 'case study']),
     openGraph: {
@@ -31,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `/work/${slug}`,
       siteName: 'Paul Ochieng Levi',
       images: project.image
-        ? [{ url: project.image, width: 1200, height: 750, alt: `${project.title} screenshot` }]
+        ? [{ url: new URL(project.image, SITE_URL).toString(), width: 1200, height: 750, alt: `${project.title} application interface` }]
         : [],
     },
     twitter: {
@@ -55,6 +57,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
   }
 
   return (
+    <>
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <CaseStudyLayout
@@ -157,16 +160,32 @@ export default async function CaseStudyPage({ params }: PageProps) {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'CreativeWork',
+            '@id': `${SITE_URL}/work/${project.slug}#project`,
             name: project.title,
+            headline: project.title,
             description: project.description,
             url: `${SITE_URL}/work/${project.slug}`,
-            image: project.image ? `${SITE_URL}${project.image}` : undefined,
-            author: { '@type': 'Person', name: 'Paul Ochieng Levi', url: SITE_URL },
+            image: project.image
+              ? new URL(project.image, SITE_URL).toString()
+              : undefined,
+            author: {
+              '@id': `${SITE_URL}/#person`,
+            },
+            creator: {
+              '@id': `${SITE_URL}/#person`,
+            },
             keywords: [...(project.tags ?? []), ...project.stack].join(', '),
-            isPartOf: { '@type': 'WebSite', name: 'ochiengpaul.com', url: SITE_URL },
-          }),
+            inLanguage: 'en-UG',
+            isPartOf: {
+              '@id': `${SITE_URL}/#website`,
+            },
+            ...(project.repo ? { codeRepository: project.repo } : {}),
+            ...(project.liveUrl ? { sameAs: project.liveUrl } : {}),
+          }).replace(/</g, '\\u003c'),
         }}
       />
+      <JsonLd data={projectBreadcrumbs(project.slug, project.title)} />
     </section>
+    </>
   );
 }

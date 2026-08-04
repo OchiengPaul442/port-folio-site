@@ -17,7 +17,7 @@ export function ProjectVisual({ title, stack, status, image, priority = false }:
         <div className="relative aspect-[16/10] w-full">
           <Image
             src={image}
-            alt={`${title} screenshot`}
+            alt={`${title} application interface`}
             fill
             priority={priority}
             placeholder="blur"

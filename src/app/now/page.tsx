@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { nowBreadcrumbs } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Now',
+  title: 'What Paul Ochieng Is Building Now',
   description:
     'What Paul Ochieng Levi is currently building, learning, and exploring. Active projects, current focus areas, and open problems in software engineering.',
   openGraph: {
-    title: 'Now | Paul Ochieng Levi',
+    title: 'What Paul Ochieng Is Building Now',
     description: 'Current projects and focus areas of a full-stack software engineer in Kampala, Uganda.',
     url: '/now',
   },
@@ -17,6 +19,7 @@ export const metadata: Metadata = {
 
 export default function NowPage() {
   return (
+    <>
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <ScrollReveal>
@@ -92,5 +95,7 @@ export default function NowPage() {
         </div>
       </div>
     </section>
+    <JsonLd data={nowBreadcrumbs()} />
+    </>
   );
 }

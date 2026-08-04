@@ -1,8 +1,45 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ProjectCard } from '@/components/ProjectCard';
 import { getFeaturedProjects } from '@/lib/projects';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { GitHubStats } from '@/components/GitHubStats';
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+  SOCIAL_PROFILES,
+} from '@/lib/site';
+
+export const metadata: Metadata = {
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} — Full-Stack Software Engineer`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ['/twitter-image'],
+  },
+};
 
 const capabilities = [
   ['Product engineering', 'From problem to production. I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.'],
@@ -40,12 +77,15 @@ export default async function Home() {
 
                 {/* Main heading: asymmetric, weight contrast */}
             <div className="mt-10 reveal-up-delay">
-              <h1 className="text-6xl font-light tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-7xl lg:text-8xl">
-                Paul
+              <h1 className="text-6xl tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-7xl lg:text-8xl">
+                <span className="block font-light">Paul</span>
+                <span className="-mt-2 block font-bold tracking-[-0.05em] text-[var(--color-accent)] sm:-mt-4">
+                  Ochieng.
+                </span>
               </h1>
-              <h1 className="text-6xl font-bold tracking-[-0.05em] text-[var(--color-accent)] sm:text-7xl lg:text-8xl -mt-2 sm:-mt-4">
-                Ochieng.
-              </h1>
+              <p className="mt-4 text-base font-medium text-[var(--color-text-secondary)] sm:text-lg">
+                Full-Stack Software Engineer in Kampala, Uganda
+              </p>
             </div>
 
             {/* Statement + CTAs */}
@@ -168,6 +208,74 @@ export default async function Home() {
           <GitHubStats />
         </div>
       </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'Person',
+                '@id': `${SITE_URL}/#person`,
+                name: 'Paul Ochieng Levi',
+                alternateName: ['Paul Ochieng', 'Ochieng Paul'],
+                url: SITE_URL,
+                jobTitle: 'Full-Stack Software Engineer',
+                worksFor: {
+                  '@type': 'Organization',
+                  name: 'AirQo',
+                },
+                address: {
+                  '@type': 'PostalAddress',
+                  addressLocality: 'Kampala',
+                  addressCountry: 'UG',
+                },
+                image: `${SITE_URL}/brand/logo-transparent-512.png`,
+                sameAs: SOCIAL_PROFILES,
+                knowsAbout: [
+                  'Full-stack software engineering',
+                  'Next.js',
+                  'React',
+                  'TypeScript',
+                  'Python',
+                  'FastAPI',
+                  'Django',
+                  'Applied AI',
+                  'Developer tools',
+                  'Environmental technology',
+                  'Air quality data systems',
+                ],
+              },
+              {
+                '@type': 'WebSite',
+                '@id': `${SITE_URL}/#website`,
+                name: 'Paul Ochieng Levi',
+                alternateName: 'ochiengpaul.com',
+                url: SITE_URL,
+                inLanguage: 'en-UG',
+                description: SITE_DESCRIPTION,
+                publisher: {
+                  '@id': `${SITE_URL}/#person`,
+                },
+              },
+              {
+                '@type': 'ProfilePage',
+                '@id': `${SITE_URL}/#profilepage`,
+                url: SITE_URL,
+                name: SITE_TITLE,
+                description: SITE_DESCRIPTION,
+                inLanguage: 'en-UG',
+                isPartOf: {
+                  '@id': `${SITE_URL}/#website`,
+                },
+                mainEntity: {
+                  '@id': `${SITE_URL}/#person`,
+                },
+              },
+            ],
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
     </>
   );
 }

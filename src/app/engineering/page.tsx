@@ -2,16 +2,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { engineeringBreadcrumbs } from '@/lib/seo';
 
 const exceedsProfileUrl = 'https://myteam.exceeds.ai/profile/ochiengpaul442';
 
 export const metadata: Metadata = {
-  title: 'Engineering Profile',
+  title: 'Engineering Profile and Open-Source Work | Paul Ochieng',
   description:
     'Public engineering profile for Paul Ochieng Levi, including selected software engineering work and professional activity signals.',
   openGraph: {
-    title: `Engineering Profile | ${SITE_NAME}`,
-    description: 'A source-linked overview of Paul Ochieng Levi’s engineering practice and public work.',
+    title: `Engineering Profile and Open-Source Work | ${SITE_NAME}`,
+    description: 'A source-linked overview of Paul Ochieng Levi\'s engineering practice and public work.',
     url: '/engineering',
   },
   alternates: { canonical: '/engineering' },
@@ -19,6 +21,7 @@ export const metadata: Metadata = {
 
 export default function EngineeringPage() {
   return (
+    <>
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <div className="max-w-2xl">
@@ -75,6 +78,8 @@ export default function EngineeringPage() {
           }).replace(/</g, '\\u003c'),
         }}
       />
+      <JsonLd data={engineeringBreadcrumbs()} />
     </section>
+    </>
   );
 }

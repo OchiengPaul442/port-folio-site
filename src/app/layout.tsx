@@ -1,15 +1,9 @@
 import type { Metadata } from 'next';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import { ClickFeedback } from '@/components/ClickFeedback';
-import { LanguageSelector } from '@/components/LanguageSelector';
 import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
-import { ScrollProgress } from '@/components/ScrollProgress';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { CustomCursor } from '@/components/CustomCursor';
-import { Analytics } from '@/components/Analytics';
-import { ConsentBanner } from '@/components/ConsentBanner';
-import { PortfolioChatWidget } from '@/components/PortfolioChatWidget';
+import { ClientProviders } from '@/components/ClientProviders';
 import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME, SITE_TITLE, SITE_URL, SOCIAL_PROFILES } from '@/lib/site';
 import './globals.css';
 import '@/components/portfolio-chat.css';
@@ -19,7 +13,7 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   category: 'technology',
   title: {
-    default: 'Paul Ochieng Levi | Full-Stack Software Engineer',
+    default: SITE_TITLE,
     template: '%s | Paul Ochieng Levi',
   },
   description: SITE_DESCRIPTION,
@@ -31,14 +25,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: SITE_URL,
-    siteName: 'Paul Ochieng Levi',
-    title: 'Paul Ochieng Levi | Full-Stack Software Engineer',
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE_TITLE }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Paul Ochieng Levi | Full-Stack Software Engineer',
+    title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     creator: '@OchiengTech',
     images: [{ url: '/twitter-image', width: 1200, height: 630, alt: SITE_TITLE }],
@@ -54,8 +48,10 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+  },
   alternates: {
-    canonical: SITE_URL,
     languages: {
       'en-UG': SITE_URL,
     },
@@ -84,23 +80,17 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <body className="site-shell min-h-full flex flex-col">
-        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScrollProvider>
             <a href="#main-content" className="skip-link">
               Skip to main content
             </a>
-            <ScrollProgress />
-            <ClickFeedback />
-            <CustomCursor />
+            <ClientProviders />
             <Navigation />
             <main id="main-content" className="flex-1 pt-16">
               {children}
             </main>
             <Footer />
-            <LanguageSelector />
-            <ConsentBanner />
-            <PortfolioChatWidget />
           </SmoothScrollProvider>
         </ThemeProvider>
         <script
@@ -131,14 +121,6 @@ export default function RootLayout({
                   inLanguage: 'en-UG',
                   description: SITE_DESCRIPTION,
                   publisher: { '@id': `${SITE_URL}/#person` },
-                },
-                {
-                  '@type': 'ProfilePage',
-                  '@id': `${SITE_URL}/#profilepage`,
-                  url: SITE_URL,
-                  name: SITE_TITLE,
-                  isPartOf: { '@id': `${SITE_URL}/#website` },
-                  mainEntity: { '@id': `${SITE_URL}/#person` },
                 },
               ],
             }),

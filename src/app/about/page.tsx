@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import { Timeline } from '@/components/Timeline';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { aboutBreadcrumbs } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'About',
+  title: 'About Paul Ochieng | Software Engineer in Uganda',
   description:
     'About Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience with AirQo, React, Next.js, Python, and Django.',
   openGraph: {
-    title: 'About Paul Ochieng Levi',
+    title: 'About Paul Ochieng | Software Engineer in Uganda',
     description: 'Full-stack software engineer in Kampala, Uganda building reliable web products and developer tools.',
     url: '/about',
   },
@@ -39,6 +41,7 @@ const experience = [
 
 export default function AboutPage() {
   return (
+    <>
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <ScrollReveal>
@@ -111,5 +114,7 @@ export default function AboutPage() {
         </div>
       </div>
     </section>
+    <JsonLd data={aboutBreadcrumbs()} />
+    </>
   );
 }

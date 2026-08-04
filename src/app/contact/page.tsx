@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import { ContactForm } from '@/components/ContactForm';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { contactBreadcrumbs } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: 'Contact Paul Ochieng | Full-Stack Software Engineer',
   description:
     'Get in touch with Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda. Open to full-time roles, remote engineering, climate-tech collaboration, and consulting.',
   openGraph: {
-    title: 'Contact Paul Ochieng Levi',
+    title: 'Contact Paul Ochieng | Full-Stack Software Engineer',
     description: 'Full-stack software engineer open to opportunities and collaboration.',
     url: '/contact',
   },
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
+    <>
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <ScrollReveal>
@@ -120,5 +123,7 @@ export default function ContactPage() {
         </ScrollReveal>
       </div>
     </section>
+    <JsonLd data={contactBreadcrumbs()} />
+    </>
   );
 }

@@ -1,24 +1,28 @@
 export const SITE_URL = 'https://www.ochiengpaul.com';
 export const SITE_NAME = 'Paul Ochieng Levi';
-export const SITE_TITLE = 'Paul Ochieng Levi | Full-Stack Software Engineer';
+export const SITE_TITLE =
+  'Full-Stack Engineer in Kampala, Uganda | Paul Ochieng';
 export const SITE_DESCRIPTION =
-  'Full-stack software engineer in Kampala, Uganda building reliable web products, APIs, developer tools, and data platforms for real-world users.';
+  'Paul Ochieng is a full-stack software engineer in Kampala, Uganda building reliable Next.js applications, Python APIs, AI tools, and data platforms.';
 
 export const SITE_KEYWORDS = [
   'Paul Ochieng Levi',
+  'Paul Ochieng',
   'software engineer Uganda',
+  'software engineer Kampala',
+  'full-stack engineer Uganda',
   'full-stack developer Kampala',
-  'React Next.js developer',
+  'Next.js developer Uganda',
+  'React developer Uganda',
   'TypeScript developer',
   'Python developer',
-  'web developer Uganda',
-  'backend API developer',
-  'frontend engineer',
+  'FastAPI developer',
+  'Django developer',
+  'AI developer Uganda',
   'developer tools',
   'environmental technology',
+  'air quality software',
   'data platforms',
-  'AI engineer',
-  'portfolio',
 ];
 
 export const SOCIAL_PROFILES = [

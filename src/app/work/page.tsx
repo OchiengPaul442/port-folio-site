@@ -2,13 +2,15 @@ import type { Metadata } from 'next';
 import { ProjectCard } from '@/components/ProjectCard';
 import { getAllProjects } from '@/lib/projects';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { workBreadcrumbs } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Work',
+  title: 'Software Projects and Case Studies | Paul Ochieng',
   description:
     'Projects and case studies by Paul Ochieng Levi. Full-stack products, developer tools, AI agents, and open-source contributions built with React, Next.js, Python, and Django.',
   openGraph: {
-    title: 'Work | Paul Ochieng Levi',
+    title: 'Software Projects and Case Studies | Paul Ochieng',
     description: 'Full-stack projects including AI agents, SaaS platforms, and developer tools.',
     url: '/work',
   },
@@ -26,6 +28,7 @@ export default function WorkPage() {
   ];
 
   return (
+    <>
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <ScrollReveal>
@@ -73,5 +76,7 @@ export default function WorkPage() {
         </section>
       </div>
     </section>
+    <JsonLd data={workBreadcrumbs()} />
+    </>
   );
 }
