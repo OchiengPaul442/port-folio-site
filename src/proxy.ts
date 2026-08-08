@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getSiteOrigin } from '@/lib/site';
 
 export function proxy(request: NextRequest) {
   const hostname = request.nextUrl.hostname.toLowerCase();
   const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0].trim();
   const protocol = forwardedProtocol || request.nextUrl.protocol.replace(':', '');
   const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  let configuredOrigin: URL | null = null;
-
-  if (configuredSiteUrl) {
-    try {
-      configuredOrigin = new URL(configuredSiteUrl);
-    } catch {
-      // Fall back to the incoming host if the deployment variable is invalid.
-    }
-  }
+  const configuredOrigin = getSiteOrigin(configuredSiteUrl);
 
   const expectedProtocol =
     configuredOrigin?.protocol.replace(':', '') ||

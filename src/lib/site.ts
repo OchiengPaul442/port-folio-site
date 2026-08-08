@@ -1,6 +1,23 @@
-const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+export function getSiteOrigin(value?: string): URL | null {
+  const configuredSiteUrl = value?.trim();
+  if (!configuredSiteUrl) return null;
 
-export const SITE_URL = (configuredSiteUrl || 'http://localhost:3000').replace(/\/+$/, '');
+  // Deployment providers often expose a hostname without a scheme. URL
+  // requires an absolute URL, so treat a bare hostname as HTTPS.
+  const absoluteUrl = /^[a-z][a-z\d+.-]*:\/\//i.test(configuredSiteUrl)
+    ? configuredSiteUrl
+    : `https://${configuredSiteUrl}`;
+
+  try {
+    return new URL(absoluteUrl);
+  } catch {
+    return null;
+  }
+}
+
+const configuredSiteOrigin = getSiteOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+
+export const SITE_URL = configuredSiteOrigin?.origin || 'http://localhost:3000';
 export const SITE_NAME = 'Paul Ochieng Levi';
 export const SITE_TITLE =
   'Full-Stack Engineer in Kampala, Uganda | Paul Ochieng';
