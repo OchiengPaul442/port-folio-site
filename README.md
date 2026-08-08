@@ -78,6 +78,9 @@ RESEND_API_KEY=re_...
 CONTACT_TO_EMAIL=you@example.com
 CONTACT_FROM_EMAIL=noreply@yourdomain.com
 
+# Public site origin used for canonical URLs, metadata, and sitemap entries
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+
 # Cloudflare Turnstile
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
 TURNSTILE_SECRET_KEY=...
@@ -89,6 +92,9 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 # AI Portfolio Agent (optional)
 PORTFOLIO_AGENT_URL=https://your-agent-url.com
 ```
+
+Set `NEXT_PUBLIC_SITE_URL` in the production deployment environment as well as
+locally. The value should be the single HTTPS origin you want Google to index.
 
 ### Development
 

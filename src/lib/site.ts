@@ -1,4 +1,6 @@
-export const SITE_URL = 'https://www.ochiengpaul.com';
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+export const SITE_URL = (configuredSiteUrl || 'http://localhost:3000').replace(/\/+$/, '');
 export const SITE_NAME = 'Paul Ochieng Levi';
 export const SITE_TITLE =
   'Full-Stack Engineer in Kampala, Uganda | Paul Ochieng';

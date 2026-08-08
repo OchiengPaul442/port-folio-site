@@ -9,6 +9,10 @@ export const metadata: Metadata = {
     url: '/terms',
   },
   alternates: { canonical: '/terms' },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {
