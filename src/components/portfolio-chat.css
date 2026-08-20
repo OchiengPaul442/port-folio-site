@@ -125,11 +125,14 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
 .portfolio-chat-continue { display: inline-flex; align-items: center; gap: .4rem; margin-top: .6rem; padding: .4rem .85rem; border: 1px solid color-mix(in srgb, var(--color-accent) 50%, var(--color-border)); border-radius: 999px; background: transparent; color: var(--color-accent); font: 600 .72rem var(--font-mono); letter-spacing: .02em; cursor: pointer; transition: all .2s ease; }.portfolio-chat-continue:hover:not(:disabled) { background: var(--color-accent); color: var(--color-accent-text); border-color: var(--color-accent); }.portfolio-chat-continue:disabled { opacity: .5; cursor: not-allowed; }
 .portfolio-chat-caret { display: inline-block; width: .42rem; height: 1em; margin-left: .16rem; vertical-align: -.14em; border-radius: .1rem; background: var(--color-accent); animation: portfolio-chat-caret .85s steps(1, end) infinite; }
 @keyframes portfolio-chat-caret { 50% { opacity: 0; } }
-.portfolio-chat-skeleton { display: grid; gap: .42rem; width: 10rem; padding: .12rem 0; }
-.portfolio-chat-skeleton i { display: block; height: .45rem; border-radius: 999px; background: linear-gradient(90deg, var(--color-bg-tertiary) 20%, color-mix(in srgb, var(--color-accent) 22%, var(--color-bg-tertiary)) 50%, var(--color-bg-tertiary) 80%); background-size: 220% 100%; animation: portfolio-chat-shimmer 1.35s ease-in-out infinite; }
-.dark .portfolio-chat-skeleton i { background: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-tertiary)) 20%, color-mix(in srgb, var(--color-accent) 45%, var(--color-bg-tertiary)) 50%, color-mix(in srgb, var(--color-accent) 12%, var(--color-bg-tertiary)) 80%); box-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 15%, transparent); }
-.portfolio-chat-skeleton i:nth-child(1) { width: 82%; }.portfolio-chat-skeleton i:nth-child(2) { width: 100%; animation-delay: .08s; }.portfolio-chat-skeleton i:nth-child(3) { width: 58%; animation-delay: .16s; }
-@keyframes portfolio-chat-shimmer { 0% { background-position: 100% 0; opacity: .55; } 50% { opacity: 1; } 100% { background-position: -100% 0; opacity: .55; } }
+.portfolio-chat-thinking { display: inline-flex; align-items: center; gap: .5rem; color: var(--color-text-secondary); font-size: .83rem; line-height: 1.58; }
+.portfolio-chat-thinking-text { background: linear-gradient(90deg, var(--color-text-secondary) 0%, var(--color-accent) 50%, var(--color-text-secondary) 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: portfolio-chat-shimmer-text 1.8s linear infinite; }
+@keyframes portfolio-chat-shimmer-text { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.portfolio-chat-thinking-dots { display: inline-flex; gap: .18rem; }
+.portfolio-chat-thinking-dots i { width: .3rem; height: .3rem; border-radius: 50%; background: var(--color-accent); animation: portfolio-chat-dot 1.2s ease-in-out infinite; }
+.portfolio-chat-thinking-dots i:nth-child(2) { animation-delay: .15s; }
+.portfolio-chat-thinking-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes portfolio-chat-dot { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-2px); } }
 .portfolio-chat-suggestions { display: flex; flex-wrap: wrap; gap: .45rem; margin: -.15rem 0 1.05rem 1.9rem; }
 .portfolio-chat-suggestions button { padding: .45rem .65rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-text-secondary); font: .68rem var(--font-mono); cursor: pointer; transition: border-color .2s ease, color .2s ease, background .2s ease; }
 .portfolio-chat-suggestions button:hover { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 9%, transparent); color: var(--color-accent); }
@@ -193,4 +196,4 @@ body:has(.portfolio-chat-panel) .language-selector-root { opacity: 0; pointer-ev
 @keyframes portfolio-chat-confetti-fall { 0% { opacity: 1; transform: translateY(-30px) rotate(0deg); } 100% { opacity: 0; transform: translateY(200px) rotate(720deg); } }
 @keyframes portfolio-chat-flash-pop { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1); } }
 
-@media (prefers-reduced-motion: reduce) { .portfolio-chat-panel { animation: none; } .portfolio-chat-launcher:hover, .portfolio-chat-send:hover:not(:disabled) { transform: none; } .portfolio-chat-skeleton i { animation: none; } .portfolio-chat-easter-egg { display: none; } .portfolio-chat-sparkle, .portfolio-chat-emoji, .portfolio-chat-confetti, .portfolio-chat-flash { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .portfolio-chat-panel { animation: none; } .portfolio-chat-launcher:hover, .portfolio-chat-send:hover:not(:disabled) { transform: none; } .portfolio-chat-thinking-text, .portfolio-chat-thinking-dots i { animation: none; } .portfolio-chat-easter-egg { display: none; } .portfolio-chat-sparkle, .portfolio-chat-emoji, .portfolio-chat-confetti, .portfolio-chat-flash { animation: none; } }

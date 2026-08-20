@@ -21,6 +21,7 @@ type AgentStatus = 'checking' | 'ready' | 'warming' | 'offline';
 const MAX_LOCAL_MESSAGES = 50;
 const SUGGESTIONS = ['What has Paul built?', 'Tell me about his AI work', 'How can we collaborate?'];
 const WARMUP_MESSAGES = ['Waking up the assistant...', 'Connecting to the portfolio agent...', 'Preparing your response...'];
+const THINKING_MESSAGES = ['Thinking…', 'Searching the site…', 'Reading sources…', 'Writing…'];
 const INITIAL_MESSAGE: Message = {
   id: 'welcome',
   role: 'assistant',
@@ -314,6 +315,7 @@ export function PortfolioChatWidget() {
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [agentStatus, setAgentStatus] = useState<AgentStatus>('checking');
   const [warmupIndex, setWarmupIndex] = useState(0);
+  const [thinkingIndex, setThinkingIndex] = useState(0);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sparklePositions, setSparklePositions] = useState<{ left: number; delay: number }[]>([]);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
@@ -438,6 +440,12 @@ export function PortfolioChatWidget() {
     const timer = window.setInterval(() => setWarmupIndex((current) => (current + 1) % WARMUP_MESSAGES.length), 1800);
     return () => window.clearInterval(timer);
   }, [agentStatus]);
+
+  useEffect(() => {
+    if (!loading) return;
+    const timer = window.setInterval(() => setThinkingIndex((current) => (current + 1) % THINKING_MESSAGES.length), 1800);
+    return () => window.clearInterval(timer);
+  }, [loading]);
 
   useEffect(() => {
     const feed = feedRef.current;
@@ -731,7 +739,7 @@ export function PortfolioChatWidget() {
                 <div className="portfolio-chat-message-body">
                   <span className="portfolio-chat-message-label">{message.role === 'assistant' ? 'Assistant' : 'You'}</span>
                   <div className="portfolio-chat-message-content">
-                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <p><span className="portfolio-chat-skeleton" role="status" aria-label="Assistant is preparing a response"><i /><i /><i /></span></p>}
+                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <div className="portfolio-chat-thinking" role="status" aria-label="Assistant is preparing a response"><span className="portfolio-chat-thinking-dots" aria-hidden="true"><i /><i /><i /></span><span className="portfolio-chat-thinking-text">{THINKING_MESSAGES[thinkingIndex]}</span></div>}
                   </div>
                   {message.role === 'assistant' && message.truncated && message.continue_token && !loading && (
                     <button className="portfolio-chat-continue" type="button" onClick={() => message.continue_token && handleContinue(message.continue_token, message.id)} disabled={loading}>

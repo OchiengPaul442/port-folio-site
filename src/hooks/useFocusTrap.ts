@@ -38,6 +38,10 @@ export function useFocusTrap(
       focusTarget?.focus();
     });
 
+    // Capture the return-focus target at setup time so the cleanup closure
+    // uses a stable reference (avoids react-hooks/exhaustive-deps warning).
+    const returnTarget = returnFocusRef?.current ?? null;
+
     function getFocusableElements(): HTMLElement[] {
       return Array.from(el.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS));
     }
@@ -77,8 +81,7 @@ export function useFocusTrap(
       el.removeEventListener('keydown', handleKeyDown);
 
       // Restore focus
-      const returnTarget = returnFocusRef?.current ?? previousFocusRef.current;
-      returnTarget?.focus();
+      (returnTarget ?? previousFocusRef.current)?.focus();
     };
   }, [active, containerRef, initialFocusRef, returnFocusRef, onEscape]);
 }
