@@ -21,27 +21,19 @@ export const nowContent: NowContent = {
       title: "ATLAS - Aggregated Tracking & Live Analytics System",
       subtitle: "E-mobility data platform",
       description:
-        "Digitizing Uganda\u2019s e-mobility reporting into a secure public intelligence platform. " +
-        "Stakeholder organizations submit performance data via Excel templates or web forms; " +
-        "STI admins verify, aggregate, and publish source-anonymous statistics with a permanent " +
-        "audit trail; the public gets an analytics dashboard with an interactive charging and " +
-        "swap-station map. Mandatory 2FA, role-based admin access, and locally hosted " +
-        "infrastructure for data sovereignty.",
+        "A data platform for Uganda\u2019s e-mobility sector.",
       tags: [
         "Next.js",
         "React",
         "Node.js",
         "PostgreSQL",
         "Docker",
-        "RBAC \u00B7 2FA",
       ],
     },
     {
       title: "STI One Stop Center",
       description:
-        "Government innovation portal for Uganda\u2019s STI ecosystem \u2014 innovation " +
-        "submission, assessment, mentorship, funding, and IP support. Live at " +
-        "osc.sti.go.ug, supporting 500+ innovators and 25+ partner organizations.",
+        "A government innovation portal for Uganda\u2019s STI ecosystem.",
       tags: ["Next.js", "i18n", "Tailwind CSS"],
       link: { href: "/work/sti", label: "Case study \u2192" },
     },
@@ -55,7 +47,7 @@ export const nowContent: NowContent = {
     },
   ],
   currentFocus: [
-    "Public-sector digital platforms: secure, accessible government systems \u2014 2FA, role-based access, audit trails, and data sovereignty",
+    "Public-sector digital platforms: secure, accessible government systems",
     "Full-stack product craft: creating clear interfaces and dependable services that work well together",
     "Developer tooling: making everyday engineering workflows calmer, faster, and easier to understand",
     "Environmental data infrastructure: contributing to AirQo\u2019s platform and its community-facing products",
@@ -67,5 +59,5 @@ export const nowContent: NowContent = {
     "Collecting and aggregating trustworthy data from organizations with very different digital maturity",
   ],
   homeNowLine:
-    "Building ATLAS, an e-mobility intelligence platform for Uganda\u2019s STI Mobility Bureau",
+    "Building ATLAS, an e-mobility data platform for Uganda",
 };

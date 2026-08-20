@@ -8,10 +8,10 @@ import { nowContent } from '@/lib/now';
 export const metadata: Metadata = {
   title: 'What Paul Ochieng Is Building Now',
   description:
-    'Currently building ATLAS, an e-mobility intelligence platform for Uganda\'s STI Mobility Bureau, plus the STI One Stop Center and NexCode. Active projects, current focus areas, and open problems in software engineering.',
+    'What Paul Ochieng Levi is currently building, learning, and exploring. Active projects, current focus areas, and open problems in software engineering.',
   openGraph: {
     title: 'What Paul Ochieng Is Building Now',
-    description: 'Currently building ATLAS, STI One Stop Center, and NexCode. Active projects, focus areas, and open problems.',
+    description: 'What Paul Ochieng Levi is currently building, learning, and exploring.',
     url: '/now',
   },
   alternates: {

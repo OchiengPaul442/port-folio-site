@@ -191,23 +191,14 @@ iframe.skiptranslate {
    ============================================ */
 
 /* ============================================
-   THEME TOGGLE: View Transition API
+   THEME TOGGLE: Icon Pop Animation
    ============================================ */
-html {
-  view-transition-name: root;
+@keyframes theme-icon-pop {
+  0% { transform: scale(0.6) rotate(-30deg); opacity: 0; }
+  60% { transform: scale(1.1) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
-
-/* Disable default cross-fade: use custom clip-path */
-::view-transition-image-pair(root) {
-  isolation: auto;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-  display: block;
-}
+.theme-icon-pop { animation: theme-icon-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
 
 /* ============================================
    CUSTOM CURSOR: Dot + Ring Follower
