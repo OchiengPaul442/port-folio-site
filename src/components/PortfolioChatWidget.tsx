@@ -739,7 +739,7 @@ export function PortfolioChatWidget() {
                 <div className="portfolio-chat-message-body">
                   <span className="portfolio-chat-message-label">{message.role === 'assistant' ? 'Assistant' : 'You'}</span>
                   <div className="portfolio-chat-message-content">
-                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <div className="portfolio-chat-thinking" role="status" aria-label="Assistant is preparing a response"><span className="portfolio-chat-thinking-dots" aria-hidden="true"><i /><i /><i /></span><span className="portfolio-chat-thinking-text">{THINKING_MESSAGES[thinkingIndex]}</span></div>}
+                    {message.content ? message.role === 'assistant' ? <div className="portfolio-chat-rich-text">{renderAssistantContent(message.content)}{loading && message.id === messages[messages.length - 1]?.id && <span className="portfolio-chat-caret" aria-hidden="true" />}</div> : <p>{message.content}</p> : <div className="portfolio-chat-thinking" role="status" aria-label="Assistant is preparing a response"><span className="portfolio-chat-thinking-text">{THINKING_MESSAGES[thinkingIndex]}</span></div>}
                   </div>
                   {message.role === 'assistant' && message.truncated && message.continue_token && !loading && (
                     <button className="portfolio-chat-continue" type="button" onClick={() => message.continue_token && handleContinue(message.continue_token, message.id)} disabled={loading}>
