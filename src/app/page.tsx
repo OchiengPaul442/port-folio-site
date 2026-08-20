@@ -1,53 +1,65 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ProjectCard } from '@/components/ProjectCard';
-import { getFeaturedProjects } from '@/lib/projects';
-import { ScrollReveal } from '@/components/ScrollReveal';
-import { GitHubStats } from '@/components/GitHubStats';
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { ProjectCard } from "@/components/ProjectCard";
+import { getFeaturedProjects } from "@/lib/projects";
+import { ScrollReveal } from "@/components/ScrollReveal";
+import { GitHubStats } from "@/components/GitHubStats";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_TITLE,
   SITE_URL,
   SOCIAL_PROFILES,
-} from '@/lib/site';
-import { nowContent } from '@/lib/now';
+} from "@/lib/site";
+import { nowContent } from "@/lib/now";
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
   alternates: {
-    canonical: '/',
+    canonical: "/",
   },
   openGraph: {
-    type: 'website',
+    type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: '/opengraph-image',
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Full-Stack Software Engineer`,
+        alt: `${SITE_NAME} - Full-Stack Software Engineer`,
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ['/twitter-image'],
+    images: ["/twitter-image"],
   },
 };
 
 const capabilities = [
-  ['Product engineering', 'From problem to production. I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.'],
-  ['Frontend systems', 'React and Next.js applications built for real users: accessible, fast on slow connections, and maintainable months after launch.'],
-  ['Backend & data', 'Python, Django, TypeScript, and PostgreSQL. APIs, authentication, data pipelines, and the integrations that connect systems.'],
-  ['Applied AI', 'AI where it earns its place. Coding assistants, data agents, and developer tools built for real workflows, not demos.'],
+  [
+    "Product engineering",
+    "From problem to production. I build interfaces people trust, APIs that scale, and the architecture decisions that hold it all together.",
+  ],
+  [
+    "Frontend systems",
+    "React and Next.js applications built for real users: accessible, fast on slow connections, and maintainable months after launch.",
+  ],
+  [
+    "Backend & data",
+    "Python, Django, TypeScript, and PostgreSQL. APIs, authentication, data pipelines, and the integrations that connect systems.",
+  ],
+  [
+    "Applied AI",
+    "AI where it earns its place. Coding assistants, data agents, and developer tools built for real workflows, not demos.",
+  ],
 ];
 
 export default async function Home() {
@@ -61,8 +73,9 @@ export default async function Home() {
         <div
           className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
           style={{
-            backgroundImage: 'radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
+            backgroundImage:
+              "radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
           }}
           aria-hidden="true"
         />
@@ -77,7 +90,7 @@ export default async function Home() {
               <span className="font-mono">Software Engineer</span>
             </div>
 
-                {/* Main heading: asymmetric, weight contrast */}
+            {/* Main heading: asymmetric, weight contrast */}
             <div className="mt-10 reveal-up-delay">
               <h1 className="text-6xl tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-7xl lg:text-8xl">
                 <span className="block font-light">Paul</span>
@@ -103,7 +116,19 @@ export default async function Home() {
                   className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-[var(--color-accent-text)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
                 >
                   See the work
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                    />
+                  </svg>
                 </Link>
                 <Link
                   href="/contact"
@@ -114,18 +139,31 @@ export default async function Home() {
               </div>
             </div>
 
-                {/* Status strip: horizontal on desktop */}
+            {/* Status strip: horizontal on desktop */}
             <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3 reveal-up-delay-2">
               {[
-                { label: 'Now', text: nowContent.homeNowLine },
-                { label: 'Thinking', text: 'Resilient systems that work when dependencies fail' },
-                { label: 'Focus', text: 'Full-stack craft · public-sector platforms · developer tools' },
+                { label: "Now", text: nowContent.homeNowLine },
+                {
+                  label: "Thinking",
+                  text: "Resilient systems that work when dependencies fail",
+                },
+                {
+                  label: "Focus",
+                  text: "Full-stack craft · public-sector platforms · developer tools",
+                },
               ].map((item) => (
-                <div key={item.label} className="group flex items-start gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 transition-colors duration-200 hover:border-[var(--color-accent)]/30">
+                <div
+                  key={item.label}
+                  className="group flex items-start gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 transition-colors duration-200 hover:border-[var(--color-accent)]/30"
+                >
                   <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
                   <div>
-                    <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-tertiary)]">{item.label}</p>
-                    <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{item.text}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-tertiary)]">
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                      {item.text}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -141,9 +179,19 @@ export default async function Home() {
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="section-label">Selected work</p>
-                <h2 id="selected-work" className="mt-3 text-3xl font-bold tracking-tight">Things I&apos;ve made and improved.</h2>
+                <h2
+                  id="selected-work"
+                  className="mt-3 text-3xl font-bold tracking-tight"
+                >
+                  Things I&apos;ve made and improved.
+                </h2>
               </div>
-              <Link href="/work" className="text-sm font-semibold text-[var(--color-accent)] hover:underline">View every project →</Link>
+              <Link
+                href="/work"
+                className="text-sm font-semibold text-[var(--color-accent)] hover:underline"
+              >
+                View every project →
+              </Link>
             </div>
           </ScrollReveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -166,22 +214,34 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className="section-divider section-divider--accent" aria-hidden="true" />
+      <div
+        className="section-divider section-divider--accent"
+        aria-hidden="true"
+      />
 
       {/* ─── Capabilities ─── */}
       <section className="px-6 py-20" aria-labelledby="capabilities">
         <div className="mx-auto max-w-5xl">
           <ScrollReveal>
             <p className="section-label">Capabilities</p>
-            <h2 id="capabilities" className="mt-3 max-w-xl text-3xl font-bold tracking-tight">A balanced product engineering practice.</h2>
+            <h2
+              id="capabilities"
+              className="mt-3 max-w-xl text-3xl font-bold tracking-tight"
+            >
+              A balanced product engineering practice.
+            </h2>
           </ScrollReveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {capabilities.map(([title, description], index) => (
               <ScrollReveal key={title} delay={index * 0.08}>
                 <div className="card group relative h-full">
-                  <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">0{index + 1}</span>
+                  <span className="font-mono text-xs font-semibold text-[var(--color-accent)]">
+                    0{index + 1}
+                  </span>
                   <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">{description}</p>
+                  <p className="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+                    {description}
+                  </p>
                   <div className="absolute bottom-0 left-6 right-6 h-px bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
                 </div>
               </ScrollReveal>
@@ -199,12 +259,37 @@ export default async function Home() {
             <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
               <div>
                 <p className="section-label">Open source</p>
-                <h2 id="github-activity" className="mt-3 text-3xl font-bold tracking-tight">I share the work as I go.</h2>
-                <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">Browse source code, documentation, and experiments behind these projects.</p>
+                <h2
+                  id="github-activity"
+                  className="mt-3 text-3xl font-bold tracking-tight"
+                >
+                  I share the work as I go.
+                </h2>
+                <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-text-secondary)]">
+                  Browse source code, documentation, and experiments behind
+                  these projects.
+                </p>
               </div>
-              <a href="https://github.com/OchiengPaul442" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-primary)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+              <a
+                href="https://github.com/OchiengPaul442"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-primary)] transition-all duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              >
                 GitHub
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                <svg
+                  className="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
               </a>
             </div>
           </ScrollReveal>
@@ -212,77 +297,89 @@ export default async function Home() {
         </div>
       </section>
       {/* Preload featured project preview images for instant hover */}
-      <div aria-hidden="true" className="pointer-events-none fixed -left-[9999px] top-0 h-0 w-0 overflow-hidden">
-        {featuredProjects.filter((p) => p.image).map((p) => (
-          <Image key={p.slug} src={p.image as string} alt="" width={288} height={160} loading="eager" />
-        ))}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed -left-[9999px] top-0 h-0 w-0 overflow-hidden"
+      >
+        {featuredProjects
+          .filter((p) => p.image)
+          .map((p) => (
+            <Image
+              key={p.slug}
+              src={p.image as string}
+              alt=""
+              width={288}
+              height={160}
+              loading="eager"
+            />
+          ))}
       </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@graph': [
+            "@context": "https://schema.org",
+            "@graph": [
               {
-                '@type': 'Person',
-                '@id': `${SITE_URL}/#person`,
-                name: 'Paul Ochieng Levi',
-                alternateName: ['Paul Ochieng', 'Ochieng Paul'],
+                "@type": "Person",
+                "@id": `${SITE_URL}/#person`,
+                name: "Paul Ochieng Levi",
+                alternateName: ["Paul Ochieng", "Ochieng Paul"],
                 url: SITE_URL,
-                jobTitle: 'Full-Stack Software Engineer',
+                jobTitle: "Full-Stack Software Engineer",
                 worksFor: {
-                  '@type': 'Organization',
-                  name: 'AirQo',
+                  "@type": "Organization",
+                  name: "AirQo",
                 },
                 address: {
-                  '@type': 'PostalAddress',
-                  addressLocality: 'Kampala',
-                  addressCountry: 'UG',
+                  "@type": "PostalAddress",
+                  addressLocality: "Kampala",
+                  addressCountry: "UG",
                 },
                 image: `${SITE_URL}/brand/logo-transparent-512.png`,
                 sameAs: SOCIAL_PROFILES,
                 knowsAbout: [
-                  'Full-stack software engineering',
-                  'Next.js',
-                  'React',
-                  'TypeScript',
-                  'Python',
-                  'FastAPI',
-                  'Django',
-                  'Applied AI',
-                  'Developer tools',
-                  'Environmental technology',
-                  'Air quality data systems',
+                  "Full-stack software engineering",
+                  "Next.js",
+                  "React",
+                  "TypeScript",
+                  "Python",
+                  "FastAPI",
+                  "Django",
+                  "Applied AI",
+                  "Developer tools",
+                  "Environmental technology",
+                  "Air quality data systems",
                 ],
               },
               {
-                '@type': 'WebSite',
-                '@id': `${SITE_URL}/#website`,
-                name: 'Paul Ochieng Levi',
-                alternateName: 'ochiengpaul.com',
+                "@type": "WebSite",
+                "@id": `${SITE_URL}/#website`,
+                name: "Paul Ochieng Levi",
+                alternateName: "ochiengpaul.com",
                 url: SITE_URL,
-                inLanguage: 'en-UG',
+                inLanguage: "en-UG",
                 description: SITE_DESCRIPTION,
                 publisher: {
-                  '@id': `${SITE_URL}/#person`,
+                  "@id": `${SITE_URL}/#person`,
                 },
               },
               {
-                '@type': 'ProfilePage',
-                '@id': `${SITE_URL}/#profilepage`,
+                "@type": "ProfilePage",
+                "@id": `${SITE_URL}/#profilepage`,
                 url: SITE_URL,
                 name: SITE_TITLE,
                 description: SITE_DESCRIPTION,
-                inLanguage: 'en-UG',
+                inLanguage: "en-UG",
                 isPartOf: {
-                  '@id': `${SITE_URL}/#website`,
+                  "@id": `${SITE_URL}/#website`,
                 },
                 mainEntity: {
-                  '@id': `${SITE_URL}/#person`,
+                  "@id": `${SITE_URL}/#person`,
                 },
               },
             ],
-          }).replace(/</g, '\\u003c'),
+          }).replace(/</g, "\\u003c"),
         }}
       />
     </>
