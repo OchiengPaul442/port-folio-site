@@ -13,7 +13,6 @@ const languages: Language[] = [
   { code: 'en', name: 'English', englishName: 'English', flag: '🇬🇧' },
   { code: 'fr', name: 'Français', englishName: 'French', flag: '🇫🇷' },
   { code: 'sw', name: 'Kiswahili', englishName: 'Swahili', flag: '🇰🇪' },
-  { code: 'lg', name: 'Luganda', englishName: 'Luganda', flag: '🇺🇬' },
   { code: 'es', name: 'Español', englishName: 'Spanish', flag: '🇪🇸' },
   { code: 'ja', name: '日本語', englishName: 'Japanese', flag: '🇯🇵' },
   { code: 'zh-CN', name: '中文', englishName: 'Chinese', flag: '🇨🇳' },
@@ -69,7 +68,7 @@ export function LanguageSelector() {
         new TranslateClass(
           {
             pageLanguage: 'en',
-            includedLanguages: 'en,lg,sw,fr,es,ja,zh-CN',
+            includedLanguages: 'en,sw,fr,es,ja,zh-CN',
             layout: 'SIMPLE',
             autoDisplay: false,
           },
