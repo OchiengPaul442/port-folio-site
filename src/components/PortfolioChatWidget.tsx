@@ -2,6 +2,8 @@
 
 import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUp, Bot, Check, Copy, Edit3, MessageCircle, Square, X } from 'lucide-react';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import ChatCodeBlock from './ChatCodeBlock';
 
 type Role = 'user' | 'assistant';
 type Message = { id: string; role: Role; content: string; truncated?: boolean; continue_token?: string };
@@ -152,12 +154,26 @@ function renderInline(value: string, keyPrefix: string): ReactNode[] {
   return nodes;
 }
 
+function isTableSeparator(line: string): boolean {
+  return /^\s*\|[\s:-]+\|[\s|:-]*$/.test(line);
+}
+
+function isTableRow(line: string): boolean {
+  return /^\s*\|.*\|\s*$/.test(line);
+}
+
+function parseTableRow(line: string): string[] {
+  const inner = line.trim().replace(/^\|/, '').replace(/\|$/, '');
+  return inner.split('|').map((cell) => cell.trim());
+}
+
 function renderAssistantContent(content: string): ReactNode[] {
   const blocks: ReactNode[] = [];
   const lines = content.split(/\r?\n/);
   let listItems: { text: string; ordered: boolean }[] = [];
   let codeLines: string[] | null = null;
   let codeLanguage = '';
+  let tableLines: string[] | null = null;
 
   const flushList = () => {
     if (!listItems.length) return;
@@ -167,15 +183,44 @@ function renderAssistantContent(content: string): ReactNode[] {
     listItems = [];
   };
 
+  const flushTable = () => {
+    if (!tableLines || tableLines.length === 0) { tableLines = null; return; }
+    const headerRow = parseTableRow(tableLines[0]);
+    const dataRows: string[][] = [];
+    for (let i = 1; i < tableLines.length; i++) {
+      if (!isTableSeparator(tableLines[i])) {
+        dataRows.push(parseTableRow(tableLines[i]));
+      }
+    }
+    blocks.push(
+      <div className="portfolio-chat-table-wrap" key={`table-${blocks.length}`}>
+        <table>
+          <thead>
+            <tr>{headerRow.map((cell, ci) => <th key={ci}>{renderInline(cell, `th-${blocks.length}-${ci}`)}</th>)}</tr>
+          </thead>
+          <tbody>
+            {dataRows.map((row, ri) => (
+              <tr key={ri}>{row.map((cell, ci) => <td key={ci}>{renderInline(cell, `td-${blocks.length}-${ri}-${ci}`)}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>,
+    );
+    tableLines = null;
+  };
+
   lines.forEach((line, index) => {
     const trimmed = line.trim();
+
+    // Code block start/end
     if (trimmed.startsWith('```')) {
       if (codeLines) {
-        blocks.push(<pre key={`code-block-${index}`}><code data-language={codeLanguage || undefined}>{codeLines.join('\n')}</code></pre>);
+        blocks.push(<ChatCodeBlock key={`code-block-${index}`} language={codeLanguage || undefined}>{codeLines.join('\n')}</ChatCodeBlock>);
         codeLines = null;
         codeLanguage = '';
       } else {
         flushList();
+        flushTable();
         codeLines = [];
         codeLanguage = trimmed.slice(3).trim();
       }
@@ -185,6 +230,18 @@ function renderAssistantContent(content: string): ReactNode[] {
       codeLines.push(line);
       return;
     }
+
+    // Table rows
+    if (isTableRow(trimmed)) {
+      flushList();
+      if (!tableLines) tableLines = [];
+      tableLines.push(trimmed);
+      return;
+    }
+    if (tableLines && tableLines.length > 0) {
+      flushTable();
+    }
+
     const bullet = trimmed.match(/^[-*+]\s+(.+)$/);
     const numbered = trimmed.match(/^\d+[.)]\s+(.+)$/);
     if (bullet || numbered) {
@@ -224,8 +281,9 @@ function renderAssistantContent(content: string): ReactNode[] {
   });
 
   flushList();
+  flushTable();
   const remainingCode = codeLines as string[] | null;
-  if (remainingCode !== null) blocks.push(<pre key="code-block-final"><code data-language={codeLanguage || undefined}>{remainingCode.join('\n')}</code></pre>);
+  if (remainingCode !== null) blocks.push(<ChatCodeBlock key="code-block-final" language={codeLanguage || undefined}>{remainingCode.join('\n')}</ChatCodeBlock>);
   return blocks;
 }
 
@@ -265,10 +323,57 @@ export function PortfolioChatWidget() {
   const feedRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const panelRef = useRef<HTMLElement | null>(null);
+  const confirmRef = useRef<HTMLElement | null>(null);
+  const keepChattingRef = useRef<HTMLButtonElement | null>(null);
+  const easterEggTimerRef = useRef<number | null>(null);
   const revealQueueRef = useRef('');
   const revealedTextRef = useRef('');
   const revealTimerRef = useRef<number | null>(null);
   const readinessTimerRef = useRef<number | null>(null);
+
+  function closeChat() {
+    setShowCloseConfirm(false);
+    setOpen(false);
+    setMessages([INITIAL_MESSAGE]);
+    setSources([]);
+    setError(null);
+    setRetryText(null);
+    setInput('');
+    if (easterEggTimerRef.current) {
+      window.clearTimeout(easterEggTimerRef.current);
+      easterEggTimerRef.current = null;
+    }
+    setShowEasterEgg(false);
+    try {
+      localStorage.removeItem('portfolio-chat-state');
+    } catch {
+      // Ignore storage errors
+    }
+  }
+
+  const requestClose = useCallback(() => {
+    if (loading) return;
+    if (messages.length > 1) {
+      setShowCloseConfirm(true);
+      return;
+    }
+    closeChat();
+  }, [loading, messages.length]);
+
+  useFocusTrap(open, {
+    containerRef: panelRef,
+    initialFocusRef: inputRef,
+    returnFocusRef: closeRef,
+    onEscape: requestClose,
+  });
+
+  useFocusTrap(showCloseConfirm, {
+    containerRef: confirmRef,
+    initialFocusRef: keepChattingRef,
+    returnFocusRef: closeRef,
+    onEscape: () => setShowCloseConfirm(false),
+  });
 
   const history = useMemo(
     () => messages.slice(1).filter((message) => message.content.trim()).slice(-8).map(({ role, content }) => ({ role, content })),
@@ -364,36 +469,13 @@ export function PortfolioChatWidget() {
   function triggerEasterEgg() {
     setSparklePositions([...Array(12)].map(() => ({ left: 10 + Math.random() * 80, delay: Math.random() * 0.5 })));
     setShowEasterEgg(true);
-    setTimeout(() => setShowEasterEgg(false), 3000);
+    if (easterEggTimerRef.current) window.clearTimeout(easterEggTimerRef.current);
+    easterEggTimerRef.current = window.setTimeout(() => setShowEasterEgg(false), 3000);
   }
 
   function updateAssistant(id: string, content: string) {
     setMessages((current) => current.map((message) => (message.id === id ? { ...message, content } : message)));
   }
-
-  function closeChat() {
-    setShowCloseConfirm(false);
-    setOpen(false);
-    setMessages([INITIAL_MESSAGE]);
-    setSources([]);
-    setError(null);
-    setRetryText(null);
-    setInput('');
-    try {
-      localStorage.removeItem('portfolio-chat-state');
-    } catch {
-      // Ignore storage errors
-    }
-  }
-
-  const requestClose = useCallback(() => {
-    if (loading) return;
-    if (messages.length > 1) {
-      setShowCloseConfirm(true);
-      return;
-    }
-    closeChat();
-  }, [loading, messages.length]);
 
   function stopRequest() {
     if (abortRef.current) {
@@ -460,19 +542,11 @@ export function PortfolioChatWidget() {
     }
   }
 
-  useEffect(() => {
-    if (!open) return;
-    function handleEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape') requestClose();
-    }
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [open, loading, requestClose]);
-
   useEffect(() => () => {
     abortRef.current?.abort();
     if (revealTimerRef.current) window.clearInterval(revealTimerRef.current);
     if (readinessTimerRef.current) window.clearTimeout(readinessTimerRef.current);
+    if (easterEggTimerRef.current) window.clearTimeout(easterEggTimerRef.current);
   }, []);
 
   function queueReveal(id: string, chunk: string) {
@@ -626,7 +700,7 @@ export function PortfolioChatWidget() {
     <div className="portfolio-chat-root">
       {open && <button className="portfolio-chat-scrim" aria-label="Close chat" onClick={requestClose} />}
       {open ? (
-        <section id="portfolio-chat-panel" className="portfolio-chat-panel" aria-label="Paul's assistant" role="dialog" aria-modal="false">
+        <section id="portfolio-chat-panel" ref={panelRef} className="portfolio-chat-panel" aria-label="Paul's assistant" role="dialog" aria-modal="true">
           {showEasterEgg && (
             <div className="portfolio-chat-easter-egg" aria-hidden="true">
               <div className="portfolio-chat-flash" />
@@ -680,7 +754,7 @@ export function PortfolioChatWidget() {
               </article>
             ))}
             {messages.length > 7 && !loading && (
-              <p className="portfolio-chat-notice">Older messages were summarized for context efficiency.</p>
+              <p className="portfolio-chat-notice">Older messages were trimmed to keep the conversation focused.</p>
             )}
             {messages.length === 1 && <div className="portfolio-chat-suggestions" aria-label="Suggested questions">{SUGGESTIONS.map((suggestion) => <button key={suggestion} type="button" onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}>{suggestion}</button>)}</div>}
             {!loading && sources.length > 0 && <aside className="portfolio-chat-sources"><p>Referenced links</p>{sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>)}</aside>}
@@ -710,7 +784,26 @@ export function PortfolioChatWidget() {
       ) : (
         <button ref={closeRef} className="portfolio-chat-launcher" onClick={() => { setAgentStatus('checking'); setOpen(true); }} aria-expanded={open} aria-controls="portfolio-chat-panel"><span className="portfolio-chat-launcher-icon"><MessageCircle size={19} /></span><span>Ask Paul&apos;s assistant</span><span className="portfolio-chat-launcher-pulse" aria-hidden="true" /></button>
       )}
-      {showCloseConfirm && <div className="portfolio-chat-confirm-backdrop"><section className="portfolio-chat-confirm" role="alertdialog" aria-modal="true" aria-labelledby="portfolio-chat-confirm-title" aria-describedby="portfolio-chat-confirm-description"><div className="portfolio-chat-confirm-icon"><X size={16} /></div><h2 id="portfolio-chat-confirm-title">Close this chat?</h2><p id="portfolio-chat-confirm-description">This conversation is temporary and will be cleared when you close the chat. You will not be able to recover it.</p><div className="portfolio-chat-confirm-actions"><button type="button" onClick={() => setShowCloseConfirm(false)}>Keep chatting</button><button type="button" onClick={closeChat}>Close chat</button></div></section></div>}
+      {showCloseConfirm && (
+        <div className="portfolio-chat-confirm-backdrop">
+          <section
+            ref={confirmRef}
+            className="portfolio-chat-confirm"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="portfolio-chat-confirm-title"
+            aria-describedby="portfolio-chat-confirm-description"
+          >
+            <div className="portfolio-chat-confirm-icon"><X size={16} /></div>
+            <h2 id="portfolio-chat-confirm-title">Close this chat?</h2>
+            <p id="portfolio-chat-confirm-description">This conversation is temporary and will be cleared when you close the chat. You will not be able to recover it.</p>
+            <div className="portfolio-chat-confirm-actions">
+              <button ref={keepChattingRef} type="button" onClick={() => setShowCloseConfirm(false)} className="portfolio-chat-confirm-primary">Keep chatting</button>
+              <button type="button" onClick={closeChat} className="portfolio-chat-confirm-destructive">Close chat</button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }

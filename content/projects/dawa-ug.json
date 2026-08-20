@@ -15,6 +15,6 @@
   "repo": null,
   "liveUrl": "https://www.dawa.ug",
   "image": "/images/dawa.webp",
-  "featured": false,
-  "order": 8
+  "featured": true,
+  "order": 1
 }

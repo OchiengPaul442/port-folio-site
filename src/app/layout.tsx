@@ -75,6 +75,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
+      id="top"
       lang="en"
       suppressHydrationWarning
       className="h-full antialiased overflow-x-hidden"

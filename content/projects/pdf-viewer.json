@@ -14,6 +14,6 @@
   "repo": "https://github.com/OchiengPaul442/pdf-viewer",
   "liveUrl": "https://paperpilot.ochiengpaul.com",
   "image": "/images/paperpilot.webp",
-  "featured": true,
+  "featured": false,
   "order": 5
 }

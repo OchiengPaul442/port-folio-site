@@ -17,7 +17,9 @@ export function proxy(request: NextRequest) {
 
   // Keep one crawlable URL for the portfolio. This consolidates the naked
   // domain and HTTP variants before Google has to choose between them.
-  if (shouldUseCanonicalOrigin && (configuredOrigin || process.env.NODE_ENV === 'production')) {
+  // Production-only: the redirect must not fire in development, where
+  // NEXT_PUBLIC_SITE_URL points at the production domain but the host is localhost.
+  if (shouldUseCanonicalOrigin && process.env.NODE_ENV === 'production') {
     const canonicalUrl = request.nextUrl.clone();
     canonicalUrl.protocol = `${expectedProtocol}:`;
     canonicalUrl.host = expectedHost;

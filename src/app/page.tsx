@@ -11,6 +11,7 @@ import {
   SITE_URL,
   SOCIAL_PROFILES,
 } from '@/lib/site';
+import { nowContent } from '@/lib/now';
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
@@ -115,9 +116,9 @@ export default async function Home() {
                 {/* Status strip: horizontal on desktop */}
             <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3 reveal-up-delay-2">
               {[
-                { label: 'Now', text: 'Building NexCode, a multi-agent AI coding assistant for VS Code' },
+                { label: 'Now', text: nowContent.homeNowLine },
                 { label: 'Thinking', text: 'Resilient systems that work when dependencies fail' },
-                { label: 'Focus', text: 'Full-stack craft · developer tools · environmental data' },
+                { label: 'Focus', text: 'Full-stack craft · public-sector platforms · developer tools' },
               ].map((item) => (
                 <div key={item.label} className="group flex items-start gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-4 transition-colors duration-200 hover:border-[var(--color-accent)]/30">
                   <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />

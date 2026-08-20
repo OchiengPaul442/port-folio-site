@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, useState, useSyncExternalStore } from 'react';
+import { useRef, useCallback, useState, useSyncExternalStore, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
 
@@ -8,11 +8,18 @@ export function ThemeToggle() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { theme, setTheme } = useTheme();
   const [isAnimating, setIsAnimating] = useState(false);
+  const animatingTimerRef = useRef<number | null>(null);
   const mounted = useSyncExternalStore(
     () => () => undefined,
     () => true,
     () => false,
   );
+
+  useEffect(() => {
+    return () => {
+      if (animatingTimerRef.current) window.clearTimeout(animatingTimerRef.current);
+    };
+  }, []);
 
   const toggleTheme = useCallback((e: React.MouseEvent) => {
     if (isAnimating) return;
@@ -57,7 +64,7 @@ export function ThemeToggle() {
         );
 
         // Cleanup after animation
-        setTimeout(() => {
+        animatingTimerRef.current = window.setTimeout(() => {
           setIsAnimating(false);
         }, 550);
       });

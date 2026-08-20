@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 
 interface ParallaxSectionProps {
   children?: React.ReactNode;
@@ -23,6 +23,7 @@ export function ParallaxSection({
   className = '',
 }: ParallaxSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -31,6 +32,10 @@ export function ParallaxSection({
   const travel = Math.max(0.05, Math.min(speed, 0.8)) * 50;
   const y = useTransform(scrollYProgress, [0, 1], [`-${travel}%`, `${travel}%`]);
 
+  const imageStyle = prefersReducedMotion
+    ? { backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover' as const, backgroundPosition: 'center' as const }
+    : { y, backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover' as const, backgroundPosition: 'center' as const };
+
   return (
     <div
       ref={ref}
@@ -38,7 +43,7 @@ export function ParallaxSection({
     >
       <motion.div
         className="absolute inset-0 w-full h-[130%] -top-[15%]"
-        style={{ y, backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={imageStyle}
       />
       {overlay && (
         <div

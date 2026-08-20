@@ -107,8 +107,9 @@ export function GitHubStats() {
           </div>
 
           {loading && (
-            <div className="mt-6 flex min-h-40 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-tertiary)]">
-              <LoaderCircle className="h-6 w-6 animate-spin text-[var(--color-accent)]" aria-label="Loading GitHub contributions" />
+            <div className="mt-6 flex min-h-40 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] text-[var(--color-text-tertiary)]" aria-live="polite">
+              <LoaderCircle className="h-6 w-6 animate-spin text-[var(--color-accent)]" aria-hidden="true" />
+              <span className="sr-only">Loading GitHub contributions for {selectedYear}</span>
             </div>
           )}
 
@@ -136,7 +137,7 @@ export function GitHubStats() {
 
           <div className="mt-4 flex items-center justify-between text-xs text-[var(--color-text-tertiary)]">
             <span className="inline-flex items-center gap-2"><GitCommitHorizontal className="h-4 w-4" aria-hidden="true" /> Public contribution calendar</span>
-            <span>Less <i className="github-calendar-cell level-0" /> <i className="github-calendar-cell level-1" /> <i className="github-calendar-cell level-2" /> <i className="github-calendar-cell level-3" /> <i className="github-calendar-cell level-4" /> More</span>
+            <span>Less <span aria-hidden="true" className="github-calendar-cell level-0" /> <span aria-hidden="true" className="github-calendar-cell level-1" /> <span aria-hidden="true" className="github-calendar-cell level-2" /> <span aria-hidden="true" className="github-calendar-cell level-3" /> <span aria-hidden="true" className="github-calendar-cell level-4" /> More</span>
           </div>
         </div>
       </ScrollReveal>

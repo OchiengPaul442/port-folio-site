@@ -15,6 +15,6 @@
   "repo": null,
   "liveUrl": "https://osc.sti.go.ug",
   "image": "/images/sti-one.webp",
-  "featured": false,
-  "order": 14
+  "featured": true,
+  "order": 2
 }

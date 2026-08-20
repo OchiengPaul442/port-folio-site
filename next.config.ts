@@ -11,9 +11,6 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75],
   },
-  experimental: {
-    // Enable PPR for better performance
-  },
 };
 
 export default nextConfig;

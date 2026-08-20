@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 const CONSENT_KEY = 'privacy-analytics-consent';
 
@@ -14,6 +15,20 @@ export function ConsentBanner() {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [choice, setChoice] = useState<'granted' | 'denied' | null>(null);
   const closeTimer = useRef<number | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
+  const rejectButtonRef = useRef<HTMLButtonElement | null>(null);
+  const feedbackHeadingRef = useRef<HTMLHeadingElement | null>(null);
+
+  useFocusTrap(visible, {
+    containerRef,
+    initialFocusRef: rejectButtonRef,
+  });
+
+  useEffect(() => {
+    if (feedback) {
+      feedbackHeadingRef.current?.focus();
+    }
+  }, [feedback]);
 
   useEffect(() => {
     const sync = () => setVisible(!window.localStorage.getItem(CONSENT_KEY));
@@ -43,6 +58,7 @@ export function ConsentBanner() {
 
   return (
     <aside
+      ref={containerRef}
       role="dialog"
       aria-label="Privacy preferences"
       aria-describedby="privacy-consent-description"
@@ -57,7 +73,7 @@ export function ConsentBanner() {
                 {choice === 'granted' ? '✓' : 'Not set'}
               </span>
               <div>
-                <h2 className="text-base font-semibold text-[var(--color-text-primary)]">Choice saved</h2>
+                <h2 ref={feedbackHeadingRef} tabIndex={-1} className="text-base font-semibold text-[var(--color-text-primary)] outline-none">Choice saved</h2>
                 <p id="privacy-consent-description" className="mt-1 text-sm text-[var(--color-text-secondary)]">{feedback}</p>
               </div>
             </div>
@@ -73,6 +89,7 @@ export function ConsentBanner() {
         </div>
         <div className={`flex shrink-0 gap-2 sm:pt-1 ${feedback ? 'hidden' : ''}`}>
           <button
+            ref={rejectButtonRef}
             type="button"
             onClick={() => choose('denied')}
             disabled={Boolean(feedback)}

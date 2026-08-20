@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { BrandMark } from '@/components/BrandMark';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -25,14 +26,17 @@ export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const firstMenuItemRef = useRef<HTMLAnchorElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const drawerPanelRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
 
-  useEffect(() => {
-    if (mobileOpen) {
-      firstMenuItemRef.current?.focus();
-    }
-  }, [mobileOpen]);
+  useFocusTrap(mobileOpen, {
+    containerRef: drawerPanelRef,
+    initialFocusRef: firstMenuItemRef,
+    returnFocusRef: triggerRef,
+    onEscape: () => setMobileOpen(false),
+  });
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -42,16 +46,6 @@ export function Navigation() {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
-  }, [mobileOpen]);
-
-  useEffect(() => {
-    function handleEscape(e: KeyboardEvent) {
-      if (e.key === 'Escape' && mobileOpen) {
-        setMobileOpen(false);
-      }
-    }
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
   }, [mobileOpen]);
 
   // Scroll-based hide/show
@@ -122,6 +116,7 @@ export function Navigation() {
           <div className="flex items-center gap-1">
             <ThemeToggle />
             <button
+              ref={triggerRef}
               className="inline-flex items-center justify-center rounded-md p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] md:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
@@ -165,6 +160,7 @@ export function Navigation() {
         {/* Drawer panel */}
         <div
           id="mobile-drawer"
+          ref={drawerPanelRef}
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"

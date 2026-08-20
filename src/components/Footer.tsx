@@ -52,7 +52,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Paul Ochieng Levi.
           </p>
           <a
-            href="#main-content"
+            href="#top"
             className="font-mono text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors duration-200"
           >
             Back to top ↑

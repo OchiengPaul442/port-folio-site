@@ -13,6 +13,6 @@
   "stack": ["TypeScript", "VS Code Extension API", "Ollama", "OpenAI API", "HuggingFace"],
   "repo": "https://github.com/OchiengPaul442/NexCode",
   "liveUrl": null,
-  "featured": true,
+  "featured": false,
   "order": 1
 }

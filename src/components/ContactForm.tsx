@@ -37,6 +37,13 @@ export function ContactForm() {
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetIdRef = useRef<string | null>(null);
 
+  // Honeypot hardening: clear the website input value on mount to prevent
+  // browser autofill from triggering the silent-success bot path.
+  useEffect(() => {
+    const websiteInput = document.getElementById('website') as HTMLInputElement | null;
+    if (websiteInput) websiteInput.value = '';
+  }, []);
+
   useEffect(() => {
     if (
       !turnstileReady ||
@@ -140,9 +147,13 @@ export function ContactForm() {
 
       setStatus('success');
       form.reset();
-    } catch {
+    } catch (err) {
       resetTurnstile();
-      setStatus('error');
+      setErrors({
+        form: err instanceof TypeError
+          ? 'Could not connect to the server. Check your connection and try again.'
+          : 'Something went wrong. Please try again or email me directly.',
+      });
     }
   }
 
@@ -212,9 +223,12 @@ export function ContactForm() {
             id="name"
             name="name"
             required
+            autoComplete="name"
+            aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? 'name-error' : undefined}
             className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
           />
-          {errors.name && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.name}</p>}
+          {errors.name && <p id="name-error" className="mt-1 text-xs text-[var(--color-error)]">{errors.name}</p>}
         </div>
 
         <div>
@@ -226,9 +240,12 @@ export function ContactForm() {
             id="email"
             name="email"
             required
+            autoComplete="email"
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? 'email-error' : undefined}
             className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
           />
-          {errors.email && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.email}</p>}
+          {errors.email && <p id="email-error" className="mt-1 text-xs text-[var(--color-error)]">{errors.email}</p>}
         </div>
 
         <div>
@@ -240,9 +257,12 @@ export function ContactForm() {
             id="subject"
             name="subject"
             required
+            autoComplete="on"
+            aria-invalid={Boolean(errors.subject)}
+            aria-describedby={errors.subject ? 'subject-error' : undefined}
             className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
           />
-          {errors.subject && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.subject}</p>}
+          {errors.subject && <p id="subject-error" className="mt-1 text-xs text-[var(--color-error)]">{errors.subject}</p>}
         </div>
 
         <div>
@@ -254,12 +274,15 @@ export function ContactForm() {
             name="message"
             required
             rows={5}
+            autoComplete="on"
+            aria-invalid={Boolean(errors.message)}
+            aria-describedby={errors.message ? 'message-error' : undefined}
             className="mt-1 block w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-3 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]"
           />
-          {errors.message && <p className="mt-1 text-xs text-[var(--color-error)]">{errors.message}</p>}
+          {errors.message && <p id="message-error" className="mt-1 text-xs text-[var(--color-error)]">{errors.message}</p>}
         </div>
 
-        {errors.form && <p className="text-xs text-[var(--color-error)]">{errors.form}</p>}
+        {errors.form && <p role="alert" className="text-xs text-[var(--color-error)]">{errors.form}</p>}
 
         <div className="space-y-2">
           {turnstileSiteKey ? (
@@ -277,7 +300,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="inline-flex items-center rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-accent-text)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:opacity-50"
+          className="inline-flex items-center rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-accent-text)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:opacity-50 min-h-11 min-w-11"
         >
           {status === 'submitting' ? 'Sending...' : 'Send Message'}
         </button>
