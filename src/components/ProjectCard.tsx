@@ -48,13 +48,13 @@ export function ProjectCard({ slug, title, subtitle, client, status, stack, imag
       onMouseLeave={hidePreview}
       onFocus={showPreview}
       onBlur={hidePreview}
-      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-[var(--color-accent)]/40 hover:shadow-md hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
     >
       {/* Accent top bar */}
       <div className="absolute inset-x-0 top-0 z-10 h-0.5 bg-[var(--color-accent)] scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
-      {image && previewVisible && (
-        <div className="project-preview-tooltip pointer-events-none absolute left-4 right-4 top-4 z-20 overflow-hidden rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-bg-primary)] shadow-2xl shadow-black/40" aria-hidden="true">
+      {image && (previewVisible || previewStarted) && (
+        <div className={`project-preview-tooltip pointer-events-none absolute left-4 right-4 top-4 z-20 overflow-hidden rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-bg-primary)] shadow-lg shadow-black/30 ${!previewVisible ? 'opacity-0 invisible' : ''}`} aria-hidden="true">
           <div className="relative h-40 w-full overflow-hidden bg-stone-950">
             {!imageLoaded && !imageFailed && (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
@@ -118,7 +118,7 @@ export function ProjectCard({ slug, title, subtitle, client, status, stack, imag
             {stack.map((tech) => (
               <span
                 key={tech}
-                className="rounded-md bg-[var(--color-bg-tertiary)]/80 backdrop-blur-sm px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)] transition-colors duration-300 group-hover:bg-[var(--color-bg-secondary)]/80 group-hover:text-[var(--color-accent)]"
+                className="rounded-md bg-[var(--color-bg-tertiary)]/80 px-2 py-0.5 font-mono text-xs text-[var(--color-text-tertiary)] transition-colors duration-300 group-hover:bg-[var(--color-bg-secondary)]/80 group-hover:text-[var(--color-accent)]"
               >
                 {tech}
               </span>

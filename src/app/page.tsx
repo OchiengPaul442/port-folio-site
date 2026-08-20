@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ProjectCard } from '@/components/ProjectCard';
 import { getFeaturedProjects } from '@/lib/projects';
 import { ScrollReveal } from '@/components/ScrollReveal';
@@ -210,6 +211,12 @@ export default async function Home() {
           <GitHubStats />
         </div>
       </section>
+      {/* Preload featured project preview images for instant hover */}
+      <div aria-hidden="true" className="pointer-events-none fixed -left-[9999px] top-0 h-0 w-0 overflow-hidden">
+        {featuredProjects.filter((p) => p.image).map((p) => (
+          <Image key={p.slug} src={p.image as string} alt="" width={288} height={160} loading="eager" />
+        ))}
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
