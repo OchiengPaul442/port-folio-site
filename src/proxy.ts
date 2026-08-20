@@ -30,12 +30,12 @@ export function proxy(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://translate.google.com blob:",
-    "style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com https://translate.google.com",
-    "img-src 'self' data: blob: https://avatars.githubusercontent.com https://www.google.com https://www.gstatic.com https://challenges.cloudflare.com https://translate.google.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://translate.google.com https://translate.googleapis.com blob:",
+    "style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com https://translate.google.com https://www.gstatic.com",
+    "img-src 'self' data: blob: https://avatars.githubusercontent.com https://www.google.com https://www.gstatic.com https://challenges.cloudflare.com https://translate.google.com https://translate.googleapis.com",
     "font-src 'self' blob: data: https://fonts.gstatic.com",
     "connect-src 'self' blob: https://challenges.cloudflare.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com",
-    "frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://translate.google.com",
+    "frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://translate.google.com https://translate.googleapis.com",
     "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",
