@@ -57,13 +57,20 @@ export function LanguageSelector() {
     }
   }, [isOpen]);
 
+  const applyLanguage = useCallback((code: string) => {
+    const select = widgetRef.current?.querySelector<HTMLSelectElement>('.goog-te-combo');
+    if (!select) return false;
+    if (!Array.from(select.options).some((o) => o.value === code)) return false;
+    select.value = code;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    return true;
+  }, []);
+
   const loadGoogleTranslate = useCallback(() => {
-    // Define the init callback globally
     window.googleTranslateElementInit = () => {
       if (!widgetRef.current || initAttempted.current) return;
       const TranslateClass = window.google?.translate?.TranslateElement;
       if (!TranslateClass) return;
-
       try {
         new TranslateClass(
           {
@@ -75,6 +82,10 @@ export function LanguageSelector() {
           widgetRef.current
         );
         initAttempted.current = true;
+        const stored = getStoredLanguage();
+        if (stored !== 'en') {
+          window.setTimeout(() => applyLanguage(stored), 150);
+        }
       } catch {
         // Silent fail
       }
@@ -92,7 +103,7 @@ export function LanguageSelector() {
     script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
     script.async = true;
     document.head.appendChild(script);
-  }, []);
+  }, [applyLanguage]);
 
   useEffect(() => {
     if (currentLang !== 'en') loadGoogleTranslate();
@@ -102,16 +113,25 @@ export function LanguageSelector() {
     setIsOpen(false);
     localStorage.setItem('preferred-language', lang.code);
 
-    // Google Translate reads this cookie on page load. This avoids racing the
-    // widget's asynchronously-created select element.
     if (lang.code === 'en') {
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
-    } else {
-      document.cookie = `googtrans=/en/${lang.code}; path=/; max-age=31536000; SameSite=Lax`;
+      window.location.reload();
+      return;
     }
-    window.location.reload();
-  }, []);
+
+    if (!applyLanguage(lang.code)) {
+      document.cookie = `googtrans=/en/${lang.code}; path=/; max-age=31536000; SameSite=Lax`;
+      window.location.reload();
+    }
+  }, [applyLanguage]);
+
+  const toggleOpen = () => {
+    setIsOpen((prev) => {
+      const next = !prev;
+      if (next) loadGoogleTranslate();
+      return next;
+    });
+  };
 
   const current = languages.find((l) => l.code === currentLang) || languages[0];
 
@@ -134,7 +154,7 @@ export function LanguageSelector() {
       <div ref={containerRef} className="language-selector-root" data-notranslate="true">
         <div className="relative">
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleOpen}
             className="flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-md px-3 py-2.5 text-sm font-medium text-[var(--color-text-secondary)] shadow-lg transition-all duration-200 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-text-primary)] hover:shadow-xl hover:shadow-[var(--color-accent)]/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
             aria-label={`Language: ${current.englishName}`}
             aria-expanded={isOpen}
