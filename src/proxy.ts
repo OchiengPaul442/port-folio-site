@@ -30,12 +30,12 @@ export function proxy(request: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://translate.google.com https://translate.googleapis.com blob:",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.googletagmanager.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://ssl.gstatic.com https://translate.goog blob:",
     "style-src 'self' 'unsafe-inline' blob: https://fonts.googleapis.com https://translate.google.com https://www.gstatic.com",
-    "img-src 'self' data: blob: https://avatars.githubusercontent.com https://www.google.com https://www.gstatic.com https://challenges.cloudflare.com https://translate.google.com https://translate.googleapis.com",
+    "img-src 'self' data: blob: https://avatars.githubusercontent.com https://www.google.com https://www.gstatic.com https://challenges.cloudflare.com https://translate.google.com https://translate.googleapis.com https://fonts.gstatic.com https://ssl.gstatic.com https://translate.goog",
     "font-src 'self' blob: data: https://fonts.gstatic.com",
-    "connect-src 'self' blob: https://challenges.cloudflare.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com",
-    "frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://translate.google.com https://translate.googleapis.com",
+    "connect-src 'self' blob: https://challenges.cloudflare.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://translate.googleapis.com https://translate.google.com https://translate-pa.googleapis.com https://ssl.gstatic.com https://translate.goog",
+    "frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://translate.google.com https://translate.googleapis.com https://translate.goog",
     "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",
