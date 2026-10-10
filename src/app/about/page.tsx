@@ -7,7 +7,7 @@ import { aboutBreadcrumbs } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'About Paul Ochieng | Software Engineer in Uganda',
   description:
-    'About Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience with AirQo, React, Next.js, Python, and Django.',
+    'About Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience building and maintaining AirQo Nexus and the AirQo website with React, Next.js, Python, and Django.',
   openGraph: {
     title: 'About Paul Ochieng | Software Engineer in Uganda',
     description: 'Full-stack software engineer in Kampala, Uganda building reliable web products and developer tools.',
@@ -29,7 +29,13 @@ const experience = [
     period: 'Active Contributor',
     title: 'AirQo Platform',
     description:
-      'Contributing to AirQo\'s frontend and backend. Internationalization supporting 40+ languages including African languages, REST API development, and dashboard components for air quality monitoring across Africa.',
+      'Contributing to AirQo\'s frontend and backend, including building and mainly maintaining AirQo Nexus alongside the public website. Internationalization supports 40+ languages, with REST APIs, analysis flows, dashboards, maps, and data visualizations for air-quality monitoring across Africa.',
+  },
+  {
+    period: 'Active Contributor',
+    title: 'PICSA Apps',
+    description:
+      'Contributing to the PICSA Apps monorepo, a set of tools supporting participatory climate services and agricultural extension. The work brings practical climate information and training resources closer to farmers and extension teams.',
   },
   {
     period: 'Ongoing',

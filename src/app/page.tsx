@@ -183,7 +183,7 @@ export default async function Home() {
                   id="selected-work"
                   className="mt-3 text-3xl font-bold tracking-tight"
                 >
-                  Things I&apos;ve made and improved.
+                  Flagship products and contributions.
                 </h2>
               </div>
               <Link

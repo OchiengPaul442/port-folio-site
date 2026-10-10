@@ -45,9 +45,26 @@ const projectTaxonomy: Record<string, { category: string; tags: string[] }> = {
   'tic-tack-toe': { category: 'Learning projects', tags: ['Java', 'Game logic', 'Algorithms'] },
   'paul-portfolio-agent': { category: 'Applied AI', tags: ['AI agents', 'FastAPI', 'LLM orchestration', 'Rate limiting'] },
   'oncallug-drivers': { category: 'Product engineering', tags: ['Next.js', 'Ride-hailing', 'Fintech', 'Maps'] },
+  'picsa-app': { category: 'Open source', tags: ['Climate services', 'Agricultural extension', 'Mobile apps'] },
 };
 
 const contentDir = path.join(process.cwd(), 'content', 'projects');
+
+// This is the editorial order for the work people should understand first.
+// The full project archive remains available below it on the Work page.
+export const FLAGSHIP_PROJECT_SLUGS = [
+  'airqo-website',
+  'nexus-airqo',
+  'airqo-npm-packages',
+  'airqo-icons-flutter',
+  'picsa-app',
+  'dawa-ug',
+  'oncallug-drivers',
+  'aqmrg',
+  'sti',
+  'builld',
+  'coinz',
+] as const;
 
 export const getAllProjects = cache((): Project[] => {
   try {
@@ -72,7 +89,14 @@ export const getAllProjects = cache((): Project[] => {
 });
 
 export function getFeaturedProjects(): Project[] {
-  return getAllProjects().filter((p) => p.featured);
+  return getFlagshipProjects();
+}
+
+export function getFlagshipProjects(): Project[] {
+  const projects = getAllProjects();
+  return FLAGSHIP_PROJECT_SLUGS.map((slug) => projects.find((project) => project.slug === slug)).filter(
+    (project): project is Project => Boolean(project),
+  );
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {

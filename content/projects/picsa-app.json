@@ -1,0 +1,20 @@
+{
+  "slug": "picsa-app",
+  "title": "PICSA Apps",
+  "subtitle": "Open-source tools for climate services and agricultural extension",
+  "client": "E-PICSA",
+  "description": "A set of digital tools supporting Participatory Integrated Climate Services for Agriculture (PICSA), helping training teams and farmers work with climate information, planning resources, and locally relevant agricultural knowledge.",
+  "problem": "Climate information is most useful when it is connected to the decisions farmers make in their own context. The project needs practical tools that can support participatory training and remain useful in the field, including in places with limited connectivity.",
+  "role": "Active contributor to the PICSA Apps codebase, collaborating on product improvements and the supporting tooling behind the app ecosystem.",
+  "approach": "Contribute within the PICSA Apps monorepo, working with the existing application architecture and prioritizing dependable field workflows, reusable tooling, and clear user experiences for agricultural extension contexts.",
+  "hardestDecision": "Keeping the product useful across very different field conditions: the experience must be approachable for training teams while still supporting the structure and resources needed for repeatable extension work.",
+  "status": "shipped",
+  "outcome": "An active open-source contribution to the PICSA app ecosystem, supporting climate services and agricultural extension work beyond a single product team.",
+  "whatIdChange": "Would continue improving offline-first workflows, field feedback loops, and the discoverability of resources for extension teams and farmers.",
+  "stack": ["TypeScript", "Nx", "Capacitor", "Mobile apps", "Open source"],
+  "repo": "https://github.com/e-picsa/picsa-apps",
+  "liveUrl": "https://picsa.app",
+  "image": "/images/picsa-app.webp",
+  "featured": true,
+  "order": 2
+}

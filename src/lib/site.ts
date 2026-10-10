@@ -17,12 +17,12 @@ export function getSiteOrigin(value?: string): URL | null {
 
 const configuredSiteOrigin = getSiteOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 
-export const SITE_URL = configuredSiteOrigin?.origin || 'http://localhost:3000';
+export const SITE_URL = configuredSiteOrigin?.origin || 'https://ochiengpaul.com';
 export const SITE_NAME = 'Paul Ochieng Levi';
 export const SITE_TITLE =
   'Full-Stack Engineer in Kampala, Uganda | Paul Ochieng';
 export const SITE_DESCRIPTION =
-  'Paul Ochieng is a full-stack software engineer in Kampala, Uganda building reliable Next.js applications, Python APIs, AI tools, and data platforms.';
+  'Paul Ochieng is a full-stack software engineer in Kampala, Uganda building reliable web products, Python APIs, AI tools, and public-interest data platforms.';
 
 export const SITE_KEYWORDS = [
   'Paul Ochieng Levi',
@@ -42,6 +42,8 @@ export const SITE_KEYWORDS = [
   'environmental technology',
   'air quality software',
   'data platforms',
+  'PICSA Apps contributor',
+  'open source contributor Uganda',
 ];
 
 export const SOCIAL_PROFILES = [

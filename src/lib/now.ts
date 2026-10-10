@@ -15,7 +15,7 @@ export interface NowContent {
 }
 
 export const nowContent: NowContent = {
-  lastUpdated: "August 2026",
+  lastUpdated: "October 2026",
   activeProjects: [
     {
       title: "ATLAS - Aggregated Tracking & Live Analytics System",
@@ -29,21 +29,6 @@ export const nowContent: NowContent = {
         "PostgreSQL",
         "Docker",
       ],
-    },
-    {
-      title: "STI One Stop Center",
-      description:
-        "A government innovation portal for Uganda\u2019s STI ecosystem.",
-      tags: ["Next.js", "i18n", "Tailwind CSS"],
-      link: { href: "/work/sti", label: "Case study \u2192" },
-    },
-    {
-      title: "NexCode",
-      description:
-        "Building a multi-agent AI coding assistant for VS Code with " +
-        "sensible task routing, resilient provider connections, and a " +
-        "less distracting editor experience.",
-      tags: ["TypeScript", "VS Code API", "Multi-Agent"],
     },
   ],
   currentFocus: [

@@ -14,6 +14,7 @@
   "stack": ["Flutter", "Dart", "pub.dev"],
   "repo": null,
   "liveUrl": "https://pub.dev/packages/airqo_icons_flutter",
-  "featured": false,
+  "image": "/images/airqo-icons-flutter.webp",
+  "featured": true,
   "order": 16
 }
