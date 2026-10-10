@@ -40,7 +40,7 @@ export function Footer() {
           <Link href="/work" className="hover:text-[var(--color-accent)] transition-colors duration-200">Work</Link>
           <Link href="/about" className="hover:text-[var(--color-accent)] transition-colors duration-200">About</Link>
           <Link href="/now" className="hover:text-[var(--color-accent)] transition-colors duration-200">Now</Link>
-          <Link href="/engineering" className="hover:text-[var(--color-accent)] transition-colors duration-200">Engineering</Link>
+          {/* <Link href="/engineering" className="hover:text-[var(--color-accent)] transition-colors duration-200">Engineering</Link> */}
           <Link href="/privacy" className="hover:text-[var(--color-accent)] transition-colors duration-200">Privacy</Link>
           <Link href="/terms" className="hover:text-[var(--color-accent)] transition-colors duration-200">Terms</Link>
           <PrivacySettingsButton />
