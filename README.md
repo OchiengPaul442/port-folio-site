@@ -57,7 +57,7 @@ A personal portfolio and engineering showcase built with **Next.js 16**, **React
 
 ### Prerequisites
 
-- **Node.js** ≥ 18
+- **Node.js** ≥ 24
 - **npm**, **yarn**, **pnpm**, or **bun**
 
 ### Installation
