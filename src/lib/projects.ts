@@ -66,6 +66,12 @@ export const FLAGSHIP_PROJECT_SLUGS = [
   'coinz',
 ] as const;
 
+// The homepage keeps its featured list focused while the full Work page shows
+// every flagship project, including Builld and Coinz.
+export const HOME_FEATURED_PROJECT_SLUGS = FLAGSHIP_PROJECT_SLUGS.filter(
+  (slug) => slug !== 'builld' && slug !== 'coinz',
+);
+
 export const getAllProjects = cache((): Project[] => {
   try {
     const files = fs.readdirSync(contentDir).filter((f) => f.endsWith('.json'));
@@ -88,15 +94,19 @@ export const getAllProjects = cache((): Project[] => {
   }
 });
 
+function getProjectsBySlugOrder(slugs: readonly string[]): Project[] {
+  const projects = getAllProjects();
+  return slugs.map((slug) => projects.find((project) => project.slug === slug)).filter(
+    (project): project is Project => Boolean(project),
+  );
+}
+
 export function getFeaturedProjects(): Project[] {
-  return getFlagshipProjects();
+  return getProjectsBySlugOrder(HOME_FEATURED_PROJECT_SLUGS);
 }
 
 export function getFlagshipProjects(): Project[] {
-  const projects = getAllProjects();
-  return FLAGSHIP_PROJECT_SLUGS.map((slug) => projects.find((project) => project.slug === slug)).filter(
-    (project): project is Project => Boolean(project),
-  );
+  return getProjectsBySlugOrder(FLAGSHIP_PROJECT_SLUGS);
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
