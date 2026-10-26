@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   description:
     'Public engineering profile for Paul Ochieng Levi, including selected software engineering work and professional activity signals.',
   openGraph: {
+    locale: 'en_UG',
     title: `Engineering Profile and Open-Source Work | ${SITE_NAME}`,
     description: 'A source-linked overview of Paul Ochieng Levi\'s engineering practice and public work.',
     url: '/engineering',

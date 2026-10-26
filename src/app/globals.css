@@ -472,7 +472,11 @@ button:hover ~ .cursor-dot,
   .consent-panel,
   .consent-orb,
   .consent-confirmation,
-  .consent-confirmation-icon { animation: none; }
+  .consent-confirmation-icon,
+  .reveal-up,
+  .reveal-up-delay,
+  .reveal-up-delay-2,
+  .float-soft { animation: none; }
 }
 
 @keyframes reveal-up {

@@ -79,7 +79,7 @@ CONTACT_TO_EMAIL=you@example.com
 CONTACT_FROM_EMAIL=noreply@yourdomain.com
 
 # Public site origin used for canonical URLs, metadata, and sitemap entries
-NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+NEXT_PUBLIC_SITE_URL=https://www.ochiengpaul.com
 
 # Cloudflare Turnstile
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
@@ -117,6 +117,17 @@ npm run start
 npm run lint
 ```
 
+### SEO tests
+
+```bash
+npm run test:unit
+```
+
+For browser checks, set `NEXT_PUBLIC_SITE_URL` to `https://www.ochiengpaul.com`,
+build the app, and start it in one terminal. Run `npm run test:browser` in a
+second terminal while the production server is running. Install Chromium for
+Playwright with `npx playwright install chromium` if needed.
+
 ## Project Structure
 
 ```
@@ -131,7 +142,7 @@ npm run lint
 │   │   └── terms/          # Terms of service
 │   ├── components/         # 26 React components
 │   └── lib/                # Utilities (site config, projects, GitHub)
-├── content/projects/       # 19 JSON case study files
+├── content/projects/       # Project case study records
 ├── public/                 # Static assets (brand logos, images)
 └── src/components/portfolio-chat.css  # Chat widget styles
 ```

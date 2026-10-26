@@ -1,28 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSiteOrigin } from '@/lib/site';
+import {
+  shouldApplyCanonicalRedirect,
+  buildCanonicalRedirectUrl,
+  getCanonicalSiteOrigin,
+  shouldRedirectToCanonicalOrigin,
+} from '@/lib/site';
 
 export function proxy(request: NextRequest) {
-  const hostname = request.nextUrl.hostname.toLowerCase();
   const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0].trim();
   const protocol = forwardedProtocol || request.nextUrl.protocol.replace(':', '');
-  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  const configuredOrigin = getSiteOrigin(configuredSiteUrl);
+  const forwardedHost = request.headers.get('x-forwarded-host')?.split(',')[0].trim();
+  let hostname = request.nextUrl.hostname.toLowerCase();
 
-  const expectedProtocol =
-    configuredOrigin?.protocol.replace(':', '') ||
-    (process.env.NODE_ENV === 'production' ? 'https' : protocol);
-  const expectedHost = configuredOrigin?.host || request.nextUrl.host;
-  const shouldUseCanonicalOrigin =
-    hostname !== expectedHost.split(':')[0].toLowerCase() || protocol !== expectedProtocol;
+  if (forwardedHost) {
+    try {
+      hostname = new URL(`${protocol}://${forwardedHost}`).hostname.toLowerCase();
+    } catch {
+      // Ignore malformed proxy headers and fall back to Next.js's request URL.
+    }
+  }
+
+  const canonicalOrigin = getCanonicalSiteOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+  const expectedProtocol = canonicalOrigin.protocol.replace(':', '');
+  const expectedHost = canonicalOrigin.host;
+  const isLocalHost =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '::1' ||
+    hostname === '[::1]' ||
+    hostname.endsWith('.localhost');
+  const shouldUseCanonicalOrigin = shouldRedirectToCanonicalOrigin(
+    hostname,
+    protocol,
+    expectedHost,
+    expectedProtocol,
+  );
 
   // Keep one crawlable URL for the portfolio. This consolidates the naked
   // domain and HTTP variants before Google has to choose between them.
   // Production-only: the redirect must not fire in development, where
   // NEXT_PUBLIC_SITE_URL points at the production domain but the host is localhost.
-  if (shouldUseCanonicalOrigin && process.env.NODE_ENV === 'production') {
-    const canonicalUrl = request.nextUrl.clone();
-    canonicalUrl.protocol = `${expectedProtocol}:`;
-    canonicalUrl.host = expectedHost;
+  if (
+    shouldUseCanonicalOrigin &&
+    shouldApplyCanonicalRedirect(process.env.NODE_ENV, process.env.VERCEL_ENV, isLocalHost)
+  ) {
+    const canonicalUrl = buildCanonicalRedirectUrl(
+      new URL(request.nextUrl.toString()),
+      expectedProtocol,
+      expectedHost,
+      canonicalOrigin.port,
+    );
     return NextResponse.redirect(canonicalUrl, 308);
   }
 

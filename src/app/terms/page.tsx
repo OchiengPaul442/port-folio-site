@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Terms of Use',
   description: 'Terms of use for the ochiengpaul.com portfolio website.',
   openGraph: {
+    locale: 'en_UG',
     title: 'Terms of Use | Paul Ochieng Levi',
     description: 'Terms governing use of the ochiengpaul.com portfolio website.',
     url: '/terms',

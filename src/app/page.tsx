@@ -5,12 +5,13 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { getFeaturedProjects } from "@/lib/projects";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { GitHubStats } from "@/components/GitHubStats";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { profilePageStructuredData } from "@/lib/seo";
 import {
   SITE_DESCRIPTION,
+  SITE_HOME_URL,
   SITE_NAME,
   SITE_TITLE,
-  SITE_URL,
-  SOCIAL_PROFILES,
 } from "@/lib/site";
 import { nowContent } from "@/lib/now";
 
@@ -18,11 +19,12 @@ export const metadata: Metadata = {
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
   alternates: {
-    canonical: "/",
+    canonical: SITE_HOME_URL,
   },
   openGraph: {
     type: "website",
-    url: SITE_URL,
+    locale: "en_UG",
+    url: SITE_HOME_URL,
     siteName: SITE_NAME,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
@@ -314,74 +316,7 @@ export default async function Home() {
             />
           ))}
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Person",
-                "@id": `${SITE_URL}/#person`,
-                name: "Paul Ochieng Levi",
-                alternateName: ["Paul Ochieng", "Ochieng Paul"],
-                url: SITE_URL,
-                jobTitle: "Full-Stack Software Engineer",
-                worksFor: {
-                  "@type": "Organization",
-                  name: "AirQo",
-                },
-                address: {
-                  "@type": "PostalAddress",
-                  addressLocality: "Kampala",
-                  addressCountry: "UG",
-                },
-                image: `${SITE_URL}/brand/logo-transparent-512.png`,
-                sameAs: SOCIAL_PROFILES,
-                knowsAbout: [
-                  "Full-stack software engineering",
-                  "Next.js",
-                  "React",
-                  "TypeScript",
-                  "Python",
-                  "FastAPI",
-                  "Django",
-                  "Applied AI",
-                  "Developer tools",
-                  "Environmental technology",
-                  "Air quality data systems",
-                ],
-              },
-              {
-                "@type": "WebSite",
-                "@id": `${SITE_URL}/#website`,
-                name: "Paul Ochieng Levi",
-                alternateName: "ochiengpaul.com",
-                url: SITE_URL,
-                inLanguage: "en-UG",
-                description: SITE_DESCRIPTION,
-                publisher: {
-                  "@id": `${SITE_URL}/#person`,
-                },
-              },
-              {
-                "@type": "ProfilePage",
-                "@id": `${SITE_URL}/#profilepage`,
-                url: SITE_URL,
-                name: SITE_TITLE,
-                description: SITE_DESCRIPTION,
-                inLanguage: "en-UG",
-                isPartOf: {
-                  "@id": `${SITE_URL}/#website`,
-                },
-                mainEntity: {
-                  "@id": `${SITE_URL}/#person`,
-                },
-              },
-            ],
-          }).replace(/</g, "\\u003c"),
-        }}
-      />
+      <JsonLd data={profilePageStructuredData} />
     </>
   );
 }

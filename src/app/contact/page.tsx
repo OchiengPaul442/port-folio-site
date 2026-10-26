@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description:
     'Get in touch with Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda. Open to full-time roles, remote engineering, climate-tech collaboration, and consulting.',
   openGraph: {
+    locale: 'en_UG',
     title: 'Contact Paul Ochieng | Full-Stack Software Engineer',
     description: 'Full-stack software engineer open to opportunities and collaboration.',
     url: '/contact',

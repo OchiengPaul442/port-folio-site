@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Privacy policy for ochiengpaul.com. How Paul Ochieng Levi collects, uses, and protects personal data on this portfolio website.',
   openGraph: {
+    locale: 'en_UG',
     title: 'Privacy Policy | Paul Ochieng Levi',
     description: 'Privacy policy for ochiengpaul.com portfolio website.',
     url: '/privacy',

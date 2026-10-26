@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description:
     'About Paul Ochieng Levi, a full-stack software engineer in Kampala, Uganda building web products, APIs, developer tools, and data platforms. Experience building and maintaining AirQo Nexus and the AirQo website with React, Next.js, Python, and Django.',
   openGraph: {
+    locale: 'en_UG',
     title: 'About Paul Ochieng | Software Engineer in Uganda',
     description: 'Full-stack software engineer in Kampala, Uganda building reliable web products and developer tools.',
     url: '/about',

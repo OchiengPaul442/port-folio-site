@@ -13,7 +13,7 @@
   "whatIdChange": "Would add comprehensive JSDoc documentation, implement automated API documentation generation, and build example projects demonstrating common integration patterns.",
   "stack": ["TypeScript", "Node.js", "Air Quality Data"],
   "repo": null,
-  "liveUrl": "https://www.npmjs.com/settings/airqo/packages",
+  "liveUrl": "https://www.npmjs.com/package/@airqo-packages/network-coverage",
   "image": "/images/airqo-npm-packages.webp",
   "featured": true,
   "order": 17

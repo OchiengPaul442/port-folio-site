@@ -4,7 +4,9 @@ import { Footer } from '@/components/Footer';
 import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ClientProviders } from '@/components/ClientProviders';
-import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME, SITE_TITLE, SITE_URL, SOCIAL_PROFILES } from '@/lib/site';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { siteStructuredData } from '@/lib/seo';
+import { SITE_DESCRIPTION, SITE_HOME_URL, SITE_NAME, SITE_TITLE, SITE_URL } from '@/lib/site';
 import './globals.css';
 import '@/components/portfolio-chat.css';
 
@@ -12,19 +14,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
   category: 'technology',
-  title: {
-    default: SITE_TITLE,
-    template: '%s | Paul Ochieng Levi',
-  },
+  title: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  keywords: SITE_KEYWORDS,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  authors: [{ name: SITE_NAME, url: SITE_HOME_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
   openGraph: {
     type: 'website',
-    locale: 'en_US',
-    url: SITE_URL,
+    locale: 'en_UG',
+    url: SITE_HOME_URL,
     siteName: SITE_NAME,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
@@ -51,11 +49,6 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
-  alternates: {
-    languages: {
-      'en-UG': SITE_URL,
-    },
-  },
   icons: {
     icon: [
       { url: '/brand/logo-white-background-48.png', sizes: '48x48', type: 'image/png' },
@@ -76,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       id="top"
-      lang="en"
+      lang="en-UG"
       suppressHydrationWarning
       className="h-full antialiased overflow-x-hidden"
     >
@@ -94,39 +87,7 @@ export default function RootLayout({
             <Footer />
           </SmoothScrollProvider>
         </ThemeProvider>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@graph': [
-                {
-                  '@type': 'Person',
-                  '@id': `${SITE_URL}/#person`,
-                  name: 'Paul Ochieng Levi',
-                  alternateName: 'ochiengpaul.com',
-                  url: SITE_URL,
-                  jobTitle: 'Software Engineer',
-                  worksFor: { '@type': 'Organization', name: 'AirQo' },
-                  address: { '@type': 'PostalAddress', addressLocality: 'Kampala', addressCountry: 'UG' },
-                  sameAs: SOCIAL_PROFILES,
-                  image: `${SITE_URL}/brand/logo-transparent-512.png`,
-                  knowsAbout: ['Software Engineering', 'Applied AI', 'Environmental Technology', 'TypeScript', 'Python', 'React', 'Next.js'],
-                },
-                {
-                  '@type': 'WebSite',
-                  '@id': `${SITE_URL}/#website`,
-                  name: 'Paul Ochieng Levi',
-                  alternateName: 'ochiengpaul.com',
-                  url: SITE_URL,
-                  inLanguage: 'en-UG',
-                  description: SITE_DESCRIPTION,
-                  publisher: { '@id': `${SITE_URL}/#person` },
-                },
-              ],
-            }),
-          }}
-        />
+        <JsonLd data={siteStructuredData} />
       </body>
     </html>
   );

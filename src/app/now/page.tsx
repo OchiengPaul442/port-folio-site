@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description:
     'What Paul Ochieng Levi is currently building, learning, and exploring. Active projects, current focus areas, and open problems in software engineering.',
   openGraph: {
+    locale: 'en_UG',
     title: 'What Paul Ochieng Is Building Now',
     description: 'What Paul Ochieng Levi is currently building, learning, and exploring.',
     url: '/now',

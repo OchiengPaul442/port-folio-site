@@ -7,6 +7,7 @@ import { getProjectBySlug, getAllProjects } from '@/lib/projects';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { projectBreadcrumbs } from '@/lib/seo';
+import { isIndexableProjectSlug } from '@/lib/sitemap-utils';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -23,24 +24,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return {};
 
   const clientSuffix = project.client ? ` for ${project.client}` : '';
+  const canonicalUrl = new URL(`/work/${slug}`, SITE_URL).toString();
+  const socialImages = [
+    project.image
+      ? {
+          url: new URL(project.image, SITE_URL).toString(),
+          alt: `${project.title} application interface`,
+        }
+      : {
+          url: new URL('/opengraph-image', SITE_URL).toString(),
+          alt: 'Paul Ochieng software engineering portfolio',
+        },
+  ];
 
   return {
     title: `${project.title}${clientSuffix} Case Study | Paul Ochieng`,
     description: project.client
       ? `${project.description} Built for ${project.client}.`
       : project.description,
-    keywords: project.stack.concat(['Paul Ochieng Levi', 'portfolio', 'case study']),
     openGraph: {
       title: `${project.title}${clientSuffix} | Paul Ochieng Levi`,
       description: project.client
         ? `${project.description} Built for ${project.client}.`
         : project.description,
       type: 'article',
-      url: `/work/${slug}`,
+      url: canonicalUrl,
       siteName: 'Paul Ochieng Levi',
-      images: project.image
-        ? [{ url: new URL(project.image, SITE_URL).toString(), width: 1200, height: 750, alt: `${project.title} application interface` }]
-        : [],
+      locale: 'en_UG',
+      images: socialImages,
     },
     twitter: {
       card: 'summary_large_image',
@@ -49,10 +60,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         ? `${project.description} Built for ${project.client}.`
         : project.description,
       creator: '@OchiengTech',
+      images: socialImages,
     },
     alternates: {
-      canonical: `/work/${slug}`,
+      canonical: canonicalUrl,
     },
+    ...(isIndexableProjectSlug(slug)
+      ? {}
+      : { robots: { index: false, follow: true } }),
   };
 }
 
