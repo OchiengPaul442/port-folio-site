@@ -16,7 +16,7 @@ export function Footer() {
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
               Software engineer in Kampala, Uganda.
               <br />
-              Building thoughtful web products and dependable software systems.
+              Building thoughtful web and mobile products, backed by dependable software systems.
             </p>
           </div>
           <div className="flex gap-6">
