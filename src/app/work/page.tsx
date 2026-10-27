@@ -10,7 +10,7 @@ import { workBreadcrumbs } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'Software Projects and Case Studies | Paul Ochieng',
   description:
-    'Selected software projects and case studies by Paul Ochieng Levi, including AirQo, AirQo Nexus, AirQo open-source packages, PICSA Apps, Dawa, OnCallUg, AQMRG, STI, Builld, and Coinz.',
+    'Selected software projects and case studies by Paul Ochieng Levi, including AirQo, AirQo Nexus, AirQo open-source packages, PICSA Apps, Mizani, Dawa, OnCallUg, AQMRG, STI, Builld, and Coinz.',
   openGraph: {
     locale: 'en_UG',
     title: 'Software Projects and Case Studies | Paul Ochieng',

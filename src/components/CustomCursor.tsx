@@ -2,80 +2,95 @@
 
 import { useEffect, useRef } from 'react';
 
+const POINTER_TARGET_SELECTOR = [
+  'a[href]:not([aria-disabled="true"])',
+  'button:not(:disabled):not([aria-disabled="true"])',
+  '[role="button"]:not([aria-disabled="true"])',
+  '[role="link"]:not([aria-disabled="true"])',
+  'input[type="button"]:not(:disabled)',
+  'input[type="submit"]:not(:disabled)',
+  'input[type="checkbox"]:not(:disabled)',
+  'input[type="radio"]:not(:disabled)',
+  'select:not(:disabled)',
+  'summary',
+  'label[for]',
+  '[data-cursor="pointer"]',
+].join(',');
+
+const EDITABLE_TARGET_SELECTOR = [
+  'textarea:not(:disabled)',
+  'input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not(:disabled)',
+  '[contenteditable="true"]',
+  '[role="textbox"]',
+].join(',');
+
+const CURSOR_STATE_CLASSES = [
+  'has-custom-cursor',
+  'cursor-is-pointer',
+  'cursor-uses-native',
+  'cursor-is-clicking',
+] as const;
+
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const posRef = useRef({ x: 0, y: 0 });
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
+    const supportsCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    let hasMoved = false;
+    if (!supportsCustomCursor || prefersReducedMotion) return;
 
-    const handleMouseDown = () => {
-      if (ringRef.current) ringRef.current.classList.add('cursor-ring--click');
-    };
+    const root = document.documentElement;
 
-    const handleMouseUp = () => {
-      if (ringRef.current) ringRef.current.classList.remove('cursor-ring--click');
-    };
+    const handleMouseMove = (event: MouseEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      const isEditable = Boolean(target?.closest(EDITABLE_TARGET_SELECTOR));
+      const isPointerTarget = !isEditable && Boolean(target?.closest(POINTER_TARGET_SELECTOR));
 
-    // Animation loop
-    let animId: number;
-
-    const animate = () => {
-      const ringLerp = 0.12;
-
-      posRef.current.x += (mouseRef.current.x - posRef.current.x) * ringLerp;
-      posRef.current.y += (mouseRef.current.y - posRef.current.y) * ringLerp;
-
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${mouseRef.current.x}px, ${mouseRef.current.y}px) translate(-50%, -50%)`;
+      const cursor = cursorRef.current;
+      if (cursor) {
+        const pointerOffsetX = isPointerTarget ? 8 : 2;
+        const pointerOffsetY = isPointerTarget ? 2 : 1.3;
+        cursor.style.transform = `translate3d(${event.clientX - pointerOffsetX}px, ${event.clientY - pointerOffsetY}px, 0)`;
+        cursor.style.opacity = '1';
       }
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${posRef.current.x}px, ${posRef.current.y}px) translate(-50%, -50%)`;
-      }
-      animId = requestAnimationFrame(animate);
+
+      root.classList.toggle('cursor-uses-native', isEditable);
+      root.classList.toggle('cursor-is-pointer', isPointerTarget);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-
-      // Show cursor after first move
-      if (!hasMoved) {
-        hasMoved = true;
-        if (dotRef.current) dotRef.current.style.opacity = '1';
-        if (ringRef.current) ringRef.current.style.opacity = '1';
-      }
+    const hideCursor = () => {
+      if (cursorRef.current) cursorRef.current.style.opacity = '0';
     };
 
-    // Hide default cursor
-    document.documentElement.classList.add('has-custom-cursor');
+    const handleMouseDown = () => root.classList.add('cursor-is-clicking');
+    const handleMouseUp = () => root.classList.remove('cursor-is-clicking');
 
+    root.classList.add('has-custom-cursor');
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mouseup', handleMouseUp);
-    animId = requestAnimationFrame(animate);
+    document.addEventListener('mouseleave', hideCursor);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('blur', hideCursor);
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mouseup', handleMouseUp);
-      cancelAnimationFrame(animId);
-      document.documentElement.classList.remove('has-custom-cursor');
+      document.removeEventListener('mouseleave', hideCursor);
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('blur', hideCursor);
+      root.classList.remove(...CURSOR_STATE_CLASSES);
     };
   }, []);
 
-  if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-    return null;
-  }
-
   return (
-    <>
-      <div ref={dotRef} className="cursor-dot" style={{ opacity: 0 }} />
-      <div ref={ringRef} className="cursor-ring" style={{ opacity: 0 }} />
-    </>
+    <div ref={cursorRef} className="cursor-arrow" aria-hidden="true">
+      <svg className="cursor-arrow-icon" viewBox="0 0 28 36" focusable="false">
+        <path d="M2 1.5v28l7-6.6 5.8 11.3 5.5-2.8-5.8-11.1 10-.2z" />
+      </svg>
+      <svg className="cursor-hand-icon" viewBox="0 0 32 40" focusable="false">
+        <path d="M10 20V5a2.5 2.5 0 0 1 5 0v11a2.3 2.3 0 0 1 4.6 0v2a2.3 2.3 0 0 1 4.6 0v2a2.3 2.3 0 0 1 4.6 0v7c0 6.4-4.2 10.5-10.6 10.5h-1.7c-3.2 0-6.1-1.6-7.9-4.3l-4.3-6.5a2.4 2.4 0 0 1 3.8-2.9l1.9 1.8V20Z" />
+      </svg>
+    </div>
   );
 }

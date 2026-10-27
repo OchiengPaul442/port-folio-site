@@ -224,65 +224,91 @@ html {
 }
 
 /* ============================================
-   CUSTOM CURSOR: Dot + Ring Follower
+   CUSTOM CURSOR: Large orange arrow
    ============================================ */
 .has-custom-cursor,
 .has-custom-cursor * {
   cursor: none !important;
 }
 
-.cursor-dot {
+.has-custom-cursor.cursor-uses-native,
+.has-custom-cursor.cursor-uses-native * {
+  cursor: auto !important;
+}
+
+.has-custom-cursor.cursor-uses-native input:not([type='button']):not([type='submit']):not([type='checkbox']):not([type='radio']),
+.has-custom-cursor.cursor-uses-native textarea,
+.has-custom-cursor.cursor-uses-native [contenteditable='true'],
+.has-custom-cursor.cursor-uses-native [role='textbox'] {
+  cursor: text !important;
+}
+
+.cursor-arrow {
   position: fixed;
   top: 0;
   left: 0;
-  width: 8px;
-  height: 8px;
-  background: var(--color-accent);
-  border-radius: 50%;
+  width: 26px;
+  height: 34px;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 999999;
+  opacity: 0;
   will-change: transform;
-  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1), height 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
+  transition: opacity 80ms linear;
 }
 
-.cursor-ring {
-  position: fixed;
+.cursor-arrow svg {
+  display: block;
+  width: 24px;
+  height: 31px;
+  overflow: visible;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 25%));
+  transform-origin: 2px 2px;
+  transition: transform 100ms ease-out;
+}
+
+.cursor-arrow .cursor-hand-icon {
+  position: absolute;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
-  border: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  will-change: transform;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, border-width 0.2s ease;
+  display: none;
+  width: 26px;
+  height: 33px;
+  transform: translate(-8px, -2px);
+  transform-origin: 8px 2px;
 }
 
-/* Click state */
-.cursor-ring--click {
-  width: 28px !important;
-  height: 28px !important;
-  border-width: 2.5px;
-  border-color: var(--color-accent);
+.cursor-arrow path {
+  fill: var(--color-accent);
+  stroke: var(--color-bg-primary);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
 }
 
-/* Hover states: ring expands on interactive elements */
-a:hover ~ .cursor-ring,
-button:hover ~ .cursor-ring,
-[role="link"]:hover ~ .cursor-ring {
-  width: 56px;
-  height: 56px;
-  border-color: var(--color-accent);
-  border-width: 2px;
+.cursor-is-clicking .cursor-arrow svg {
+  transform: scale(0.9);
 }
 
-/* Active hover: dot scales on interactive elements */
-a:hover ~ .cursor-dot,
-button:hover ~ .cursor-dot,
-[role="link"]:hover ~ .cursor-dot {
-  width: 6px;
-  height: 6px;
+.cursor-is-pointer .cursor-arrow-icon {
+  display: none;
+}
+
+.cursor-is-pointer .cursor-arrow .cursor-hand-icon {
+  display: block;
+}
+
+.cursor-is-clicking .cursor-arrow .cursor-hand-icon {
+  transform: translate(-8px, -2px) scale(0.9);
+}
+
+.cursor-uses-native .cursor-arrow {
+  opacity: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-arrow,
+  .cursor-arrow svg {
+    transition: none;
+  }
 }
 
 .hero-accent-line {

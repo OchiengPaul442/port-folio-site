@@ -2,7 +2,7 @@
 
 # Paul Ochieng - Portfolio
 
-A personal portfolio and engineering showcase built with **Next.js 16**, **React 19**, and **Tailwind CSS v4**. Features 19 project case studies, an AI-powered chat assistant, multi-language support, and a contact form with enterprise-grade spam protection.
+A personal portfolio and engineering showcase built with **Next.js 16**, **React 19**, and **Tailwind CSS v4**. Features 20 project case studies, an AI-powered chat assistant, multi-language support, and a contact form with enterprise-grade spam protection.
 
 <p>
   <a href="https://nextjs.org"><img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js"></a>
@@ -20,7 +20,7 @@ A personal portfolio and engineering showcase built with **Next.js 16**, **React
 
 ## Features
 
-- **19 Project Case Studies** - Detailed write-ups with problem, approach, outcome, and tech stack
+- **20 Project Case Studies** - Detailed write-ups with problem, approach, outcome, and tech stack
 - **AI Chat Assistant** - SSE-streaming FastAPI portfolio agent with multi-provider LLM support, web search, and daily quota enforcement
 - **Multi-Language Support** - Google Translate integration with 7 languages
 - **Contact Form** - Cloudflare Turnstile CAPTCHA, Zod validation, honeypot field, rate limiting

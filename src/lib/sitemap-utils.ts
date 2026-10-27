@@ -14,6 +14,7 @@ export const INDEXABLE_PROJECT_SLUGS = [
   'coinz',
   'dawa-ug',
   'ledgerbloom',
+  'mizani',
   'nexcode',
   'nexus-airqo',
   'oncallug-drivers',

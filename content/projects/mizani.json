@@ -1,0 +1,19 @@
+{
+  "slug": "mizani",
+  "title": "Mizani",
+  "subtitle": "Offline-first Android budgeting for everyday money",
+  "description": "Mizani is a native Android app for tracking income, expenses, transfers, refunds, and balances across cash, mobile money, and bank wallets. It helps people understand day-to-day cash flow and multi-currency activity while keeping the ledger on the device.",
+  "problem": "Keeping a useful view of personal finances is hard when money is spread across cash, mobile money, bank accounts, and different currencies. A tracking app also needs to work through unreliable connectivity without asking people to trust a cloud account with sensitive records.",
+  "role": "I built Mizani as a native Android personal finance app, shaping its core flows from onboarding and transaction entry to wallet management, insights, local security, and data export.",
+  "approach": "Developed in Kotlin with Jetpack Compose and a local Room database protected with SQLCipher. The app works without an account or continuous internet access; currency reference rates are fetched only when requested. I added country presets, support for cash, mobile money, and bank wallets, income, expenses, transfers, refunds and adjustments, plus cash-flow insights, CSV and Excel exports, passphrase-encrypted backups, and optional PIN or biometric access.",
+  "hardestDecision": "The core challenge was adding useful currency and recovery features while keeping the ledger private and usable offline. I kept rates as optional, dated reference data and built encrypted backups for moving or restoring records, without introducing account or sync dependencies.",
+  "status": "shipped",
+  "outcome": "Released as Mizani 1.0.0 for Android, with offline transaction and wallet tracking, multi-currency entry, cash-flow insights, exports, and protected backups. The app includes regional setup for Uganda, Kenya, Tanzania, Rwanda, Nigeria, Ghana, and South Africa.",
+  "whatIdChange": "I would extend the insights with opt-in budget targets and recurring transactions while preserving local-first storage and clear export and backup controls.",
+  "stack": ["Kotlin", "Android", "Jetpack Compose", "Room", "SQLCipher"],
+  "repo": "https://github.com/OchiengPaul442/Mizani",
+  "liveUrl": null,
+  "image": "/images/mizani.svg",
+  "featured": true,
+  "order": 18
+}
