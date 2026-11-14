@@ -21,7 +21,7 @@ export default function TermsPage() {
     <section className="px-6 py-16">
       <div className="mx-auto max-w-4xl">
         <h1 className="text-3xl font-bold tracking-tight text-[var(--color-text-primary)]">Terms of Use</h1>
-        <p className="mt-2 font-mono text-sm text-[var(--color-text-tertiary)]">Last updated: 2 August 2026</p>
+        <p className="mt-2 font-mono text-sm text-[var(--color-text-tertiary)]">Last updated: 14 November 2026</p>
         <div className="prose mt-8 max-w-none text-[var(--color-text-secondary)]">
           <p>
             These terms apply to your use of ochiengpaul.com, a personal portfolio website operated by Paul Ochieng Levi in Kampala, Uganda. By using the website, you agree to use it lawfully and respectfully.
@@ -32,7 +32,7 @@ export default function TermsPage() {
           </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">External links and services</h2>
           <p>
-            This website links to services including GitHub, LinkedIn, X/Twitter, Google services, Resend, and Exceeds. Those services operate independently and have their own terms and privacy notices. Paul Ochieng Levi is not responsible for their availability, content, security, or data practices.
+            This website links to services including GitHub, LinkedIn, X/Twitter, Reddit, Google services, Resend, and Exceeds. Those services operate independently and have their own terms and privacy notices. Paul Ochieng Levi is not responsible for their availability, content, security, or data practices.
           </p>
           <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Contact form</h2>
           <p>

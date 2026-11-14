@@ -26,7 +26,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="mt-2 font-mono text-sm text-[var(--color-text-tertiary)]">
-          Last updated: 2 August 2026
+          Last updated: 14 November 2026
         </p>
         <div className="prose mt-8 max-w-none text-[var(--color-text-secondary)]">
           <p>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
             your GitHub account information from that feature.
           </p>
           <p>
-            Links to GitHub, LinkedIn, and Twitter/X take you to those services.
+            Links to GitHub, LinkedIn, Twitter/X, and Reddit take you to those services.
             They may collect information under their own policies once you leave
             this site.
           </p>

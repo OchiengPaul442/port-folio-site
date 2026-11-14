@@ -75,4 +75,5 @@ export const SOCIAL_PROFILES = [
   'https://github.com/OchiengPaul442',
   'https://www.linkedin.com/in/paulochieng442/',
   'https://twitter.com/OchiengTech',
+  'https://www.reddit.com/user/NyotaCipher/',
 ];

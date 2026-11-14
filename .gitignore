@@ -19,15 +19,35 @@
 
 # production
 /build
+/dist/
 
 # misc
 .DS_Store
+Thumbs.db
+Desktop.ini
 *.pem
+*.swp
+*.swo
+*~
+
+# local editor state
+/.idea/
+/.vscode/*.local.json
+/.vscode/.history/
+
+# local caches and generated QA artifacts
+/.turbo/
+/.parcel-cache/
+/.cache/
+/.codex-mizani-qa/
+/playwright-report/
+/test-results/
 
 # playwright
 .playwright-mcp/
 
 # debug
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

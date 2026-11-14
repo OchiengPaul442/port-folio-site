@@ -46,6 +46,7 @@ export function Footer() {
           <PrivacySettingsButton />
           <a href="https://www.linkedin.com/in/paulochieng442/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">LinkedIn</a>
           <a href="https://twitter.com/OchiengTech" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">Twitter</a>
+          <a href="https://www.reddit.com/user/NyotaCipher/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-accent)] transition-colors duration-200">Reddit</a>
         </div>
         <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-[var(--color-border)] pt-6 sm:flex-row sm:items-center">
           <p className="font-mono text-xs text-[var(--color-text-tertiary)]">

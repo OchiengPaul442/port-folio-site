@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Check, X } from 'lucide-react';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 const CONSENT_KEY = 'privacy-analytics-consent';
@@ -70,7 +71,9 @@ export function ConsentBanner() {
           {feedback ? (
             <div className="consent-confirmation" role="status" aria-live="assertive">
               <span className="consent-confirmation-icon" aria-hidden="true">
-                {choice === 'granted' ? '✓' : 'Not set'}
+                {choice === 'granted'
+                  ? <Check className="h-5 w-5" strokeWidth={2.5} />
+                  : <X className="h-5 w-5" strokeWidth={2.5} />}
               </span>
               <div>
                 <h2 ref={feedbackHeadingRef} tabIndex={-1} className="text-base font-semibold text-[var(--color-text-primary)] outline-none">Choice saved</h2>

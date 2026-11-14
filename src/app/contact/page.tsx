@@ -119,6 +119,14 @@ export default function ContactPage() {
               >
                 Twitter
               </a>
+              <a
+                href="https://www.reddit.com/user/NyotaCipher/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
+              >
+                Reddit
+              </a>
             </div>
           </div>
         </ScrollReveal>
