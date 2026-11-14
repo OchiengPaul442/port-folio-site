@@ -13,7 +13,7 @@
   "stack": ["Kotlin", "Android", "Jetpack Compose", "Room", "SQLCipher"],
   "repo": "https://github.com/OchiengPaul442/Mizani",
   "liveUrl": null,
-  "image": "/images/mizani.svg",
+  "image": "/images/feature-graphic-1024x500.png",
   "featured": true,
   "order": 18
 }
