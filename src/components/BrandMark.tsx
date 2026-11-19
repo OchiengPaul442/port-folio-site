@@ -9,10 +9,11 @@ export function BrandMark({ className = 'h-9 w-9', title = 'Paul Ochieng Levi ma
   return (
     <Image
       className={className}
-      src="/brand/logo-transparent.svg"
+      src="/brand/logo-transparent-128.png"
       alt={title}
       width={48}
       height={48}
+      sizes="48px"
     />
   );
 }

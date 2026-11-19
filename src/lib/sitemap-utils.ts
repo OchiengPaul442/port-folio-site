@@ -1,7 +1,7 @@
 /**
  * Editorial allow-list for project case studies submitted for indexing.
- * This includes flagship work and substantial personal applications selected
- * for public case-study content. Secondary demos remain available in archive.
+ * This includes selected, substantive case studies. Secondary demos remain
+ * available in the archive without competing with the main portfolio pages.
  */
 export const INDEXABLE_PROJECT_SLUGS = [
   'aeris-aq',
@@ -21,6 +21,8 @@ export const INDEXABLE_PROJECT_SLUGS = [
   'paul-portfolio-agent',
   'pdf-viewer',
   'picsa-app',
+  'saving-food',
+  'sentsafrica',
   'sti',
 ] as const;
 

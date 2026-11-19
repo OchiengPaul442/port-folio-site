@@ -113,8 +113,6 @@ test('the sitemap contains only unique, absolute URLs for the index allow-list',
   assert.ok(urls.every((url) => !url.includes('?') && !url.includes('#')));
   assert.ok(!urls.includes('https://www.ochiengpaul.com/privacy'));
   assert.ok(!urls.includes('https://www.ochiengpaul.com/terms'));
-  assert.ok(!urls.some((url) => url.includes('/work/saving-food')));
-  assert.ok(!urls.some((url) => url.includes('/work/sentsafrica')));
   assert.ok(!urls.some((url) => url.includes('/work/tic-tack-toe')));
 });
 
@@ -146,7 +144,7 @@ test('every indexable case study has the content fields rendered by the case-stu
     }
   }
 
-  for (const slug of ['saving-food', 'sentsafrica', 'tic-tack-toe']) {
+  for (const slug of ['tic-tack-toe']) {
     assert.equal(isIndexableProjectSlug(slug), false);
   }
 });

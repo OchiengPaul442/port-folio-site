@@ -1,0 +1,48 @@
+.portfolio-chat-root {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 80;
+  font-family: var(--font-sans);
+}
+
+.language-selector-root {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4.1rem);
+  z-index: 79;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.language-selector-root > .relative > button { min-height: 2.75rem; border-radius: .75rem !important; padding: .55rem .8rem; box-shadow: 0 .75rem 2rem color-mix(in srgb, #000 18%, transparent); }
+.language-selector-menu { border-radius: .75rem !important; }
+
+.portfolio-chat-launcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 3.25rem;
+  padding: .65rem 1.05rem .65rem .7rem;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 42%, var(--color-border));
+  border-radius: .75rem;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  box-shadow: 0 1rem 3.5rem color-mix(in srgb, #000 22%, transparent), 0 0 0 1px color-mix(in srgb, var(--color-accent) 7%, transparent);
+  font-size: .86rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.portfolio-chat-launcher:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--color-accent); box-shadow: 0 1.25rem 4rem color-mix(in srgb, #000 28%, transparent), 0 0 1.5rem color-mix(in srgb, var(--color-accent) 16%, transparent); }
+.portfolio-chat-launcher:focus-visible, .portfolio-chat-icon:focus-visible, .portfolio-chat-send:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.portfolio-chat-launcher-icon { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--color-accent); color: var(--color-accent-text); }
+.portfolio-chat-launcher-pulse { width: .4rem; height: .4rem; margin-left: -.35rem; border-radius: 50%; background: #34d399; box-shadow: 0 0 0 .2rem color-mix(in srgb, #34d399 18%, transparent); }
+
+@media (max-width: 640px) {
+  .language-selector-root { right: .75rem; bottom: calc(max(.75rem, env(safe-area-inset-bottom)) + 4.05rem); }
+  .portfolio-chat-root { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); left: .75rem; display: flex; justify-content: flex-end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-chat-launcher:hover:not(:disabled) { transform: none; }
+}

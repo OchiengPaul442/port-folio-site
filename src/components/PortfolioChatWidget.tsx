@@ -4,6 +4,7 @@ import { FormEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, use
 import { ArrowUp, Bot, Check, Copy, Edit3, MessageCircle, Square, X } from 'lucide-react';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import ChatCodeBlock from './ChatCodeBlock';
+import './portfolio-chat.css';
 
 type Role = 'user' | 'assistant';
 type Message = { id: string; role: Role; content: string; truncated?: boolean; continue_token?: string };
@@ -303,8 +304,12 @@ function getSavedChatState(): { messages: Message[]; sources: Source[]; quota: Q
   return { messages: [INITIAL_MESSAGE], sources: [], quota: null, hasHistory: false };
 }
 
-export function PortfolioChatWidget() {
-  const [open, setOpen] = useState(false);
+interface PortfolioChatWidgetProps {
+  initialOpen?: boolean;
+}
+
+export function PortfolioChatWidget({ initialOpen = false }: PortfolioChatWidgetProps) {
+  const [open, setOpen] = useState(initialOpen);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>(() => getSavedChatState().messages);
   const [sources, setSources] = useState<Source[]>(() => getSavedChatState().sources);

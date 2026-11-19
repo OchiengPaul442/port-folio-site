@@ -121,7 +121,7 @@ test('robots and sitemap responses agree on absolute canonical index URLs', asyn
   assert.ok(urls.includes('https://www.ochiengpaul.com'));
   assert.ok(urls.includes('https://www.ochiengpaul.com/work/aeris-aq'));
   assert.ok(!urls.some((url) => /\/(privacy|terms)$/.test(url)));
-  assert.ok(!urls.some((url) => /\/work\/(saving-food|sentsafrica|tic-tack-toe)$/.test(url)));
+  assert.ok(!urls.some((url) => /\/work\/tic-tack-toe$/.test(url)));
   assert.doesNotMatch(xml, /<lastmod>/);
 
   for (const url of urls) {
@@ -164,8 +164,16 @@ test('production proxy redirects forwarded apex and HTTP requests with a permane
   );
 });
 
-test('secondary project records remain available but explicitly noindex', async () => {
-  for (const slug of ['saving-food', 'sentsafrica', 'tic-tack-toe']) {
+test('selected case studies are indexable while the secondary demo remains noindex', async () => {
+  for (const slug of ['saving-food', 'sentsafrica']) {
+    const response = await api.get(`${baseUrl}/work/${slug}`);
+    assert.equal(response.status(), 200);
+    const html = await response.text();
+    assert.doesNotMatch(html, /<meta name="robots" content="[^"]*noindex/i);
+    assert.match(html, new RegExp(`rel="canonical" href="https://www\\.ochiengpaul\\.com/work/${slug}"`));
+  }
+
+  for (const slug of ['tic-tack-toe']) {
     const response = await api.get(`${baseUrl}/work/${slug}`);
     assert.equal(response.status(), 200);
     const html = await response.text();

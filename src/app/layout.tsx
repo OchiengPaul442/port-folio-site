@@ -8,7 +8,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { siteStructuredData } from '@/lib/seo';
 import { SITE_DESCRIPTION, SITE_HOME_URL, SITE_NAME, SITE_TITLE, SITE_URL } from '@/lib/site';
 import './globals.css';
-import '@/components/portfolio-chat.css';
+import '@/components/portfolio-chat-launcher.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
