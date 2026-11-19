@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { DeferredPortfolioChatWidget } from '@/components/DeferredPortfolioChatWidget';
 
 const Analytics = dynamic(
   () => import('@/components/Analytics').then((m) => m.Analytics),
@@ -42,7 +41,6 @@ export function ClientProviders() {
       <CustomCursor />
       <LanguageSelector />
       <ConsentBanner />
-      <DeferredPortfolioChatWidget />
     </>
   );
 }

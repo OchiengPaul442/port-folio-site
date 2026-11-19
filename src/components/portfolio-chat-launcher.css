@@ -9,8 +9,11 @@
 .language-selector-root {
   position: fixed;
   right: clamp(1rem, 3vw, 2rem);
-  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4.1rem);
+  bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 79;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
   transition: opacity .2s ease, transform .2s ease;
 }
 .language-selector-root > .relative > button { min-height: 2.75rem; border-radius: .75rem !important; padding: .55rem .8rem; box-shadow: 0 .75rem 2rem color-mix(in srgb, #000 18%, transparent); }
@@ -39,7 +42,7 @@
 .portfolio-chat-launcher-pulse { width: .4rem; height: .4rem; margin-left: -.35rem; border-radius: 50%; background: #34d399; box-shadow: 0 0 0 .2rem color-mix(in srgb, #34d399 18%, transparent); }
 
 @media (max-width: 640px) {
-  .language-selector-root { right: .75rem; bottom: calc(max(.75rem, env(safe-area-inset-bottom)) + 4.05rem); }
+  .language-selector-root { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); }
   .portfolio-chat-root { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); left: .75rem; display: flex; justify-content: flex-end; }
 }
 
