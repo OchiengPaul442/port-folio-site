@@ -12,7 +12,7 @@
   "whatIdChange": "I would extend the insights with opt-in budget targets and recurring transactions while preserving local-first storage and clear export and backup controls.",
   "stack": ["Kotlin", "Android", "Jetpack Compose", "Room", "SQLCipher"],
   "repo": "https://github.com/OchiengPaul442/Mizani",
-  "liveUrl": null,
+  "liveUrl": "https://mizani-six.vercel.app/",
   "image": "/images/feature-graphic-1024x500.png",
   "featured": true,
   "order": 18
